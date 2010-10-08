@@ -91,7 +91,7 @@ void display(void)
 	
 	// afasta a cena de 25 unidades mais a distância que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
-    glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2]-250 ); //era -25
+    glTranslatef( obj_pos[0]-250, obj_pos[1], -obj_pos[2]-250 ); //era -25
 		// tambem se poderia ter feito:
 		//glTranslated(0.0,0.0,-25.0);
 		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
@@ -277,6 +277,9 @@ void display(void)
 	hospital();
 	hangar(); 
 	heliporto();
+
+	torre();
+
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();

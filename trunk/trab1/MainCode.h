@@ -190,15 +190,23 @@ void holofote(int tipo)
 	glPopMatrix();
 
 	glPopMatrix();
-
-
 }
 
 void heliporto(void)
 {
 
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 5);
+	glBegin(GL_POLYGON);
+		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
+		glTexCoord2f(0.0,0.0); glVertex3d( 150.0+45/2, 0.1,  -75/2);
+		glTexCoord2f(10.0,0.0); glVertex3d(150.0+45/2+105, 0.1,  -75/2);
+		glTexCoord2f(10.0,5.0); glVertex3d(150.0+45/2+105, 0.1,  -75/2-75);
+		glTexCoord2f(0.0,5.0); glVertex3d(150.0+45/2, 0.1,  -75/2-75);		
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 
-
+	holofote(1);
 
 }
 
@@ -538,7 +546,7 @@ void hangar()
 	double alfa=0, beta=0;
 	double norm_x, norm_y, norm_x1, norm_y1;	//coordenadas x e y do vector normal ?superficie
 	glPushMatrix();
-	glTranslated(327.0+93.0/2.0, 0.0, -125.0);
+	glTranslated(307.0+93.0/2.0, 0.0, -125.0);
 
 	while(slices > 0)
 	{
@@ -580,4 +588,26 @@ void hangar()
 		alfa += delta;	//proximo angulo
 	}
 		glPopMatrix();
+}
+
+void torre()
+{
+	GLUquadric* glQ;
+	glQ = gluNewQuadric();
+	GLUquadric* quad;
+	quad = gluNewQuadric();
+
+	//glColor3f(0.0,1.0,0.0);		// verde
+	glPushMatrix();
+	glTranslated(415.0+25.0/2,0.0,-220.0-25.0/2);
+	glRotated(-90.0, 1.0,0.0,0.0 );
+	gluCylinder(glQ, 25.0/2, 25.0/2,
+		             95.0, 12.0, 1.0);   // nao tem bases
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(415.0+25.0/2,95.0,-220.0-25.0/2);
+	glRotated(-90.0, 1.0,0.0,0.0 );
+	gluDisk(quad, 0.0, 90.0/2, 12.0, 7.0);   // nao tem bases
+	glPopMatrix();
 }
