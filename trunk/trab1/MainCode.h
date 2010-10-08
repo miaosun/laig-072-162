@@ -208,21 +208,25 @@ void heliporto(void)
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
+	//canto inferior esquerdo	
 	glPushMatrix();
 	glTranslated(150+45.0/2.0+3.0/2.0, 0.0, -75.0/2.0-3.0/2.0);
 	holofote(1);
 	glPopMatrix();
 
+	//canto superior esquerdo
 	glPushMatrix();
-	glTranslated(150.0+45.0/2.0+3.0/2.0, 0.0,-75.0/2.0-75.0-3.0/2.0);
+	glTranslated(150.0+45.0/2.0+3.0/2.0, 0.0,-75.0/2.0-75.0+3.0/2.0);
 	holofote(2);
 	glPopMatrix();
 
+	//canto superior direito	
 	glPushMatrix();
-	glTranslated(150.0+45.0/2.0+105.0-3.0/2.0, 0.0, -75.0/2.0-75.0-3.0/2.0);
+	glTranslated(150.0+45.0/2.0+105.0-3.0/2.0, 0.0, -75.0/2.0-75.0+3.0/2.0);
 	holofote(3);
 	glPopMatrix();
 
+	//canto inferior direito
 	glPushMatrix();
 	glTranslated(150.0+45.0/2.0+105.0-3.0/2.0, 0.0, -75.0/2.0-3.0/2.0);
 	holofote(4);

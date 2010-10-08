@@ -275,7 +275,6 @@ void display(void)
 	hospital();
 	hangar(); 
 	heliporto();
-
 	torre();
 
 	// swapping the buffers causes the rendering above to be shown
