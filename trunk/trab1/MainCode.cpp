@@ -265,16 +265,14 @@ void display(void)
 	//TODO
 	//INICIO DO TRABALHO
 
-	chao();
+	//Terreno e ¨¢rvores;
+	glCallList(1);
+	//Hospital (com telhado e letreiro inclu¨ªdos);
+	glCallList(2);
+	//Heliporto (¨¢rea de aterragem e holofotes).
+	glCallList(3);
 
-	arvore_A(30.0, 30.0, 70.0, 40.0);
-	arvore_A(100.0, 100.0, 50.0, 30.0);
-	arvore_X(30.0, 150.0, 50.0, 30.0);
-	arvore_X(100.0, 200.0, 70.0, 40.0);
-
-	hospital();
 	hangar(); 
-	heliporto();
 	torre();
 
 	// swapping the buffers causes the rendering above to be shown
@@ -420,6 +418,27 @@ void inicializacao()
 
 	pixmap.readBMPFile("janela.bmp");
 	pixmap.setTexture(8);
+
+//criar display lists
+
+	//Terreno e ¨¢rvores
+	glNewList(1,GL_COMPILE);
+		chao();
+		arvore_A(30.0, 30.0, 70.0, 40.0);
+		arvore_A(100.0, 100.0, 50.0, 30.0);
+		arvore_X(30.0, 150.0, 50.0, 30.0);
+		arvore_X(100.0, 200.0, 70.0, 40.0);
+	glEndList();
+
+	//Hospital (com telhado e letreiro inclu¨ªdos)
+	glNewList(2, GL_COMPILE);
+		hospital();
+	glEndList();
+
+	//Heliporto (¨¢rea de aterragem e holofotes)
+	glNewList(3, GL_COMPILE);
+		heliporto();
+	glEndList();
 }
 
 
