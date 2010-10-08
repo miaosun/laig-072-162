@@ -207,6 +207,15 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
+void heliporto(void)
+{
+
+
+
+
+
+}
+
 void hospital(void)
 {
 	glPushMatrix();
@@ -799,6 +808,7 @@ void display(void)
 
 	hospital();
 	hangar(); 
+	heliporto();
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 	glFlush();
