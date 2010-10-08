@@ -145,6 +145,14 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
+void holofotes(void)
+{
+
+
+
+
+}
+
 void heliporto(void)
 {
 
