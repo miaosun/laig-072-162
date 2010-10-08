@@ -145,17 +145,57 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void holofotes(void)
+void holofote(int tipo)
 {
+	GLUquadric* glQ;
+	glQ = gluNewQuadric();
+		
+	glPushMatrix();
+	glRotated(-90.0, 1.0,0.0,0.0 );
 
+	//poste
+	gluCylinder(glQ, 3.0, 3.0, 47.0, 10.0, 5.0);
+	glPushMatrix();
+	glTranslated(0.0, 0.0, 47.0);
+	gluDisk(glQ, 0.0, 3.0, 10.0, 5.0);
+	glPopMatrix();
 
+	glPushMatrix();
+	switch (tipo)
+	{
+	case 1://canto inferior esquerdo
+		glRotated(-45.0, 0.0, 0.0, 1.0);		
+		break;
+	case 2://canto superior esquerdo
+		glRotated(-135.0, 0.0, 0.0, 1.0);
+		break;
+	case 3://canto superior direito
+		glRotated(135.0, 0.0, 0.0, 1.0);
+		break;
+	case 4://canto inferior direito
+		glRotated(45.0, 0.0, 0.0, 1.0);
+		break;
+	default:
+		break;
+	}
+	glTranslated(0.0, 10.0, 47.0);
+	glRotated(45.0, 1.0, 0.0, 0.0);
+	//abat-jour
+	gluCylinder(glQ, 13.0, 7.0, 7.0, 10.0, 5.0);
+	glPushMatrix();
+	glTranslated(0.0, 0.0, 7.0);
+	gluDisk(glQ, 0.0, 7.0, 10.0, 5.0);
+	glPopMatrix();
+
+	glPopMatrix();
+
+	glPopMatrix();
 
 
 }
 
 void heliporto(void)
 {
-
 
 
 
