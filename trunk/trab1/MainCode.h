@@ -62,7 +62,7 @@ void arvore_A(double x, double y, double altura, double largura)
 	glPushMatrix();
 	glTranslated(x, altura/2.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, largura, 0.0, altura/2.0, 10.0, 5.0);   // nao tem bases
+	gluCylinder(glQ, largura/2.0, 0.0, altura/2.0, 10.0, 5.0);   // nao tem bases
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -152,27 +152,29 @@ void holofote(int tipo)
 		
 	glPushMatrix();
 	glRotated(-90.0, 1.0,0.0,0.0 );
-
+	
 	//poste
+	glColor3f(1.0,0.0,0.0);	
 	gluCylinder(glQ, 3.0, 3.0, 47.0, 10.0, 5.0);
 	glPushMatrix();
 	glTranslated(0.0, 0.0, 47.0);
 	gluDisk(glQ, 0.0, 3.0, 10.0, 5.0);
 	glPopMatrix();
+	
 
 	glPushMatrix();
 	switch (tipo)
 	{
-	case 1://canto inferior esquerdo
+	case 1://canto inferior esquerdo	
 		glRotated(-45.0, 0.0, 0.0, 1.0);		
 		break;
-	case 2://canto superior esquerdo
+	case 2://canto superior esquerdo			
 		glRotated(-135.0, 0.0, 0.0, 1.0);
 		break;
-	case 3://canto superior direito
+	case 3://canto superior direito	
 		glRotated(135.0, 0.0, 0.0, 1.0);
 		break;
-	case 4://canto inferior direito
+	case 4://canto inferior direito	
 		glRotated(45.0, 0.0, 0.0, 1.0);
 		break;
 	default:
@@ -180,7 +182,7 @@ void holofote(int tipo)
 	}
 	glTranslated(0.0, 10.0, 47.0);
 	glRotated(45.0, 1.0, 0.0, 0.0);
-	//abat-jour
+    //abat-jour
 	gluCylinder(glQ, 13.0, 7.0, 7.0, 10.0, 5.0);
 	glPushMatrix();
 	glTranslated(0.0, 0.0, 7.0);
@@ -199,14 +201,17 @@ void heliporto(void)
 	glBindTexture(GL_TEXTURE_2D, 5);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0); glVertex3d( 150.0+45/2, 0.1,  -75/2);
-		glTexCoord2f(10.0,0.0); glVertex3d(150.0+45/2+105, 0.1,  -75/2);
-		glTexCoord2f(10.0,5.0); glVertex3d(150.0+45/2+105, 0.1,  -75/2-75);
-		glTexCoord2f(0.0,5.0); glVertex3d(150.0+45/2, 0.1,  -75/2-75);		
+		glTexCoord2f(0.0,0.0);  glVertex3d( 150.0+45.0/2, 0.5,  -75.0/2);
+		glTexCoord2f(10.0,0.0); glVertex3d(150.0+45.0/2+105.0, 0.5,  -75.0/2);
+		glTexCoord2f(10.0,5.0); glVertex3d(150.0+45.0/2+105.0, 0.5,  -75.0/2-75.0);
+		glTexCoord2f(0.0,5.0);  glVertex3d(150.0+45.0/2, 0.5,  -75.0/2-75.0);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
 	holofote(1);
+	//holofote(2);
+	//holofote(3);
+	//holofote(4);
 
 }
 
@@ -502,7 +507,6 @@ void hospital(void)
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
-
 		//letreiro
 		glPushMatrix();
 		glTranslatef(20.0,115.0,-7.5);
@@ -512,7 +516,7 @@ void hospital(void)
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
 		glPopMatrix();
-
+		
 	glPopMatrix();
 }
 
@@ -594,20 +598,34 @@ void torre()
 {
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
-	GLUquadric* quad;
-	quad = gluNewQuadric();
 
 	//glColor3f(0.0,1.0,0.0);		// verde
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,0.0,-220.0-25.0/2);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, 25.0/2, 25.0/2,
-		             95.0, 12.0, 1.0);   // nao tem bases
+	gluCylinder(glQ, 25.0/2, 25.0/2, 95.0, 12.0, 1.0);   
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,95.0,-220.0-25.0/2);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluDisk(quad, 0.0, 90.0/2, 12.0, 7.0);   // nao tem bases
+	gluDisk(glQ, 0.0, 90.0/2, 25.0, 7.0);
+	gluCylinder(glQ, 90.0/2, 90.0/2, 7.0, 25.0, 1.0);   
+	gluDisk(glQ, 0.0, 90.0/2, 25.0, 7.0);   
 	glPopMatrix();
+
+	double clip_sphere[]={0.0,0.0,1.0,0.0}; 
+
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_CLIP_PLANE1);
+	glPushMatrix();	
+		
+		glTranslatef(415.0+25.0/2,95.0+7.0,-220.0-25.0/2);
+		glRotated(-90.0,1.0,0.0,0.0);
+		glClipPlane(GL_CLIP_PLANE1,clip_sphere);
+		gluSphere(glQ,90.0/2.0,33.0,10.0);
+	glPopMatrix();
+	glDisable(GL_CLIP_PLANE1);
+	glDisable (GL_BLEND);
 }

@@ -74,8 +74,6 @@ void display(void)
 
 	// ****** fim de todas as declaracoes da funcao display() ******
 
-
-
 	glQ = gluNewQuadric();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -83,7 +81,7 @@ void display(void)
 	// inicializacoes da matriz de visualizacao
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 1500.0 );//alcance da camara
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 2500.0 );//alcance da camara
 
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
@@ -91,7 +89,7 @@ void display(void)
 	
 	// afasta a cena de 25 unidades mais a distância que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
-    glTranslatef( obj_pos[0]-250, obj_pos[1], -obj_pos[2]-250 ); //era -25
+    glTranslatef( obj_pos[0]-150, obj_pos[1], -obj_pos[2]-250 ); //era -25
 		// tambem se poderia ter feito:
 		//glTranslated(0.0,0.0,-25.0);
 		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
