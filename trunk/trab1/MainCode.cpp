@@ -5,7 +5,6 @@
 #include <math.h>
 #include "RGBpixmap.h"
 #include "MainCode.h"
-#include "materias.h"
 
 const char *TITULO_JANEIRA = { "LAIG_T2_G06 - Gaspar & Miao" };
 // dimensoes e localizacao da janela

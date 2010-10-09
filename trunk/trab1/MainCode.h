@@ -1,4 +1,5 @@
 #include "helicoptero.h"
+#include "materias.h"
 
 const int TRUE  = 1;
 const int FALSE = 0;
@@ -642,7 +643,14 @@ void torre()
 	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);   
 	glPopMatrix();
 
+	//Cupula semi-esferica
 	double clip_sphere[]={0.0,0.0,1.0,0.0}; 
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat2_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
+
 
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
