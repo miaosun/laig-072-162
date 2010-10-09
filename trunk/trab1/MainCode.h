@@ -3,10 +3,6 @@
 const int TRUE  = 1;
 const int FALSE = 0;
 
-double dimx1 = 150.0;
-double dimx2 = 300.0;
-double dimx3 = 450.0;
-double dimy  =-300.0;
 
 void chao(void)
 {
@@ -205,11 +201,6 @@ void holofote(int tipo)
 
 	glPopMatrix();
 }
-
-double heliporto_x1 = 45.0/2.0;
-double heliporto_x2 = heliporto_x1+105.0;
-double heliporto_y1 = -75.0/2.0;
-double heliporto_y2 = heliporto_y1-75.0;
 
 void heliporto(void)
 {

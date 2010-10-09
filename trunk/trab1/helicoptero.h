@@ -1,10 +1,22 @@
+//variaveis para o chao
+double dimx1 = 150.0;
+double dimx2 = 300.0;
+double dimx3 = 450.0;
+double dimy  =-300.0;
 
+//variaveis para o heliporto
+double heliporto_x1 = 45.0/2.0;
+double heliporto_x2 = heliporto_x1+105.0;
+double heliporto_y1 = -75.0/2.0;
+double heliporto_y2 = heliporto_y1-75.0;
+
+//variaveis para helicoptero
 double base1_r = 3.0/2.0;
 double base2_r = 2.0/2.0;
 double base1_lth = 24.0;
 double base2_lth = 7.0;
 int nslices = 23;
-int nstacks = 1;
+int nstacks = 10;
 
 double cauda_r1 = 5.0;
 double cauda_r2 = 3.0;
@@ -120,7 +132,7 @@ void cauda()
 	glQ = gluNewQuadric();
 
 	glPushMatrix();
-	glTranslated(corpo_r, corpo_r+base2_lth+base1_r, 0.0);
+	glTranslated(corpo_r-base2_r, corpo_r+base2_lth+base1_r, 0.0);
 	glRotated(-90.0, 0.0, 1.0, 0.0);
 	glRotated(20.0, 1.0, 0.0, 0.0);
 	glTranslated(0.0, 0.0, -cauda_length);
@@ -174,15 +186,20 @@ void corpo()
 	glQ = gluNewQuadric();
 
 	glPushMatrix();	
+	glTranslated(0.0, corpo_r+base2_lth-2*base1_r, 0.0);
 		gluSphere(glQ,corpo_r,nslices,nstacks);
 	glPopMatrix();
 }
 
 void helicoptero()
 {
+	glPushMatrix();
+	glTranslated(dimx1+heliporto_x1+50.0, base1_r, heliporto_y1-30.0);
+	glRotated(belta, 0.0, 1.0, 0.0);
 	base();
 	cauda();
 	topo();
 	corpo();
+	glPopMatrix();
 
 }

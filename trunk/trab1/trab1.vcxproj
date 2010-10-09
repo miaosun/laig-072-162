@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClInclude Include="helicoptero.h" />
     <ClInclude Include="MainCode.h" />
+    <ClInclude Include="materias.h" />
     <ClInclude Include="RGBpixmap.h" />
   </ItemGroup>
   <ItemGroup>

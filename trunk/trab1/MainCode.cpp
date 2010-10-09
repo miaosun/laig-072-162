@@ -5,6 +5,7 @@
 #include <math.h>
 #include "RGBpixmap.h"
 #include "MainCode.h"
+#include "materias.h"
 
 
 // dimensoes e localizacao da janela
@@ -37,11 +38,6 @@ double axis_lenght       = 16.0;
 int axis_nslices = 8;
 int axis_nstacks = 1;
 
-// declaracoes para as paredes
-float mat1_shininess[] = {128.0}; 
-float mat1_specular[] = {0.3, 0.3, 0.3, 1.0};	/* specular reflection. */
-float mat1_diffuse[] =  {0.7, 0.7, 0.7, 1.0};	/* diffuse reflection. */
-float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 
 // declaraces para a fonte de luz LIGHT0;
 float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
@@ -464,16 +460,36 @@ int light4_enabled = 1;
 void ctr_light(int control)
 {
 	if(control == LIGHT1_ID)
-		glEnable(GL_LIGHT0);
+	{
+		if(light1_enabled)
+			glEnable(GL_LIGHT0);
+		else
+			glDisable(GL_LIGHT0);
+	}
 	
 	else if(control == LIGHT2_ID)
-		glEnable(GL_LIGHT1);
+	{
+		if(light2_enabled)
+			glEnable(GL_LIGHT1);
+		else
+			glDisable(GL_LIGHT1);
+	}
 
-	if(control == LIGHT3_ID)
-		glEnable(GL_LIGHT2);
+	else if(control == LIGHT3_ID)
+	{
+		if(light3_enabled)
+			glEnable(GL_LIGHT2);
+		else
+			glDisable(GL_LIGHT2);
+	}
 	
 	else if(control == LIGHT4_ID)
-		glEnable(GL_LIGHT3);
+	{
+		if(light4_enabled)
+			glEnable(GL_LIGHT3);
+		else
+			glDisable(GL_LIGHT3);
+	}
 }
 
 
