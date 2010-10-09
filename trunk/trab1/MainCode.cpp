@@ -13,17 +13,7 @@ const char *TITULO_JANEIRA = { "LAIG_T2_G06 - Gaspar & Miao" };
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 200
 
-#define LIGHT0_ID 100
-#define LIGHT1_ID 101
-#define LIGHT2_ID 102
-#define LIGHT3_ID 103
-#define LIGHT4_ID 104
-int light0_enabled = 0;
-int light1_enabled = 0;
-int light2_enabled = 0;
-int light3_enabled = 0;
-int light4_enabled = 0;
-//#define ANIMACAO_ID			 204
+
 
 float xy_aspect;
 
@@ -42,27 +32,6 @@ double axis_radius_end   =  0.0;
 double axis_lenght       = 16.0;
 int axis_nslices = 8;
 int axis_nstacks = 1;
-
-
-// declaraces para a fonte de luz LIGHT0;
-float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
-float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
-float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
-float light0_kc = 0.0;
-float light0_kl = 0.0;
-float light0_kq = 0.0;
-float light0_direction[] = {0.0, -1.0, -1.0, 1.0};
-double light0x = 450.0;
-double light0y = 150.0;
-double light0z = 150.0;
-double symb_light0_radius = 0.2;
-int symb_light0_slices = 8;
-int symb_light0_stacks = 8;
-
-// fonte (global) de luz ambiente 
-float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */// era 0.6 nos primeiros 3
-
 
 // variaveis para a janela
 int main_window;
@@ -401,8 +370,11 @@ void inicializacao()
 	// Permitir calculos de iluminacao
 	glEnable(GL_LIGHTING);
 	// "Acender" a fonte de luz GL_LIGHT0
-	//glEnable(GL_LIGHT0);
-
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+	glEnable(GL_LIGHT3);
+	glEnable(GL_LIGHT4);
 
 	// Declaracoe para shading
 	glShadeModel(GL_SMOOTH);			// GL_FLAT / GL_SMOOTH
@@ -465,29 +437,49 @@ void ctr_light(int control)
 	switch(control)
 	{
 	case LIGHT0_ID:
-		if(!light0_enabled) glEnable(GL_LIGHT0);
-		else glDisable(GL_LIGHT0);
-		light0_enabled = !light0_enabled;
+		if(light0_enabled) {
+			glEnable(GL_LIGHT0);
+		}
+		else {
+			glDisable(GL_LIGHT0);
+		}
+		light0_enabled=!light0_enabled;
 		break;
 	case LIGHT1_ID:
-		if(!light1_enabled) glEnable(GL_LIGHT1);
-		else glDisable(GL_LIGHT1);
-		light1_enabled = !light1_enabled;
+		if(light1_enabled) {
+			glEnable(GL_LIGHT1);
+		}
+		else {
+			glDisable(GL_LIGHT1);
+		}
+		light1_enabled=!light1_enabled;
 		break;
 	case LIGHT2_ID:
-		if(!light2_enabled) glEnable(GL_LIGHT2);
-		else glDisable(GL_LIGHT2);
-		light2_enabled = !light2_enabled;
+		if(light2_enabled) {
+			glEnable(GL_LIGHT2);
+		}
+		else {
+			glDisable(GL_LIGHT2);
+		}
+		light2_enabled=!light2_enabled;
 		break;
 	case LIGHT3_ID:
-		if(!light3_enabled) glEnable(GL_LIGHT3);
-		else glDisable(GL_LIGHT1);
-		light3_enabled = !light3_enabled;
+		if(light3_enabled) {
+			glEnable(GL_LIGHT3);
+		}
+		else {
+			glDisable(GL_LIGHT3);
+		}
+		light3_enabled=!light3_enabled;
 		break;
 	case LIGHT4_ID:
-		if(!light4_enabled) glEnable(GL_LIGHT4);
-		else glDisable(GL_LIGHT4);
-		light4_enabled = !light4_enabled;
+		if(light4_enabled) {
+			glEnable(GL_LIGHT4);
+		}
+		else {
+			glDisable(GL_LIGHT4);
+		}
+		light4_enabled=!light4_enabled;
 		break;
 	default:
 		break;
@@ -525,10 +517,16 @@ int main(int argc, char* argv[])
 	/*GLUI_Translation *trans_xy = glui2->add_translation( "Zoom", GLUI_TRANSLATION_XY, &obj_pos[2] );
 	trans_xy->set_speed( .02 );*/
 
+	light0_enabled=1;
+	light1_enabled=1;
+	light2_enabled=1;
+	light3_enabled=1;
+	light4_enabled=1;
+
 	//adicionar os ckeckboxes para 5 luzes
 	glui2->add_column(true);
 	glui2->add_column(true);
-	glui2->add_checkbox("Global", &light1_enabled, LIGHT0_ID, ctr_light);
+	glui2->add_checkbox("Global", &light0_enabled, LIGHT0_ID, ctr_light);
 	glui2->add_checkbox("Light 1", &light1_enabled, LIGHT1_ID, ctr_light);
 	glui2->add_checkbox("Light 2", &light2_enabled, LIGHT2_ID, ctr_light);
 	glui2->add_checkbox("Light 3", &light3_enabled, LIGHT3_ID, ctr_light);

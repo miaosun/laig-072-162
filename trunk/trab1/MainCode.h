@@ -4,6 +4,56 @@
 const int TRUE  = 1;
 const int FALSE = 0;
 
+// declaraçoes de luz
+
+#define LIGHT0_ID 100
+#define LIGHT1_ID 101
+#define LIGHT2_ID 102
+#define LIGHT3_ID 103
+#define LIGHT4_ID 104
+int light0_enabled;
+int light1_enabled;
+int light2_enabled;
+int light3_enabled;
+int light4_enabled;
+//#define ANIMACAO_ID			 204
+
+//declaracoes para holofotes
+float holofote_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float holofote_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float holofote_specular[] =  {6.0, 6.0, 6.0, 1.0};
+float holofote_kc = 0.0;
+float holofote_kl = 0.1;
+float holofote_kq = 0.0;
+
+
+// declaraces para a fonte de luz LIGHT0;
+float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
+float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
+float light0_kc = 0.0;
+float light0_kl = 0.0;
+float light0_kq = 0.0;
+float light0_direction[] = {0.0, -1.0, -1.0, 1.0};
+double light0x = 450.0;
+double light0y = 150.0;
+double light0z = 150.0;
+double symb_light0_radius = 0.2;
+
+
+int symb_light0_slices = 8;
+int symb_light0_stacks = 8;
+
+// fonte (global) de luz ambiente 
+float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */// era 0.6 nos primeiros 3
+
+double poste_r = 3.0/2.0;
+double poste_altura = 47.0;
+double baseInf_r = 13.0/2.0;
+double baseSup_r = 7.0/2.0;
+double base_altura = 7.0;
+
 
 void chao(void)
 {
@@ -148,17 +198,15 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
-double poste_r = 3.0/2.0;
-double poste_altura = 47.0;
-double baseInf_r = 13.0/2.0;
-double baseSup_r = 7.0/2.0;
-double base_altura = 7.0;
 
 void holofote(int tipo)
 {
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
-		
+	
+	float luz;
+	float holofote_pos[4], holofote_direction[4];
+
 	glPushMatrix();
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	
@@ -170,25 +218,60 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
-
+	
 	glPushMatrix();
 	switch (tipo)
 	{
 	case 1://canto inferior esquerdo	
-		glRotated(-45.0, 0.0, 0.0, 1.0);		
+		glRotated(-45.0, 0.0, 0.0, 1.0);
+		holofote_direction[0]=1.0;
+		holofote_direction[1]=-1.0;
+		holofote_direction[2]=-1.0;
+		holofote_direction[3]=1.0;
+		luz=GL_LIGHT1;
 		break;
 	case 2://canto superior esquerdo			
 		glRotated(-135.0, 0.0, 0.0, 1.0);
+		holofote_direction[0]=1.0;
+		holofote_direction[1]=-1.0;
+		holofote_direction[2]=1.0;
+		holofote_direction[3]=1.0;
+		luz=GL_LIGHT2;
 		break;
 	case 3://canto superior direito	
 		glRotated(135.0, 0.0, 0.0, 1.0);
+		holofote_direction[0]=-1.0;
+		holofote_direction[1]=-1.0;
+		holofote_direction[2]=1.0;
+		holofote_direction[3]=1.0;
+		luz=GL_LIGHT3;
 		break;
 	case 4://canto inferior direito	
 		glRotated(45.0, 0.0, 0.0, 1.0);
+		holofote_direction[0]=-1.0;
+		holofote_direction[1]=-1.0;
+		holofote_direction[2]=-1.0;
+		holofote_direction[3]=1.0;
+		luz=GL_LIGHT4;
 		break;
 	default:
 		break;
 	}
+
+	holofote_pos[0]=0.0;
+	holofote_pos[1]=0.0;
+	holofote_pos[2]=poste_altura;
+	holofote_pos[3]=1.0;
+	glLightfv(luz, GL_POSITION, holofote_pos);
+	glLightfv(luz, GL_SPOT_DIRECTION, holofote_direction);
+	glLightfv(luz, GL_AMBIENT, holofote_ambient);
+	glLightfv(luz, GL_DIFFUSE, holofote_diffuse);
+	glLightfv(luz, GL_SPECULAR, holofote_specular);
+	glLightf(luz, GL_CONSTANT_ATTENUATION,  holofote_kc);
+	glLightf(luz, GL_LINEAR_ATTENUATION,    holofote_kl);
+	glLightf(luz, GL_QUADRATIC_ATTENUATION, holofote_kq);
+
+
 	glTranslated(0.0, baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
     //abat-jour
@@ -655,8 +738,7 @@ void torre()
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_CLIP_PLANE1);
-	glPushMatrix();	
-		
+	glPushMatrix();			
 		glTranslatef(415.0+torre_r,torre_altura+plataforma_altura,-220.0-torre_r);
 		glRotated(-90.0,1.0,0.0,0.0);
 		glClipPlane(GL_CLIP_PLANE1,clip_sphere);
@@ -664,4 +746,9 @@ void torre()
 	glPopMatrix();
 	glDisable(GL_CLIP_PLANE1);
 	glDisable (GL_BLEND);
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 }
