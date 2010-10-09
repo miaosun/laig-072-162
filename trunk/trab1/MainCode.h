@@ -619,13 +619,14 @@ void torre()
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
 
-	//glColor3f(0.0,1.0,0.0);		// verde
+	//base
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,0.0,-220.0-25.0/2);
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	gluCylinder(glQ, 25.0/2, 25.0/2, 95.0, 12.0, 1.0);   
 	glPopMatrix();
 
+	//plataforma
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,95.0,-220.0-25.0/2);
 	glRotated(-90.0, 1.0,0.0,0.0 );

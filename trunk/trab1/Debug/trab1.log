@@ -1,4 +1,4 @@
-﻿Build started 09-10-2010 00:02:54.
+﻿Build started 09-10-2010 04:56:36.
      1>Project "C:\Users\Answer\Desktop\laig-072-162\trab1\trab1.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\trab1.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -31,7 +31,7 @@
                  f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
      1>f:\microsoft visual studio 10.0\vc\include\glui.h(1646): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
-     1>c:\users\answer\desktop\laig-072-162\trab1\maincode.cpp(71): warning C4101: 'temp' : unreferenced local variable
+     1>c:\users\answer\desktop\laig-072-162\trab1\maincode.cpp(72): warning C4101: 'temp' : unreferenced local variable
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -51,4 +51,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.43
+Time Elapsed 00:00:02.24
