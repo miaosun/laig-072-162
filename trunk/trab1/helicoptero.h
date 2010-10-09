@@ -185,7 +185,7 @@ void corpo()
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
 
-	glPushMatrix();	
+	glPushMatrix();
 	glTranslated(0.0, corpo_r+base2_lth-2*base1_r, 0.0);
 		gluSphere(glQ,corpo_r,nslices,nstacks);
 	glPopMatrix();
