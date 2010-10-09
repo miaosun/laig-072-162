@@ -40,7 +40,42 @@ GLUI  *glui2;
 
 RGBpixmap pixmap;
 
+void camara_control(int camara)
+{		
+	// inicializacoes da matriz de visualizacao
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 2500.0 );//alcance da camara
 
+	//inicializacoes da matriz de transformacoes geometricas
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	switch (camara)
+	{
+	case 1:
+		camera_select=1;
+	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
+		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
+		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); //era -25
+			// tambem se poderia ter feito:
+			//glTranslated(0.0,0.0,-25.0);
+			//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
+
+		// roda a cena para ficar em perspectiva	
+		glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
+		glRotated(0.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y	
+
+		// roda a cena de acordo com o botao (esfera) de rotacao
+		glMultMatrixf( view_rotate );
+	   break;
+   case 2:
+	gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
+	   camera_select=2;
+	   break;
+   default:
+	   break;
+	}	
+}
 
 void display(void)
 {
@@ -55,29 +90,8 @@ void display(void)
 	glQ = gluNewQuadric();
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
- 
-	// inicializacoes da matriz de visualizacao
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 2500.0 );//alcance da camara
 
-	//inicializacoes da matriz de transformacoes geometricas
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
-	
-	// afasta a cena de 25 unidades mais a dist鈔cia que...
-	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
-    glTranslatef( obj_pos[0]-150, obj_pos[1], -obj_pos[2]-250 ); //era -25
-		// tambem se poderia ter feito:
-		//glTranslated(0.0,0.0,-25.0);
-		//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
-
-	// roda a cena para ficar em perspectiva	
-	glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
-	glRotated(0.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
-
-	// roda a cena de acordo com o botao (esfera) de rotacao
-	glMultMatrixf( view_rotate );
+	camara_control(1);
 
 	// permissao de atribuicao directa de cores
 	// para objectos que nao tem material atribuido, como
@@ -307,13 +321,18 @@ void reshape(int w, int h)
 
 }
 
-
 void keyboard(unsigned char key, int x, int y)
 {
    switch (key) {
-      case 27:		// tecla de escape termina o programa
-         exit(0);
-         break;
+   case 49: //tecla 1
+	   camara_control(1);
+	   break;
+   case 50: //tecla 2
+	   camara_control(2);
+	   break;
+   case 27:		// tecla de escape termina o programa
+       exit(0);
+       break;
    }
 }
 
@@ -531,9 +550,9 @@ int main(int argc, char* argv[])
 	light2_enabled=1;
 	light3_enabled=1;
 	light4_enabled=1;
+	camera_select=0;
 
 	//adicionar os ckeckboxes para 5 luzes
-	glui2->add_column(true);
 	glui2->add_column(true);
 	glui2->add_checkbox("Global", &light0_enabled, LIGHT0_ID, ctr_light);
 	glui2->add_checkbox("Light 1", &light1_enabled, LIGHT1_ID, ctr_light);
@@ -541,11 +560,12 @@ int main(int argc, char* argv[])
 	glui2->add_checkbox("Light 3", &light3_enabled, LIGHT3_ID, ctr_light);
 	glui2->add_checkbox("Light 4", &light4_enabled, LIGHT4_ID, ctr_light);
 
-	//adicionar chekbox para a animação
+	//adicionar radiobuttons para as camaras
 	glui2->add_column(true);
 
-	//glui2->add_checkbox("Animação", LIGHT1_ID, ctr_light)
 
+
+	//glui2->add_checkbox("Animação", LIGHT1_ID, ctr_light)
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

@@ -4,8 +4,9 @@
 const int TRUE  = 1;
 const int FALSE = 0;
 
-// declaraçoes de luz
+int camera_select;
 
+// declaraçoes de luz
 #define LIGHT0_ID 100
 #define LIGHT1_ID 101
 #define LIGHT2_ID 102
