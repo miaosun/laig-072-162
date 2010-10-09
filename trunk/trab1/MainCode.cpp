@@ -1,4 +1,4 @@
-// G1_Ilum.cpp : Defines the entry point for the console application.
+Ôªø// G1_Ilum.cpp : Defines the entry point for the console application.
 //
 
 #include <glui.h>
@@ -13,6 +13,12 @@
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 200
 
+#define LIGHT1_ID 101
+#define LIGHT2_ID 102
+#define LIGHT3_ID 103
+#define LIGHT4_ID 104
+//#define ANIMACAO_ID			 204
+
 float xy_aspect;
 
 // matriz de transf. geometrica utilizada pelo botao esferico
@@ -24,7 +30,7 @@ float view_rotate[16] = { 1,0,0,0,
 // vector de posicao utilizado pelo botao de afastamento
 float obj_pos[] = { 0.0, 0.0, 0.0 };
 
-// declaraÁıes para os tres eixos (cilindros)
+// declaraÁè≤es para os tres eixos (cilindros)
 double axis_radius_begin =  0.2;
 double axis_radius_end   =  0.0;
 double axis_lenght       = 16.0;
@@ -37,7 +43,7 @@ float mat1_specular[] = {0.3, 0.3, 0.3, 1.0};	/* specular reflection. */
 float mat1_diffuse[] =  {0.7, 0.7, 0.7, 1.0};	/* diffuse reflection. */
 float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 
-// declaraÁıes para a fonte de luz LIGHT0;
+// declaraÁè≤es para a fonte de luz LIGHT0;
 float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
 float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
@@ -88,7 +94,7 @@ void display(void)
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 	
-	// afasta a cena de 25 unidades mais a dist‚ncia que...
+	// afasta a cena de 25 unidades mais a distÈàîcia que...
 	// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
     glTranslatef( obj_pos[0]-150, obj_pos[1], -obj_pos[2]-250 ); //era -25
 		// tambem se poderia ter feito:
@@ -244,7 +250,7 @@ void display(void)
 /*	// desenha rectangulo paralelo ao plano XY, com texturas
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 1);	// activa a textura 1 (feup)
-	temp = 2; // cinco repetiÁıes na direccao Z
+	temp = 2; // cinco repetiÁè≤es na direccao Z
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0);  glVertex3d(-1.0, 6.0, 10.0);	// associacao de
@@ -266,11 +272,11 @@ void display(void)
 	//TODO
 	//INICIO DO TRABALHO
 
-	//Terreno e ®¢rvores;
+	//Terreno e √°rvores;
 	glCallList(1);
-	//Hospital (com telhado e letreiro inclu®™dos);
+	//Hospital (com telhado e letreiro inclu√≠dos);
 	glCallList(2);
-	//Heliporto (®¢rea de aterragem e holofotes).
+	//Heliporto (√°rea de aterragem e holofotes).
 	glCallList(3);
 
 	hangar(); 
@@ -423,7 +429,7 @@ void inicializacao()
 
 //criar display lists
 
-	//Terreno e ®¢rvores
+	//Terreno e √°rvores
 	glNewList(1,GL_COMPILE);
 		chao();
 		arvore_A(30.0, 30.0, 70.0, 40.0);
@@ -432,17 +438,36 @@ void inicializacao()
 		arvore_X(100.0, 200.0, 70.0, 40.0);
 	glEndList();
 
-	//Hospital (com telhado e letreiro inclu®™dos)
+	//Hospital (com telhado e letreiro inclu√≠dos)
 	glNewList(2, GL_COMPILE);
 		hospital();
 	glEndList();
 
-	//Heliporto (®¢rea de aterragem e holofotes)
+	//Heliporto (√°rea de aterragem e holofotes)
 	glNewList(3, GL_COMPILE);
 		heliporto();
 	glEndList();
 }
 
+int light1_enabled = 1;
+int light2_enabled = 1;
+int light3_enabled = 1;
+int light4_enabled = 1;
+
+void ctr_light(int control)
+{
+	if(control == LIGHT1_ID)
+		glEnable(GL_LIGHT0);
+	
+	else if(control == LIGHT2_ID)
+		glEnable(GL_LIGHT1);
+
+	if(control == LIGHT3_ID)
+		glEnable(GL_LIGHT2);
+	
+	else if(control == LIGHT4_ID)
+		glEnable(GL_LIGHT3);
+}
 
 
 int main(int argc, char* argv[])
@@ -470,8 +495,23 @@ int main(int argc, char* argv[])
 	view_rot->set_spin( 1.0 );
 	
 	glui2->add_column( false );
-	GLUI_Translation *trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
-	trans_z->set_speed( .02 );
+	/*GLUI_Translation *trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
+	trans_z->set_speed( .02 );*/
+	GLUI_Translation *trans_xy = glui2->add_translation( "Zoom", GLUI_TRANSLATION_XY, &obj_pos[2] );
+	trans_xy->set_speed( .02 );
+
+	//adicionar os ckeckboxes para 4 luzes
+	glui2->add_column(true);
+	glui2->add_column(true);
+	glui2->add_checkbox("Light 1", &light1_enabled, LIGHT1_ID, ctr_light);
+	glui2->add_checkbox("Light 2", &light2_enabled, LIGHT2_ID, ctr_light);
+	glui2->add_checkbox("Light 3", &light3_enabled, LIGHT3_ID, ctr_light);
+	glui2->add_checkbox("Light 4", &light4_enabled, LIGHT4_ID, ctr_light);
+
+	//adicionar chekbox para a anima√ß√£o
+	glui2->add_column(true);
+
+	//glui2->add_checkbox("Anima√ß√£o", LIGHT1_ID, ctr_light)
 
 
 	/* We register the idle callback with GLUI, not with GLUT */
