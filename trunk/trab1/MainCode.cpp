@@ -7,10 +7,10 @@
 #include "MainCode.h"
 #include "materias.h"
 
-
+const char *TITULO_JANEIRA = { "LAIG_T2_G06 - Gaspar & Miao" };
 // dimensoes e localizacao da janela
-#define DIMX 500
-#define DIMY 500
+#define DIMX 800
+#define DIMY 700
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 200
 
@@ -502,7 +502,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize (DIMX, DIMY);
 	glutInitWindowPosition (INITIALPOS_X, INITIALPOS_Y); 
-	main_window = glutCreateWindow (argv[0]);
+	main_window = glutCreateWindow (TITULO_JANEIRA);
  
 	glutDisplayFunc(display);
 	GLUI_Master.set_glutReshapeFunc(reshape);
