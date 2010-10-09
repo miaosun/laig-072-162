@@ -43,23 +43,24 @@ float mat1_specular[] = {0.3, 0.3, 0.3, 1.0};	/* specular reflection. */
 float mat1_diffuse[] =  {0.7, 0.7, 0.7, 1.0};	/* diffuse reflection. */
 float mat1_ambient[] =  {0.7, 0.7, 0.7, 1.0};	/* ambient reflection. */
 
-// declara珲es para a fonte de luz LIGHT0;
+// declaraces para a fonte de luz LIGHT0;
 float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
 float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
 float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
 float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float light0_kc = 0.0;
-float light0_kl = 1.0;
+float light0_kl = 0.0;
 float light0_kq = 0.0;
-double light0x = 225.0;
-double light0y = 150;
+float light0_direction[] = {0.0, -1.0, -1.0, 1.0};
+double light0x = 450.0;
+double light0y = 150.0;
 double light0z = 150.0;
 double symb_light0_radius = 0.2;
 int symb_light0_slices = 8;
-int symb_light0_stacks =8;
+int symb_light0_stacks = 8;
 
 // fonte (global) de luz ambiente 
-float light_ambient[] = {1.0, 1.0, 1.0, 1.0}; /* Set the background ambient lighting. */// era 0.6 nos primeiros 3
+float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */// era 0.6 nos primeiros 3
 
 
 // variaveis para a janela
@@ -139,6 +140,12 @@ void display(void)
 	glPopMatrix();
 
 	
+	// NOTA: a direccao e a posicao de GL_LIGHT0 estao na rotina display(), pelo
+	//       que as isntrucoes seguntes nao sao necessarias
+	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_direction);
+	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+
 	// Actualizacao da posicao da fonte de luz...
 	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
 	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 mantem os valores
@@ -363,8 +370,8 @@ void inicializacao()
 
 
 	// Face Culling para aumentar a velocidade
-	//glEnable(GL_CULL_FACE);
-	//glCullFace(GL_BACK);		// GL_FRONT, GL_BACK, GL_FRONT_AND_BACK
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);		// GL_FRONT, GL_BACK, GL_FRONT_AND_BACK
 
 
 	// Define que modelo de iluminacao utilizar; consultar o manual de referencia

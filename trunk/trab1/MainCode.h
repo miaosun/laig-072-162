@@ -596,16 +596,7 @@ void hangar()
 		norm_y= sin(beta)/ sqrt(cos(beta)*cos(beta)+sin(beta)*sin(beta));
 
 		//construçao de uma face do prisma
-		if(smooth == 0){
-			glBegin(GL_POLYGON);
-				glNormal3d(norm_x, norm_y, 0.0);
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		0.0);
-				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	0.0);
-				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	-height);
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		-height);			
-			glEnd();
-		}
-		else{
+		
 		//normal da 1?aresta
 		norm_x= cos(alfa)/ sqrt(cos(alfa)*cos(alfa)+sin(alfa)*sin(alfa));
 		norm_y= sin(alfa)/ sqrt(cos(alfa)*cos(alfa)+sin(alfa)*sin(alfa));
@@ -614,15 +605,15 @@ void hangar()
 		norm_y1= sin(alfa+delta)/ sqrt(cos(alfa+delta)*cos(alfa+delta)+sin(alfa+delta)*sin(alfa+delta));
 
 			//construção da face j?com smooth shading
-			glBegin(GL_POLYGON);
-				glNormal3d(norm_x, norm_y, 0.0);	//normal da 1?aresta
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		-height);
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		0.0);
+			glBegin(GL_POLYGON);								
 				glNormal3d(norm_x1, norm_y1, 0.0);	//normal da 2?aresta
+				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	-height);
 				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	0.0);
-				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	-height);			
+				glNormal3d(norm_x, norm_y, 0.0);	//normal da 1?aresta.
+				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		0.0);
+				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		-height);
 			glEnd();
-		}
+
 
 		--slices;
 		alfa += delta;	//proximo angulo
@@ -652,7 +643,10 @@ void torre()
 	glPushMatrix();
 	glTranslated(415.0+torre_r,torre_altura,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);
+	glPushMatrix();
+	glRotated(180.0, 1.0,0.0,0.0 );
+		gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);
+	glPopMatrix();
 	gluCylinder(glQ, plataforma_r, plataforma_r, plataforma_altura, nslices, nstacks);   
 	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);   
 	glPopMatrix();
