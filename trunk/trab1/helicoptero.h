@@ -1,3 +1,12 @@
+#include "materias.h"
+
+// declarações para animacao
+unsigned int mili_secs = 10;
+double  obj_radius, obj_rotate, delta_radius, delta_rotate;
+#define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
+#define ANGULAR_SPEED 0.5  // rotacoes por segundo
+//#define ANIMACAO_ID			 204
+
 //variaveis para o chao
 double dimx1 = 150.0;
 double dimx2 = 300.0;
@@ -27,6 +36,20 @@ double belta = 25.0;
 double distancia = -13;
 
 double corpo_r = 12.0;
+
+void myInitTransforms()
+{
+	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
+	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
+}
+
+void myUpdateTransforms(int dummy)
+{
+
+	obj_rotate += delta_rotate;
+
+	glutTimerFunc(mili_secs, myUpdateTransforms, 0);
+}
 
 void apois_helicoptero()
 {
@@ -139,13 +162,29 @@ void cauda()
 	glTranslated(0.0, 0.0, -cauda_length);
 
 	glPushMatrix();
+	glPushMatrix();
+	glRotated(180.0, 0.0, 1.0, 0.0);
 	gluDisk(glQ, 0.0, cauda_r2, nslices, nstacks);
+	glPopMatrix();
 	gluCylinder(glQ, cauda_r2, cauda_r1, cauda_length, nslices, nstacks);   
 	glTranslated(0.0, 0.0, cauda_length);
 	gluDisk(glQ, 0.0, cauda_r1, nslices, nstacks);
 	glPopMatrix();
 
-	helice1();
+	glPushMatrix();
+		glTranslated(4.0, 0.0, 0.0);
+		glRotated(obj_rotate, 1.0, 0.0, 0.0);
+		glPushMatrix();
+			glRotated(90.0, 0.0, 1.0, 0.0);
+			helice1();
+		glPopMatrix();
+		glPushMatrix();
+			glRotated(-90.0, 0.0, 1.0, 0.0);
+			helice1();
+		glPopMatrix();
+	glPopMatrix();
+
+
 	glPopMatrix();
 }
 
@@ -157,24 +196,48 @@ void topo()
 	glPushMatrix();
 	glTranslated(0.0, 2*corpo_r+base2_lth, 0.0);
 
-	triangulo2();
 
+	//helice
 	glPushMatrix();
-	glRotated(120.0, 0.0, 1.0, 0.0);
-	triangulo2();
-	glPopMatrix();
+	glRotated(obj_rotate, 0.0, 1.0, 0.0);
+		triangulo2();
 
-	glPushMatrix();
-	glRotated(240.0, 0.0, 1.0, 0.0);
-	triangulo2();
-	glPopMatrix();
+		glPushMatrix();
+		glRotated(120.0, 0.0, 1.0, 0.0);
+		triangulo2();
+		glPopMatrix();
 
+		glPushMatrix();
+		glRotated(240.0, 0.0, 1.0, 0.0);
+		triangulo2();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(180, 1.0, 0.0, 0.0);
+			triangulo2();
+
+			glPushMatrix();
+			glRotated(120.0, 0.0, 1.0, 0.0);
+			triangulo2();
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotated(240.0, 0.0, 1.0, 0.0);
+			triangulo2();
+			glPopMatrix();
+		glPopMatrix();
+	glPopMatrix();
+	
+	//shaft
 	glPushMatrix();
 	glRotated(90.0, 1.0, 0.0, 0.0);
-	gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
-	gluCylinder(glQ, 2*base2_r, 2*base2_r, base2_lth, nslices, nstacks);   
-	glTranslated(0.0, 0.0, base2_lth);
-	gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
+		glPushMatrix();
+		glRotated(180, 0.0, 1.0, 0.0);
+			gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
+		glPopMatrix();
+		gluCylinder(glQ, 2*base2_r, 2*base2_r, base2_lth, nslices, nstacks);   
+		glTranslated(0.0, 0.0, base2_lth);	
+		gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -186,10 +249,23 @@ void corpo()
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
 
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat2_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
+
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPushMatrix();
 	glTranslated(0.0, corpo_r+base2_lth-2*base1_r, 0.0);
 		gluSphere(glQ,corpo_r,nslices,nstacks);
 	glPopMatrix();
+	glDisable (GL_BLEND);
+
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
 }
 
 void helicoptero()

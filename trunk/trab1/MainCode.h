@@ -1,10 +1,11 @@
 #include "helicoptero.h"
-#include "materias.h"
 
 const int TRUE  = 1;
 const int FALSE = 0;
 
 int camera_select;
+#define CAM1_ID 1
+#define CAM2_ID 2
 
 // declaraçoes de luz
 #define LIGHT0_ID 100
@@ -17,7 +18,6 @@ int light1_enabled;
 int light2_enabled;
 int light3_enabled;
 int light4_enabled;
-//#define ANIMACAO_ID			 204
 
 //declaracoes para holofotes
 float holofote_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
@@ -54,7 +54,6 @@ double poste_altura = 47.0;
 double baseInf_r = 13.0/2.0;
 double baseSup_r = 7.0/2.0;
 double base_altura = 7.0;
-
 
 void chao(void)
 {

@@ -13,8 +13,6 @@ const char *TITULO_JANEIRA = { "LAIG_T2_G06 - Gaspar & Miao" };
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 200
 
-
-
 float xy_aspect;
 
 // matriz de transf. geometrica utilizada pelo botao esferico
@@ -53,6 +51,28 @@ void camara_control(int camara)
 	switch (camara)
 	{
 	case 1:
+
+
+		// Texto BitMap, GLUT
+		// glRasterPos3f(x,y,z);
+		// void glutBitmapCharacter(void *font, int character);	// valores varios...
+		// int glutBitmapWidth(GLUTbitmapFont font, int character);
+
+		glPushMatrix();
+		glColor3f(1.0,1.0,0.0);		// amarelo
+		glRasterPos3f(5,5,5);
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'C');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'M');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'R');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '1');
+		glPopMatrix();
+
+
+
 		camera_select=1;
 	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
@@ -264,15 +284,15 @@ void display(void)
 	//INICIO DO TRABALHO
 
 	//Terreno e árvores;
-	glCallList(1);
+	//glCallList(1);
 	//Hospital (com telhado e letreiro incluídos);
-	glCallList(2);
+	//glCallList(2);
 	//Heliporto (área de aterragem e holofotes).
-	glCallList(3);
+	//glCallList(3);
 
-	hangar(); 
-	torre();
-	helicoptero();
+	//hangar(); 
+	//torre();
+	helicoptero();	
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -455,6 +475,8 @@ void inicializacao()
 	glNewList(3, GL_COMPILE);
 		heliporto();
 	glEndList();
+
+	myInitTransforms();	
 }
 
 
@@ -531,6 +553,7 @@ int main(int argc, char* argv[])
 	glutPassiveMotionFunc(processPassiveMouseMoved);
 	GLUI_Master.set_glutSpecialFunc( NULL );
    
+	glutTimerFunc(mili_secs, myUpdateTransforms, 0);
 
 	/*** Create the bottom subwindow ***/
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
@@ -562,7 +585,6 @@ int main(int argc, char* argv[])
 
 	//adicionar radiobuttons para as camaras
 	glui2->add_column(true);
-
 
 
 	//glui2->add_checkbox("Animação", LIGHT1_ID, ctr_light)
