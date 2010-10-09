@@ -5,6 +5,7 @@
 #include <math.h>
 #include "RGBpixmap.h"
 #include "MainCode.h"
+#include "helicoptero.h"
 
 // dimensoes e localizacao da janela
 #define DIMX 500
@@ -274,6 +275,7 @@ void display(void)
 
 	hangar(); 
 	torre();
+	helicoptero();
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
