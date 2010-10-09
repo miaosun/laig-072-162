@@ -18,3 +18,9 @@ float mat3_shininess[] = {128.0};
 float mat3_specular[] = {0.6, 0.6, 0.6, 1.0};	/* specular reflection. */
 float mat3_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
 float mat3_ambient[] =  {0.5, 0.5, 0.5, 1.0};	/* ambient reflection. */
+
+//declaracoes para material de parede do hospital
+float mat4_shininess[] = {128.0}; 
+float mat4_specular[] = {0.6, 0.6, 0.6, 1.0};	/* specular reflection. */
+float mat4_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
+float mat4_ambient[] =  {0.5, 0.5, 0.5, 1.0};	/* ambient reflection. */

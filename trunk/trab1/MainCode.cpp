@@ -412,6 +412,10 @@ void inicializacao()
 
 	pixmap.readBMPFile("plataform.bmp");
 	pixmap.setTexture(10);
+	
+	pixmap.readBMPFile("roof.bmp");
+	pixmap.setTexture(11);
+
 //criar display lists
 
 	//Terreno e árvores

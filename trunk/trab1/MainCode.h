@@ -105,7 +105,7 @@ void arvore_A(double x, double y, double altura, double largura)
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, largura/10.0, 0.0, altura/2.0, 10.0, 5.0);   // nao tem bases
+	gluCylinder(glQ, largura/10.0, 0.0, altura/2.0, nslices, nstacks);   // nao tem bases
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
@@ -115,7 +115,7 @@ void arvore_A(double x, double y, double altura, double largura)
 	glPushMatrix();
 	glTranslated(x, altura/2.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, largura/2.0, 0.0, altura/2.0, 10.0, 5.0);   // nao tem bases
+	gluCylinder(glQ, largura/2.0, 0.0, altura/2.0, nslices, nstacks);   // nao tem bases
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -131,7 +131,7 @@ void arvore_X(double x, double y, double altura, double largura)
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, largura/10.0, 0.0, altura, 10.0, 5.0);   // nao tem bases
+	gluCylinder(glQ, largura/10.0, 0.0, altura, nslices, nstacks);   // nao tem bases
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 
@@ -371,6 +371,7 @@ void hospital(void)
 			glVertex3d(115.0, 115.0,  0.0);	
 			glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
+
 		glPushMatrix();
 		glTranslated(115.0, 0.0, -70.0);
 		glRotated(180.0, 0.0,1.0,0.0 );
@@ -382,6 +383,7 @@ void hospital(void)
 			glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 		glPopMatrix();
+
 		glPushMatrix();
 		glTranslated(0.0, 0.0, -70.0);
 		glRotated(-90.0, 0.0,1.0,0.0 );
@@ -393,6 +395,7 @@ void hospital(void)
 			glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 		glPopMatrix();
+
 		glPushMatrix();
 		glTranslated(115.0, 0.0, 0.0);
 		glRotated(90.0, 0.0,1.0,0.0 );
@@ -406,6 +409,9 @@ void hospital(void)
 		glPopMatrix();
 
 		//telhado
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 11);
+
 		glPushMatrix();
 		glTranslated(-7.5, 115.0, -77.5);
 		glRotated(90.0, 1.0,0.0,0.0 );
@@ -451,7 +457,7 @@ void hospital(void)
 		glEnd();
 		glPopMatrix();
 
-		glPushMatrix();
+		glPushMatrix(); 
 		glTranslated(122.5, 115.0, -77.5);
 		glRotated(180.0, 0.0,1.0,0.0);
 		glBegin(GL_POLYGON);
@@ -461,6 +467,8 @@ void hospital(void)
 			glVertex3d(0.0, 0.0, -85);
 		glEnd();
 		glPopMatrix();
+
+		glDisable(GL_TEXTURE_2D);
 
 		//janelas
 
