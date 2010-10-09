@@ -225,7 +225,7 @@ void holofote(int tipo)
 	case 1://canto inferior esquerdo	
 		glRotated(-45.0, 0.0, 0.0, 1.0);
 		holofote_direction[0]=1.0;
-		holofote_direction[1]=-1.0;
+		holofote_direction[1]=1.0;
 		holofote_direction[2]=-1.0;
 		holofote_direction[3]=1.0;
 		luz=GL_LIGHT1;
@@ -233,23 +233,23 @@ void holofote(int tipo)
 	case 2://canto superior esquerdo			
 		glRotated(-135.0, 0.0, 0.0, 1.0);
 		holofote_direction[0]=1.0;
-		holofote_direction[1]=-1.0;
-		holofote_direction[2]=1.0;
+		holofote_direction[1]=1.0;
+		holofote_direction[2]=-1.0;
 		holofote_direction[3]=1.0;
 		luz=GL_LIGHT2;
 		break;
 	case 3://canto superior direito	
 		glRotated(135.0, 0.0, 0.0, 1.0);
 		holofote_direction[0]=-1.0;
-		holofote_direction[1]=-1.0;
-		holofote_direction[2]=1.0;
+		holofote_direction[1]=1.0;
+		holofote_direction[2]=-1.0;
 		holofote_direction[3]=1.0;
 		luz=GL_LIGHT3;
 		break;
 	case 4://canto inferior direito	
 		glRotated(45.0, 0.0, 0.0, 1.0);
 		holofote_direction[0]=-1.0;
-		holofote_direction[1]=-1.0;
+		holofote_direction[1]=1.0;
 		holofote_direction[2]=-1.0;
 		holofote_direction[3]=1.0;
 		luz=GL_LIGHT4;
@@ -262,8 +262,10 @@ void holofote(int tipo)
 	holofote_pos[1]=0.0;
 	holofote_pos[2]=poste_altura;
 	holofote_pos[3]=1.0;
+	float ang[]={90.0, 90.0, 90.0, 1.0};
 	glLightfv(luz, GL_POSITION, holofote_pos);
 	glLightfv(luz, GL_SPOT_DIRECTION, holofote_direction);
+	glLightfv(luz, GL_SPOT_CUTOFF, ang);
 	glLightfv(luz, GL_AMBIENT, holofote_ambient);
 	glLightfv(luz, GL_DIFFUSE, holofote_diffuse);
 	glLightfv(luz, GL_SPECULAR, holofote_specular);
@@ -286,10 +288,35 @@ void holofote(int tipo)
 	glPopMatrix();
 }
 
+void plano(int x, int y)
+{
+	double i,j;
+	double di, limi=x, divisoes_i;
+	double dj, limj=y, divisoes_j;
+	divisoes_i=(int)x/5;
+	divisoes_j=(int)y/5;
+	dj = limj / divisoes_j;
+	di = limi / divisoes_i;
+	glPushMatrix();                // util se se pretender transform. geom. das strips
+	for(j=0; j<limj; j+=dj)
+	{
+		glBegin(GL_TRIANGLE_STRIP);
+			glNormal3d(0.0,1.0,0.0);
+			glVertex3d(0.0,0.0,j);
+			glVertex3d(0.0,0.0,j+dj);
+	
+			for(i=di; i<=limi; i+=di)
+			{	glVertex3d(i,0.0,j);
+				glVertex3d(i,0.0,j+dj);
+			}
+		glEnd();
+	}
+	glPopMatrix();
+}
+
 void heliporto(void)
 {
-
-	glEnable(GL_TEXTURE_2D);
+	/*glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 5);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
@@ -298,7 +325,12 @@ void heliporto(void)
 		glTexCoord2f(10.0,5.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y2);
 		glTexCoord2f(0.0,5.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y2);		
 	glEnd();
-	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);*/
+
+	glPushMatrix();
+	glTranslated(dimx1+heliporto_x1, 0.1, heliporto_y2);
+	plano(105, 75);
+	glPopMatrix();
 
 	//canto inferior esquerdo	
 	glPushMatrix();
