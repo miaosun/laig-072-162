@@ -152,7 +152,7 @@ void arvore_X(double x, double y, double altura, double largura)
 	glTranslated(x, 0.0, -y);
 	glRotated(180.0, 0.0,1.0,0.0 );
 	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  
+		glNormal3d(0.0,0.0,-1.0);  
 		glVertex3d(-largura/2.0, altura/2.0,  0.0);
 		glVertex3d(0.0, altura,  0.0);
 		glVertex3d(largura/2.0, altura/2.0,  0.0);		
@@ -174,7 +174,7 @@ void arvore_X(double x, double y, double altura, double largura)
 	glTranslated(x, 0.0, -y);
 	glRotated(-90.0, 0.0,1.0,0.0 );
 	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  
+		glNormal3d(0.0,0.0,-1.0);  
 		glVertex3d(-largura/2.0, altura/2.0,  0.0);
 		glVertex3d(0.0, altura,  0.0);
 		glVertex3d(largura/2.0, altura/2.0,  0.0);		

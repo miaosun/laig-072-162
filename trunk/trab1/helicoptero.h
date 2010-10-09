@@ -102,6 +102,7 @@ void triangulo2()
 {
 	glPushMatrix();
 	glScaled(3.0, 0.0, 1.0/2.0);
+	glEnable(GL_NORMALIZE);
 	triangulo1();
 	glPopMatrix();
 }
