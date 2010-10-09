@@ -5,7 +5,7 @@
 #include <math.h>
 #include "RGBpixmap.h"
 #include "MainCode.h"
-#include "helicoptero.h"
+
 
 // dimensoes e localizacao da janela
 #define DIMX 500

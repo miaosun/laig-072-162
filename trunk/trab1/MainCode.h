@@ -1,6 +1,12 @@
+#include "helicoptero.h"
 
 const int TRUE  = 1;
 const int FALSE = 0;
+
+double dimx1 = 150.0;
+double dimx2 = 300.0;
+double dimx3 = 450.0;
+double dimy  =-300.0;
 
 void chao(void)
 {
@@ -10,9 +16,9 @@ void chao(void)
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
-		glTexCoord2f(10.0,0.0); glVertex3d(150.0, 0.0,  0.0);
-		glTexCoord2f(10.0,5.0); glVertex3d(150.0, 0.0,  -300.0);
-		glTexCoord2f(0.0,5.0); glVertex3d(0.0, 0.0,  -300.0);		
+		glTexCoord2f(10.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
+		glTexCoord2f(10.0,5.0); glVertex3d(dimx1, 0.0,  dimy);
+		glTexCoord2f(0.0,5.0); glVertex3d(0.0, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
@@ -21,10 +27,10 @@ void chao(void)
 	glBindTexture(GL_TEXTURE_2D, 7);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0); glVertex3d(150.0, 0.0,  0.0);
-		glTexCoord2f(8.0,0.0); glVertex3d(300.0, 0.0,  0.0);
-		glTexCoord2f(8.0,4.0); glVertex3d(300.0, 0.0,  -300.0);
-		glTexCoord2f(0.0,4.0); glVertex3d(150.0, 0.0,  -300.0);		
+		glTexCoord2f(0.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
+		glTexCoord2f(8.0,0.0); glVertex3d(dimx2, 0.0,  0.0);
+		glTexCoord2f(8.0,4.0); glVertex3d(dimx2, 0.0,  dimy);
+		glTexCoord2f(0.0,4.0); glVertex3d(dimx1, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
@@ -33,10 +39,10 @@ void chao(void)
 	glBindTexture(GL_TEXTURE_2D, 6);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0); glVertex3d(300.0, 0.0,  0.0);
-		glTexCoord2f(32.0,0.0); glVertex3d(450.0, 0.0,  0.0);
-		glTexCoord2f(32.0,16.0); glVertex3d(450.0, 0.0,  -300.0);
-		glTexCoord2f(0.0,16.0); glVertex3d(300.0, 0.0,  -300.0);		
+		glTexCoord2f(0.0,0.0); glVertex3d(dimx2, 0.0,  0.0);
+		glTexCoord2f(32.0,0.0); glVertex3d(dimx3, 0.0,  0.0);
+		glTexCoord2f(32.0,16.0); glVertex3d(dimx3, 0.0,  dimy);
+		glTexCoord2f(0.0,16.0); glVertex3d(dimx2, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -145,6 +151,12 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
+double poste_r = 3.0/2.0;
+double poste_altura = 47.0;
+double baseInf_r = 13.0/2.0;
+double baseSup_r = 7.0/2.0;
+double base_altura = 7.0;
+
 void holofote(int tipo)
 {
 	GLUquadric* glQ;
@@ -155,10 +167,10 @@ void holofote(int tipo)
 	
 	//poste
 	glColor3f(1.0,0.0,0.0);	
-	gluCylinder(glQ, 3.0, 3.0, 47.0, 10.0, 5.0);
+	gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
 	glPushMatrix();
-	glTranslated(0.0, 0.0, 47.0);
-	gluDisk(glQ, 0.0, 3.0, 10.0, 5.0);
+	glTranslated(0.0, 0.0, poste_altura);
+	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
 
@@ -180,19 +192,24 @@ void holofote(int tipo)
 	default:
 		break;
 	}
-	glTranslated(0.0, 10.0, 47.0);
+	glTranslated(0.0, baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
     //abat-jour
-	gluCylinder(glQ, 13.0, 7.0, 7.0, 10.0, 5.0);
+	gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
 	glPushMatrix();
-	glTranslated(0.0, 0.0, 7.0);
-	gluDisk(glQ, 0.0, 7.0, 10.0, 5.0);
+	glTranslated(0.0, 0.0, base_altura);
+	gluDisk(glQ, 0.0, baseSup_r, nslices, nstacks);
 	glPopMatrix();
 
 	glPopMatrix();
 
 	glPopMatrix();
 }
+
+double heliporto_x1 = 45.0/2.0;
+double heliporto_x2 = heliporto_x1+105.0;
+double heliporto_y1 = -75.0/2.0;
+double heliporto_y2 = heliporto_y1-75.0;
 
 void heliporto(void)
 {
@@ -201,34 +218,34 @@ void heliporto(void)
 	glBindTexture(GL_TEXTURE_2D, 5);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0);  glVertex3d( 150.0+45.0/2, 0.5,  -75.0/2);
-		glTexCoord2f(10.0,0.0); glVertex3d(150.0+45.0/2+105.0, 0.5,  -75.0/2);
-		glTexCoord2f(10.0,5.0); glVertex3d(150.0+45.0/2+105.0, 0.5,  -75.0/2-75.0);
-		glTexCoord2f(0.0,5.0);  glVertex3d(150.0+45.0/2, 0.5,  -75.0/2-75.0);		
+		glTexCoord2f(0.0,0.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y1);
+		glTexCoord2f(10.0,0.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y1);
+		glTexCoord2f(10.0,5.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y2);
+		glTexCoord2f(0.0,5.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y2);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
 	//canto inferior esquerdo	
 	glPushMatrix();
-	glTranslated(150+45.0/2.0+3.0/2.0, 0.0, -75.0/2.0-3.0/2.0);
+	glTranslated(dimx1+heliporto_x1+poste_r, 0.0, heliporto_y1-poste_r);
 	holofote(1);
 	glPopMatrix();
 
 	//canto superior esquerdo
 	glPushMatrix();
-	glTranslated(150.0+45.0/2.0+3.0/2.0, 0.0,-75.0/2.0-75.0+3.0/2.0);
+	glTranslated(dimx1+heliporto_x1+poste_r, 0.0,heliporto_y2+poste_r);
 	holofote(2);
 	glPopMatrix();
 
 	//canto superior direito	
 	glPushMatrix();
-	glTranslated(150.0+45.0/2.0+105.0-3.0/2.0, 0.0, -75.0/2.0-75.0+3.0/2.0);
+	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y2+poste_r);
 	holofote(3);
 	glPopMatrix();
 
 	//canto inferior direito
 	glPushMatrix();
-	glTranslated(150.0+45.0/2.0+105.0-3.0/2.0, 0.0, -75.0/2.0-3.0/2.0);
+	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y1-poste_r);
 	holofote(4);
 	glPopMatrix();
 
@@ -614,6 +631,11 @@ void hangar()
 
 }
 
+double torre_r = 25.0/2.0;
+double torre_altura = 95.0;
+double plataforma_r = 90.0/2.0;
+double plataforma_altura = 7.0;
+
 void torre()
 {
 	GLUquadric* glQ;
@@ -621,18 +643,18 @@ void torre()
 
 	//base
 	glPushMatrix();
-	glTranslated(415.0+25.0/2,0.0,-220.0-25.0/2);
+	glTranslated(415.0+25.0/2,0.0,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, 25.0/2, 25.0/2, 95.0, 12.0, 1.0);   
+	gluCylinder(glQ, torre_r, torre_r, torre_altura, nslices, nstacks);   
 	glPopMatrix();
 
 	//plataforma
 	glPushMatrix();
-	glTranslated(415.0+25.0/2,95.0,-220.0-25.0/2);
+	glTranslated(415.0+torre_r,torre_altura,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluDisk(glQ, 0.0, 90.0/2, 25.0, 7.0);
-	gluCylinder(glQ, 90.0/2, 90.0/2, 7.0, 25.0, 1.0);   
-	gluDisk(glQ, 0.0, 90.0/2, 25.0, 7.0);   
+	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);
+	gluCylinder(glQ, plataforma_r, plataforma_r, plataforma_altura, nslices, nstacks);   
+	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);   
 	glPopMatrix();
 
 	double clip_sphere[]={0.0,0.0,1.0,0.0}; 
@@ -642,10 +664,10 @@ void torre()
 	glEnable(GL_CLIP_PLANE1);
 	glPushMatrix();	
 		
-		glTranslatef(415.0+25.0/2,95.0+7.0,-220.0-25.0/2);
+		glTranslatef(415.0+torre_r,torre_altura+plataforma_altura,-220.0-torre_r);
 		glRotated(-90.0,1.0,0.0,0.0);
 		glClipPlane(GL_CLIP_PLANE1,clip_sphere);
-		gluSphere(glQ,90.0/2.0,33.0,10.0);
+		gluSphere(glQ,plataforma_r,33.0,10.0);
 	glPopMatrix();
 	glDisable(GL_CLIP_PLANE1);
 	glDisable (GL_BLEND);
