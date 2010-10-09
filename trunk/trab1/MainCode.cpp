@@ -407,6 +407,11 @@ void inicializacao()
 	pixmap.readBMPFile("janela.bmp");
 	pixmap.setTexture(8);
 
+	pixmap.readBMPFile("torre_base.bmp");
+	pixmap.setTexture(9);
+
+	pixmap.readBMPFile("plataform.bmp");
+	pixmap.setTexture(10);
 //criar display lists
 
 	//Terreno e árvores

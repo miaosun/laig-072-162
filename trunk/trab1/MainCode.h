@@ -708,6 +708,10 @@ void torre()
 	glQ = gluNewQuadric();
 
 	//base
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 9);
+
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,0.0,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );
@@ -715,17 +719,21 @@ void torre()
 	glPopMatrix();
 
 	//plataforma
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 10);
 	glPushMatrix();
 	glTranslated(415.0+torre_r,torre_altura,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	glPushMatrix();
 	glRotated(180.0, 1.0,0.0,0.0 );
-		gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);
+	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);
 	glPopMatrix();
 	gluCylinder(glQ, plataforma_r, plataforma_r, plataforma_altura, nslices, nstacks);   
 	gluDisk(glQ, 0.0, plataforma_r, nslices, nstacks);   
 	glPopMatrix();
 
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
 	//Cupula semi-esferica
 	double clip_sphere[]={0.0,0.0,1.0,0.0}; 
 
@@ -742,7 +750,7 @@ void torre()
 		glTranslatef(415.0+torre_r,torre_altura+plataforma_altura,-220.0-torre_r);
 		glRotated(-90.0,1.0,0.0,0.0);
 		glClipPlane(GL_CLIP_PLANE1,clip_sphere);
-		gluSphere(glQ,plataforma_r,33.0,10.0);
+		gluSphere(glQ,plataforma_r,nslices,nstacks);
 	glPopMatrix();
 	glDisable(GL_CLIP_PLANE1);
 	glDisable (GL_BLEND);
