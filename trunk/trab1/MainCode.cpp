@@ -72,7 +72,7 @@ void camara_control(int camara)
 	case 1:		
 	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
-		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); //era -25
+		glTranslatef( obj_pos[0]-0, obj_pos[1]-50, -obj_pos[2]-150 ); //era -25
 
 		// roda a cena para ficar em perspectiva	
 		glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -392,7 +392,7 @@ void inicializacao()
 
 
 	// Face Culling para aumentar a velocidade
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);		// GL_FRONT, GL_BACK, GL_FRONT_AND_BACK
 
 

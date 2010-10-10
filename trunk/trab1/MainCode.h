@@ -63,9 +63,9 @@ void chao(void)
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
-		glTexCoord2f(10.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
-		glTexCoord2f(10.0,5.0); glVertex3d(dimx1, 0.0,  dimy);
-		glTexCoord2f(0.0,5.0); glVertex3d(0.0, 0.0,  dimy);		
+		glTexCoord2f(5.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
+		glTexCoord2f(5.0,10.0); glVertex3d(dimx1, 0.0,  dimy);
+		glTexCoord2f(0.0,10.0); glVertex3d(0.0, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
@@ -211,9 +211,9 @@ void holofote(int tipo)
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	
 	//poste
-	gluQuadricTexture(glQ, GL_TRUE);
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 1);
+	//gluQuadricTexture(glQ, GL_TRUE);
+	//glEnable(GL_TEXTURE_2D);
+   // glBindTexture(GL_TEXTURE_2D, 1);
 
 	glColor3f(1.0,0.0,0.0);	
 	gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
@@ -222,8 +222,8 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
-	glDisable(GL_TEXTURE_2D);	
-	gluQuadricTexture(glQ, GL_FALSE);
+	//glDisable(GL_TEXTURE_2D);	
+	//gluQuadricTexture(glQ, GL_FALSE);
 	
 	glPushMatrix();
 	switch (tipo)
@@ -280,7 +280,7 @@ void holofote(int tipo)
 	glLightf(luz, GL_QUADRATIC_ATTENUATION, holofote_kq);
 
 
-	glTranslated(0.0, baseSup_r, poste_altura);
+	glTranslated(0.0, 2*baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
     //abat-jour
 	gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
