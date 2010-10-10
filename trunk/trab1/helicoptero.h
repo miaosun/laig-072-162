@@ -268,12 +268,14 @@ void corpo()
 void helicoptero()
 {
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1+50.0, base1_r, heliporto_y1-30.0);
-	glRotated(belta, 0.0, 1.0, 0.0);
-	base();
-	cauda();
-	topo();
-	corpo();
+		glPushMatrix();
+		glTranslated(dimx1+heliporto_x1+50.0, base1_r, heliporto_y1-30.0);
+		glRotated(belta, 0.0, 1.0, 0.0);
+		base();
+		cauda();
+		topo();
+		corpo();
+		glPopMatrix();
 	glPopMatrix();
 
 }

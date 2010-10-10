@@ -282,8 +282,8 @@ void display(void)
 	//Heliporto (área de aterragem e holofotes).
 	glCallList(3);
 
-	//hangar(); 
-	//torre();
+	hangar(); 
+	torre();
 	helicoptero();	
 
 	// swapping the buffers causes the rendering above to be shown
