@@ -502,6 +502,11 @@ void anim_control(int control)
 	case HELI_ID:
 		heli_anim=!heli_anim;
 		break;
+	case ANIM_ID:
+		myInitTransforms();
+		heli_anim=1;
+		anim_1=1;
+		break;
 	}
 }
 
@@ -589,6 +594,7 @@ int main(int argc, char* argv[])
 	camara3_oy=0;
 	camara3_oz=75;
 	heli_anim=1;
+	anim_1=0;
 
 	//adicionar os ckeckboxes para 5 luzes
 	glui2->add_column(true);
@@ -600,7 +606,9 @@ int main(int argc, char* argv[])
 
 	//adicionar radiobuttons para as camaras
 	glui2->add_column(true);
-	glui2->add_checkbox("Helices", &heli_anim, HELI_ID, anim_control);
+	//glui2->add_checkbox("Helices", &heli_anim, HELI_ID, anim_control);
+	//glui2->add_checkbox("Animação 1", &anim_1, ANIM_ID, anim_control);
+	glui2->add_button("Animacao", ANIM_ID, anim_control);
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

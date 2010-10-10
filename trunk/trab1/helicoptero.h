@@ -2,11 +2,13 @@
 
 // declarações para animacao
 unsigned int mili_secs = 10;
-double  obj_radius, obj_rotate, delta_radius, delta_rotate;
+double obj_rotate, move_x, move_y, move_z, delta_rotate, delta_rot_2, delta_r, angle, y_axis, x_axis, z_axis, heli_rot;
 #define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
 #define ANGULAR_SPEED 0.5  // rotacoes por segundo
-int heli_anim;
-//#define ANIMACAO_ID			 204
+int heli_anim, anim_1;
+bool sobe, esquerda, tras, aterra;
+#define HELI_ID 150 
+#define ANIM_ID 151
 
 //variaveis para o chao
 double dimx1 = 150.0;
@@ -41,13 +43,67 @@ double corpo_r = 12.0;
 void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;
-	delta_radius = (double) mili_secs/1000.0 * RADIUS_SPEED;
+	delta_rot_2 = (double) mili_secs/1000.0 * (ANGULAR_SPEED+1.5) *360.0;
+	move_x=0.0;
+	move_y=0.0;
+	move_z=0.0;
+	x_axis=0.0;
+	y_axis=1.0;
+	z_axis=0.0;
+	angle=0.0;
+	delta_r=1.0;
+	sobe = true;
+	esquerda=true;
+	tras=false;
+	aterra=false;
 }
 
 void myUpdateTransforms(int dummy)
 {
 
 	obj_rotate += delta_rotate;
+	heli_rot+=delta_rot_2;
+
+	//animacao 1
+	if(anim_1)
+	{
+		if(move_y<130&&sobe&&!aterra)
+		{
+			move_y+=delta_r;
+			if(move_y==130&&!tras) sobe=false;
+		}
+		else if(angle>-(atan(0.5)*180.0/3.1415926)-25.0&&esquerda)
+			angle-=delta_rotate;
+		else if(move_x>-150&&esquerda)
+		{
+			if(move_z>-75)
+				move_z-=delta_r/2.0;
+			move_x-=delta_r;
+			if(move_x==-150) esquerda=false;
+		}
+		else if(angle<70&&!tras&&!esquerda)
+			angle+=delta_rotate;
+		else if(move_y>90&&!sobe&&!aterra)
+		{
+			move_y-=delta_r;
+			if(move_y==90) 
+			{
+				sobe=!sobe;
+				tras=true;
+			}
+		}
+		else if(move_z<0)
+			move_z+=delta_r;
+		else if(angle<70+90&&tras&&!esquerda)
+			angle+=delta_rotate;
+		else if(move_x<0&&!esquerda)
+		{
+			move_x+=delta_r;
+			aterra=true;
+		}		
+		else if(move_y>0&&aterra)
+			move_y-=delta_r;
+	}
 
 	glutTimerFunc(mili_secs, myUpdateTransforms, 0);
 }
@@ -174,8 +230,8 @@ void cauda()
 
 	glPushMatrix();
 		glTranslated(4.0, 0.0, 0.0);
-		if(!heli_anim)
-			glRotated(obj_rotate, 1.0, 0.0, 0.0);
+		if(heli_anim)
+		glRotated(heli_rot, 1.0, 0.0, 0.0);
 		glPushMatrix();
 			glRotated(90.0, 0.0, 1.0, 0.0);
 			helice1();
@@ -201,8 +257,8 @@ void topo()
 
 	//helice
 	glPushMatrix();
-	if(!heli_anim)
-		glRotated(obj_rotate, 0.0, 1.0, 0.0);
+	if(heli_anim)
+		glRotated(heli_rot, 0.0, 1.0, 0.0);
 		triangulo2();
 
 		glPushMatrix();
@@ -268,12 +324,11 @@ void corpo()
 void helicoptero()
 {
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1+53.0, base1_r, heliporto_y1-38.0);
-	glRotated(belta, 0.0, 1.0, 0.0);
+	glTranslated(dimx1+heliporto_x1+53.0+move_x, base1_r+move_y, heliporto_y1-38.0+move_z);
+	glRotated(belta+angle, 0.0, 1.0, 0.0);
 	base();
 	cauda();
 	topo();
 	corpo();
 	glPopMatrix();
-
 }

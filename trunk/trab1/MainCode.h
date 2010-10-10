@@ -6,7 +6,6 @@ const int FALSE = 0;
 //declaracoes das camaras
 int camera_select;
 int camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz;
-#define HELI_ID 150 
 
 // declaraçoes de luz
 #define LIGHT0_ID 100
@@ -294,8 +293,8 @@ void plano(int x, int y)
 	double i,j;
 	double di, limi=x, divisoes_i;
 	double dj, limj=y, divisoes_j;
-	divisoes_i=(int)x/5;
-	divisoes_j=(int)y/5;
+	divisoes_i=(int)x;
+	divisoes_j=(int)y;
 	dj = limj / divisoes_j;
 	di = limi / divisoes_i;
 	glPushMatrix();                // util se se pretender transform. geom. das strips
