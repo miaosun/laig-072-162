@@ -205,7 +205,7 @@ void janela(double dim)
 }
 
 
-void holofote(int tipo)
+void holofote(int LIGHT)
 {
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
@@ -228,67 +228,57 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
+	holofote_direction[0]=0.0;
+	holofote_direction[1]=0.0;
+	holofote_direction[2]=-1.0;
+	holofote_direction[3]=1.0;
 
-	
+	holofote_pos[0]=0;
+	holofote_pos[1]=5;
+	holofote_pos[2]=poste_altura+2;
+	holofote_pos[3]=1.0;
+
 	glPushMatrix();
+	glTranslated(holofote_pos[0], holofote_pos[1], holofote_pos[2]);
+	//gluSphere(glQ, 5.0, 10, 10);
+	glPopMatrix();
+	
+	/*glPushMatrix();
 	switch (tipo)
 	{
 	case 1://canto inferior esquerdo	
-		glRotated(-45.0, 0.0, 0.0, 1.0);
-		holofote_direction[0]=1.0;
-		holofote_direction[1]=1.0;
-		holofote_direction[2]=-1.0;
-		holofote_direction[3]=1.0;
+		glRotated(-45.0, 0.0, 0.0, 1.0);		
 		luz=GL_LIGHT1;
 		break;
-	case 2://canto superior esquerdo			
-		glRotated(-135.0, 0.0, 0.0, 1.0);
-		holofote_direction[0]=1.0;
-		holofote_direction[1]=1.0;
-		holofote_direction[2]=-1.0;
-		holofote_direction[3]=1.0;
+	case 2://canto superior esquerdo		
+		glRotated(-135.0, 0.0, 0.0, 1.0);		
 		luz=GL_LIGHT2;
 		break;
 	case 3://canto superior direito	
-		glRotated(135.0, 0.0, 0.0, 1.0);
-		holofote_direction[0]=-1.0;
-		holofote_direction[1]=1.0;
-		holofote_direction[2]=-1.0;
-		holofote_direction[3]=1.0;
+		glRotated(135.0, 0.0, 0.0, 1.0);		
 		luz=GL_LIGHT3;
 		break;
 	case 4://canto inferior direito	
-		glRotated(45.0, 0.0, 0.0, 1.0);
-		holofote_direction[0]=-1.0;
-		holofote_direction[1]=1.0;
-		holofote_direction[2]=-1.0;
-		holofote_direction[3]=1.0;
+		glRotated(45.0, 0.0, 0.0, 1.0);		
 		luz=GL_LIGHT4;
 		break;
 	default:
 		break;
-	}
+	}/*/
 
-	holofote_pos[0]=0;
-	holofote_pos[1]=2*baseSup_r-2;
-	holofote_pos[2]=poste_altura+3;
-	holofote_pos[3]=1.0;
-
-	/*glPushMatrix();
-	glTranslated(holofote_pos[0], holofote_pos[1], holofote_pos[2]);
-	gluSphere(glQ,5.0, 5, 5); 
-	glPopMatrix();*/
-
+	
 	float ang[]={120.0, 120.0, 120.0, 1.0};
-	glLightfv(luz, GL_POSITION, holofote_pos);
-	glLightfv(luz, GL_SPOT_DIRECTION, holofote_direction);
+	glLightfv(LIGHT, GL_POSITION, holofote_pos);
+	glLightfv(LIGHT, GL_SPOT_DIRECTION, holofote_direction);
 	//glLightfv(luz, GL_SPOT_CUTOFF, ang);
-	glLightfv(luz, GL_AMBIENT, holofote_ambient);
-	glLightfv(luz, GL_DIFFUSE, holofote_diffuse);
-	glLightfv(luz, GL_SPECULAR, holofote_specular);
-	glLightf(luz, GL_CONSTANT_ATTENUATION,  holofote_kc);
-	glLightf(luz, GL_LINEAR_ATTENUATION,    holofote_kl);
-	glLightf(luz, GL_QUADRATIC_ATTENUATION, holofote_kq);
+	glLightfv(LIGHT, GL_AMBIENT, holofote_ambient);
+	glLightfv(LIGHT, GL_DIFFUSE, holofote_diffuse);
+	glLightfv(LIGHT, GL_SPECULAR, holofote_specular);
+	glLightf(LIGHT, GL_CONSTANT_ATTENUATION,  holofote_kc);
+	glLightf(LIGHT, GL_LINEAR_ATTENUATION,    holofote_kl);
+	glLightf(LIGHT, GL_QUADRATIC_ATTENUATION, holofote_kq);
+
+
 
 	glTranslated(0.0, 2*baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
@@ -351,25 +341,29 @@ void heliporto(void)
 	//canto inferior esquerdo	
 	glPushMatrix();
 	glTranslated(dimx1+heliporto_x1+poste_r, 0.0, heliporto_y1-poste_r);
-	holofote(1);
+	glRotated(-45.0, 0.0, 1.0, 0.0);
+	holofote(GL_LIGHT1);
 	glPopMatrix();
 
 	//canto superior esquerdo
 	glPushMatrix();
 	glTranslated(dimx1+heliporto_x1+poste_r, 0.0,heliporto_y2+poste_r);
-	holofote(2);
+	glRotated(-135.0, 0.0, 1.0, 0.0);
+	holofote(GL_LIGHT2);
 	glPopMatrix();
 
 	//canto superior direito	
 	glPushMatrix();
 	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y2+poste_r);
-	holofote(3);
+	glRotated(135.0, 0.0, 1.0, 0.0);
+	holofote(GL_LIGHT3);
 	glPopMatrix();
 
 	//canto inferior direito
 	glPushMatrix();
 	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y1-poste_r);
-	holofote(4);
+	glRotated(45.0, 0.0, 1.0, 0.0);
+	holofote(GL_LIGHT4);
 	glPopMatrix();
 
 }
