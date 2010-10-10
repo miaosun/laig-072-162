@@ -86,8 +86,7 @@ void camara_control(int camara)
 	   break;
    default:
 	   break;
-	}	
-	camera_select=camara;
+	}
 }
 
 void display(void)
