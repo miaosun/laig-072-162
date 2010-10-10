@@ -211,6 +211,10 @@ void holofote(int tipo)
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	
 	//poste
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 1);
+
 	glColor3f(1.0,0.0,0.0);	
 	gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
 	glPushMatrix();
@@ -218,6 +222,8 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
 	
 	glPushMatrix();
 	switch (tipo)

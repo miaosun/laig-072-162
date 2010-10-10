@@ -40,7 +40,7 @@ RGBpixmap pixmap;
 
 void camara_control(int camara)
 {		
-	glColor3f(0.0,0.0,1.0);	
+	glColor3f(1.0,1.0,0.0);	//amarelo
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
@@ -477,6 +477,9 @@ void inicializacao()
 	pixmap.readBMPFile("base.bmp");
 	pixmap.setTexture(14);
 
+	pixmap.readBMPFile("holo_base.bmp");
+	pixmap.setTexture(15);
+
 //criar display lists
 
 	//Terreno e árvores
@@ -603,6 +606,7 @@ int main(int argc, char* argv[])
 	anim_1=0;
 
 	//adicionar os ckeckboxes para 5 luzes
+	
 	glui2->add_column(true);
 	glui2->add_checkbox("Global", &light0_enabled, LIGHT0_ID, ctr_light);
 	glui2->add_checkbox("Light 1", &light1_enabled, LIGHT1_ID, ctr_light);

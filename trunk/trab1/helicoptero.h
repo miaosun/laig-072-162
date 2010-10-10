@@ -228,9 +228,6 @@ void cauda()
 	glRotated(20.0, 1.0, 0.0, 0.0);
 	glTranslated(0.0, 0.0, -cauda_length);
 
-	/*material3();
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
 	gluQuadricTexture(glQ, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 13);
@@ -248,9 +245,6 @@ void cauda()
 	
 	glDisable(GL_TEXTURE_2D);	
 	gluQuadricTexture(glQ, GL_FALSE);
-	/*glDisable(GL_CLIP_PLANE1);
-	glDisable (GL_BLEND);
-	material1();*/
 
 	glPushMatrix();
 		glTranslated(4.0, 0.0, 0.0);
@@ -312,6 +306,10 @@ void topo()
 	glPopMatrix();
 	
 	//shaft
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 13);
+
 	glPushMatrix();
 	glRotated(90.0, 1.0, 0.0, 0.0);
 		glPushMatrix();
@@ -322,6 +320,9 @@ void topo()
 		glTranslated(0.0, 0.0, base2_lth);	
 		gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
 	glPopMatrix();
+	
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
 
 	glPopMatrix();
 }

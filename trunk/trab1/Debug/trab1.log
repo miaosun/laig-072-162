@@ -1,7 +1,7 @@
-﻿Build started 10-10-2010 03:57:23.
+﻿Build started 10-10-2010 05:11:48.
      1>Project "C:\Users\Answer\Desktop\laig-072-162\trab1\trab1.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Touching "Debug\trab1.unsuccessfulbuild".
+         Creating "Debug\trab1.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
          F:\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt MainCode.cpp
          MainCode.cpp
@@ -51,4 +51,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.16
+Time Elapsed 00:00:01.82
