@@ -598,7 +598,7 @@ int main(int argc, char* argv[])
 	camara3_z=300;
 	camara3_ox=225;
 	camara3_oy=0;
-	camara3_oz=75;
+	camara3_oz=-75;
 	heli_anim=1;
 	anim_1=0;
 
