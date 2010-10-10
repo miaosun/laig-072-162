@@ -112,3 +112,11 @@ double belta = 25.0;
 double distancia = -13;
 
 double corpo_r = 12.0;
+
+double folha_temp = 6.0;
+
+double torre_r = 25.0/2.0;
+double torre_altura = 95.0;
+double plataforma_r = 90.0/2.0;
+double plataforma_altura = 7.0;
+

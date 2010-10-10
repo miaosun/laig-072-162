@@ -74,38 +74,37 @@ void apois_helicoptero()
 	glQ = gluNewQuadric();
 
 	glPushMatrix();
-	glTranslated(-base1_lth/2.0, 0.0, 0.0);
-	glRotated(-90.0, 0.0, 1.0, 0.0);
-	glRotated(180.0, 1.0, 0.0, 0.0);
+		glTranslated(-base1_lth/2.0, 0.0, 0.0);
+		glRotated(-90.0, 0.0, 1.0, 0.0);
+		glRotated(180.0, 1.0, 0.0, 0.0);
 
-	//base em plano (mais comprido)
-	glPushMatrix();
-	gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
-	gluCylinder(glQ, base1_r, base1_r, base1_lth, nslices, nstacks);   
-	glTranslated(0.0, 0.0, base1_lth);
-	gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
-	glPopMatrix();
+		//base em plano (mais comprido)
+		glPushMatrix();
+			gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
+			gluCylinder(glQ, base1_r, base1_r, base1_lth, nslices, nstacks);   
+			glTranslated(0.0, 0.0, base1_lth);
+			gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
+		glPopMatrix();
 	
-	//base em horizontal (mais curto)
-	glPushMatrix();
-	glTranslated(0.0, 0.0, base2_lth);
-	glRotated(90.0, 1.0, 0.0, 0.0);
-	gluDisk(glQ, 0.0, base2_r, nslices, nstacks);
-	gluCylinder(glQ, base1_r, base1_r, base2_lth, nslices, nstacks);   
-	glTranslated(0.0, 0.0, base2_lth);
-	gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
-	glPopMatrix();
+		//base em horizontal (mais curto)
+		glPushMatrix();
+			glTranslated(0.0, 0.0, base2_lth);
+			glRotated(90.0, 1.0, 0.0, 0.0);
+			gluDisk(glQ, 0.0, base2_r, nslices, nstacks);
+			gluCylinder(glQ, base1_r, base1_r, base2_lth, nslices, nstacks);   
+			glTranslated(0.0, 0.0, base2_lth);
+			gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
+		glPopMatrix();
 
-	//base em horizontal (mais curto)
-	glPushMatrix();
-	glTranslated(0.0, 0.0, 17.0);
-	glRotated(90.0, 1.0, 0.0, 0.0);
-	gluDisk(glQ, 0.0, base2_r, nslices, nstacks);
-	gluCylinder(glQ, base1_r, base1_r, base2_lth, nslices, nstacks);   
-	glTranslated(0.0, 0.0, base2_lth);
-	gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
-	glPopMatrix();
-
+		//base em horizontal (mais curto)
+		glPushMatrix();
+			glTranslated(0.0, 0.0, 17.0);
+			glRotated(90.0, 1.0, 0.0, 0.0);
+			gluDisk(glQ, 0.0, base2_r, nslices, nstacks);
+			gluCylinder(glQ, base1_r, base1_r, base2_lth, nslices, nstacks);   
+			glTranslated(0.0, 0.0, base2_lth);
+			gluDisk(glQ, 0.0, base1_r, nslices, nstacks);
+		glPopMatrix();
 	glPopMatrix();
 }
 
@@ -119,15 +118,15 @@ void base()
     glBindTexture(GL_TEXTURE_2D, base_texture);
 
 	glPushMatrix();
-	glTranslated(0.0, 0.0, -distancia/2.0);
-	glRotated(-alpha, 1.0, 0.0, 0.0);
-	apois_helicoptero();
+		glTranslated(0.0, 0.0, -distancia/2.0);
+		glRotated(-alpha, 1.0, 0.0, 0.0);
+		apois_helicoptero();
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.0, 0.0, distancia/2.0);
-	glRotated(alpha, 1.0, 0.0, 0.0);
-	apois_helicoptero();
+		glTranslated(0.0, 0.0, distancia/2.0);
+		glRotated(alpha, 1.0, 0.0, 0.0);
+		apois_helicoptero();
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);	
@@ -151,29 +150,27 @@ void triangulo1()
 void triangulo2()
 {
 	glPushMatrix();
-	glScaled(3.0, 0.0, 1.0/2.0);
-	glEnable(GL_NORMALIZE);
-	triangulo1();
+		glScaled(3.0, 0.0, 1.0/2.0);
+		glEnable(GL_NORMALIZE);
+		triangulo1();
 	glPopMatrix();
 }
 
 void helice1()
 {
 	glPushMatrix();
-	glRotated(-90.0, 1.0, 0.0, 0.0);
+		glRotated(-90.0, 1.0, 0.0, 0.0);
+		triangulo1();
 
-	triangulo1();
+		glPushMatrix();
+			glRotated(120.0, 0.0, 1.0, 0.0);
+			triangulo1();
+		glPopMatrix();
 
-	glPushMatrix();
-	glRotated(120.0, 0.0, 1.0, 0.0);
-	triangulo1();
-	glPopMatrix();
-
-	glPushMatrix();
-	glRotated(240.0, 0.0, 1.0, 0.0);
-	triangulo1();
-	glPopMatrix();
-
+		glPushMatrix();
+			glRotated(240.0, 0.0, 1.0, 0.0);
+			triangulo1();
+		glPopMatrix();
 	glPopMatrix();
 }
 
@@ -183,44 +180,42 @@ void cauda()
 	glQ = gluNewQuadric();
 
 	glPushMatrix();
-	glTranslated(corpo_r-base2_r, corpo_r+base2_lth+base1_r, 0.0);
-	glRotated(-90.0, 0.0, 1.0, 0.0);
-	glRotated(20.0, 1.0, 0.0, 0.0);
-	glTranslated(0.0, 0.0, -cauda_length);
+		glTranslated(corpo_r-base2_r, corpo_r+base2_lth+base1_r, 0.0);
+		glRotated(-90.0, 0.0, 1.0, 0.0);
+		glRotated(20.0, 1.0, 0.0, 0.0);
+		glTranslated(0.0, 0.0, -cauda_length);
 
-	gluQuadricTexture(glQ, GL_TRUE);
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, cauda_texture);
+		gluQuadricTexture(glQ, GL_TRUE);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, cauda_texture);
 
-	glPushMatrix();
-	glPushMatrix();
-	glRotated(180.0, 0.0, 1.0, 0.0);
-	gluDisk(glQ, 0.0, cauda_r2, nslices, nstacks);
-	glPopMatrix();
-	gluCylinder(glQ, cauda_r2, cauda_r1, cauda_length, nslices, nstacks);   
-	glTranslated(0.0, 0.0, cauda_length);
-	gluDisk(glQ, 0.0, cauda_r1, nslices, nstacks);
-	glPopMatrix();
+		glPushMatrix();
+			glPushMatrix();
+				glRotated(180.0, 0.0, 1.0, 0.0);
+				gluDisk(glQ, 0.0, cauda_r2, nslices, nstacks);
+			glPopMatrix();
+			gluCylinder(glQ, cauda_r2, cauda_r1, cauda_length, nslices, nstacks);   
+			glTranslated(0.0, 0.0, cauda_length);
+			gluDisk(glQ, 0.0, cauda_r1, nslices, nstacks);
+		glPopMatrix();
 
 	
-	glDisable(GL_TEXTURE_2D);	
-	gluQuadricTexture(glQ, GL_FALSE);
+		glDisable(GL_TEXTURE_2D);	
+		gluQuadricTexture(glQ, GL_FALSE);
 
-	glPushMatrix();
-		glTranslated(4.0, 0.0, 0.0);
-		if(heli_anim)
-		glRotated(heli_rot, 1.0, 0.0, 0.0);
 		glPushMatrix();
-			glRotated(90.0, 0.0, 1.0, 0.0);
-			helice1();
+			glTranslated(4.0, 0.0, 0.0);
+			if(heli_anim)
+			glRotated(heli_rot, 1.0, 0.0, 0.0);
+			glPushMatrix();
+				glRotated(90.0, 0.0, 1.0, 0.0);
+				helice1();
+			glPopMatrix();
+			glPushMatrix();
+				glRotated(-90.0, 0.0, 1.0, 0.0);
+				helice1();
+			glPopMatrix();
 		glPopMatrix();
-		glPushMatrix();
-			glRotated(-90.0, 0.0, 1.0, 0.0);
-			helice1();
-		glPopMatrix();
-	glPopMatrix();
-
-
 	glPopMatrix();
 }
 
@@ -230,59 +225,56 @@ void topo()
 	glQ = gluNewQuadric();
 
 	glPushMatrix();
-	glTranslated(0.0, 2*corpo_r+base2_lth, 0.0);
+		glTranslated(0.0, 2*corpo_r+base2_lth, 0.0);
 
-
-	//helice
-	glPushMatrix();
-	if(heli_anim)
-		glRotated(heli_rot, 0.0, 1.0, 0.0);
-		triangulo2();
-
+		//helice
 		glPushMatrix();
-		glRotated(120.0, 0.0, 1.0, 0.0);
-		triangulo2();
-		glPopMatrix();
-
-		glPushMatrix();
-		glRotated(240.0, 0.0, 1.0, 0.0);
-		triangulo2();
-		glPopMatrix();
-
-		glPushMatrix();
-		glRotated(180, 1.0, 0.0, 0.0);
+			if(heli_anim) glRotated(heli_rot, 0.0, 1.0, 0.0);
 			triangulo2();
-
 			glPushMatrix();
-			glRotated(120.0, 0.0, 1.0, 0.0);
-			triangulo2();
+				glRotated(120.0, 0.0, 1.0, 0.0);
+				triangulo2();
 			glPopMatrix();
 
 			glPushMatrix();
-			glRotated(240.0, 0.0, 1.0, 0.0);
-			triangulo2();
+				glRotated(240.0, 0.0, 1.0, 0.0);
+				triangulo2();
+			glPopMatrix();
+
+			glPushMatrix();
+				glRotated(180, 1.0, 0.0, 0.0);
+				triangulo2();
+
+				glPushMatrix();
+					glRotated(120.0, 0.0, 1.0, 0.0);
+					triangulo2();
+				glPopMatrix();
+
+				glPushMatrix();
+					glRotated(240.0, 0.0, 1.0, 0.0);
+					triangulo2();
+				glPopMatrix();
 			glPopMatrix();
 		glPopMatrix();
-	glPopMatrix();
 	
-	//shaft
-	gluQuadricTexture(glQ, GL_TRUE);
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, base_texture);
+		//shaft
+		gluQuadricTexture(glQ, GL_TRUE);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, base_texture);
 
-	glPushMatrix();
-	glRotated(90.0, 1.0, 0.0, 0.0);
 		glPushMatrix();
-		glRotated(180, 0.0, 1.0, 0.0);
+			glRotated(90.0, 1.0, 0.0, 0.0);
+			glPushMatrix();
+				glRotated(180, 0.0, 1.0, 0.0);
+				gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
+			glPopMatrix();
+			gluCylinder(glQ, 2*base2_r, 2*base2_r, base2_lth, nslices, nstacks);   
+			glTranslated(0.0, 0.0, base2_lth);	
 			gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
 		glPopMatrix();
-		gluCylinder(glQ, 2*base2_r, 2*base2_r, base2_lth, nslices, nstacks);   
-		glTranslated(0.0, 0.0, base2_lth);	
-		gluDisk(glQ, 0.0, 2*base2_r, nslices, nstacks);
-	glPopMatrix();
 	
-	glDisable(GL_TEXTURE_2D);	
-	gluQuadricTexture(glQ, GL_FALSE);
+		glDisable(GL_TEXTURE_2D);	
+		gluQuadricTexture(glQ, GL_FALSE);
 
 	glPopMatrix();
 }
@@ -298,7 +290,7 @@ void corpo()
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPushMatrix();
-	glTranslated(0.0, corpo_r+base2_lth-2*base1_r, 0.0);
+		glTranslated(0.0, corpo_r+base2_lth-2*base1_r, 0.0);
 		gluSphere(glQ,corpo_r,nslices,nstacks);
 	glPopMatrix();
 	glDisable (GL_BLEND);
@@ -309,11 +301,11 @@ void corpo()
 void helicoptero()
 {
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1+53.0+move_x, base1_r+move_y, heliporto_y1-38.0+move_z);
-	glRotated(belta+angle, 0.0, 1.0, 0.0);
-	base();
-	cauda();
-	topo();
-	corpo();
+		glTranslated(dimx1+heliporto_x1+53.0+move_x, base1_r+move_y, heliporto_y1-38.0+move_z);
+		glRotated(belta+angle, 0.0, 1.0, 0.0);
+		base();
+		cauda();
+		topo();
+		corpo();
 	glPopMatrix();
 }
