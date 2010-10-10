@@ -454,34 +454,34 @@ void inicializacao()
 	pixmap.readBMPFile("wood_texture.bmp");
 	pixmap.setTexture(6);
 
-	pixmap.readBMPFile("stone.bmp");
+	pixmap.readBMPFile("stone_texture.bmp");
 	pixmap.setTexture(7);
 
-	pixmap.readBMPFile("janela.bmp");
+	pixmap.readBMPFile("janela_texture.bmp");
 	pixmap.setTexture(8);
 
-	pixmap.readBMPFile("torre_base.bmp");
+	pixmap.readBMPFile("torre_base_texture.bmp");
 	pixmap.setTexture(9);
 
-	pixmap.readBMPFile("plataform.bmp");
+	pixmap.readBMPFile("plataform_texture.bmp");
 	pixmap.setTexture(10);
 	
-	pixmap.readBMPFile("roof.bmp");
+	pixmap.readBMPFile("roof_texture.bmp");
 	pixmap.setTexture(11);
 
-	pixmap.readBMPFile("heliporto.bmp");
+	pixmap.readBMPFile("heliporto_texture.bmp");
 	pixmap.setTexture(12);
 
-	pixmap.readBMPFile("cauda.bmp");
+	pixmap.readBMPFile("cauda_texture.bmp");
 	pixmap.setTexture(13);
 
-	pixmap.readBMPFile("base.bmp");
+	pixmap.readBMPFile("base_texture.bmp");
 	pixmap.setTexture(14);
 
-	pixmap.readBMPFile("holo_base.bmp");
+	pixmap.readBMPFile("holo_base_texture.bmp");
 	pixmap.setTexture(15);
 
-	pixmap.readBMPFile("folha.bmp");
+	pixmap.readBMPFile("folha_texture.bmp");
 	pixmap.setTexture(16);
 
 //criar display lists

@@ -59,7 +59,7 @@ void chao(void)
 {
 	//rectangulo 1
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 5);
+	glBindTexture(GL_TEXTURE_2D, GrassTexture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
@@ -325,7 +325,7 @@ void plano(int x, int y)
 void heliporto(void)
 {
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 12);
+	glBindTexture(GL_TEXTURE_2D, heliporto_texture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y1);

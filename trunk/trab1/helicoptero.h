@@ -156,7 +156,7 @@ void base()
 
 	gluQuadricTexture(glQ, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 14);
+    glBindTexture(GL_TEXTURE_2D, base_texture);
 
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -distancia/2.0);
@@ -178,7 +178,7 @@ void base()
 void triangulo1()
 {
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 6);
+	glBindTexture(GL_TEXTURE_2D, base_texture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0);  glVertex3d(0.0, 0.0, 0.0);
@@ -230,7 +230,7 @@ void cauda()
 
 	gluQuadricTexture(glQ, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 13);
+    glBindTexture(GL_TEXTURE_2D, cauda_texture);
 
 	glPushMatrix();
 	glPushMatrix();

@@ -1,4 +1,15 @@
-
+#define GrassTexture 5
+#define wood_texture  6
+#define stone_texture 7
+#define janela_texture 8
+#define torre_base_texture  9
+#define plataform_texture 10
+#define roof_texture 11
+#define heliporto_texture  12
+#define cauda_texture 13
+#define base_texture 14
+#define holo_base_texture  15
+#define folha_texture 16
 
 // declaracoes para as paredes
 float mat1_shininess[] = {128.0}; 
@@ -48,3 +59,4 @@ void material3()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat3_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat3_ambient);
 }
+
