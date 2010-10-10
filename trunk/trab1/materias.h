@@ -49,3 +49,60 @@ void material3()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat3_ambient);
 }
 
+void texturas()
+{
+	// Texturas a utilizar (ver classe RGBpixmap)
+	pixmap.readBMPFile("feup.bmp");
+	pixmap.setTexture(1);
+
+	pixmap.readBMPFile("tile.bmp");
+	pixmap.setTexture(2);
+
+	pixmap.readBMPFile("clamp.bmp");
+	pixmap.setTexture(3);
+
+	pixmap.readBMPFile("mandril.bmp");
+	pixmap.setTexture(4);
+
+	pixmap.readBMPFile("GrassTexture.bmp");
+	pixmap.setTexture(5);
+
+	pixmap.readBMPFile("wood_texture.bmp");
+	pixmap.setTexture(6);
+
+	pixmap.readBMPFile("stone_texture.bmp");
+	pixmap.setTexture(7);
+
+	pixmap.readBMPFile("janela_texture.bmp");
+	pixmap.setTexture(8);
+
+	pixmap.readBMPFile("torre_base_texture.bmp");
+	pixmap.setTexture(9);
+
+	pixmap.readBMPFile("plataform_texture.bmp");
+	pixmap.setTexture(10);
+	
+	pixmap.readBMPFile("roof_texture.bmp");
+	pixmap.setTexture(11);
+
+	pixmap.readBMPFile("heliporto_texture.bmp");
+	pixmap.setTexture(12);
+
+	pixmap.readBMPFile("cauda_texture.bmp");
+	pixmap.setTexture(13);
+
+	pixmap.readBMPFile("base_texture.bmp");
+	pixmap.setTexture(14);
+
+	pixmap.readBMPFile("holo_base_texture.bmp");
+	pixmap.setTexture(15);
+
+	pixmap.readBMPFile("folha_texture.bmp");
+	pixmap.setTexture(16);
+
+	pixmap.readBMPFile("wall_texture.bmp");
+	pixmap.setTexture(17);
+
+	pixmap.readBMPFile("floor_texture.bmp");
+	pixmap.setTexture(18);
+}

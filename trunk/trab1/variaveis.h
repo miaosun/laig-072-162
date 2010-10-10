@@ -120,3 +120,34 @@ double torre_altura = 95.0;
 double plataforma_r = 90.0/2.0;
 double plataforma_altura = 7.0;
 
+const char *TITULO_JANELA = { "LAIG_T2_G06 - Gaspar & Miao" };
+// dimensoes e localizacao da janela
+#define DIMX 800
+#define DIMY 700
+#define INITIALPOS_X 200
+#define INITIALPOS_Y 200
+
+float xy_aspect;
+
+// matriz de transf. geometrica utilizada pelo botao esferico
+float view_rotate[16] = { 1,0,0,0,
+                          0,1,0,0,
+                          0,0,1,0,
+                          0,0,0,1 };
+
+// vector de posicao utilizado pelo botao de afastamento
+float obj_pos[] = { 0.0, 0.0, 0.0 };
+
+// declaraces para os tres eixos (cilindros)
+double axis_radius_begin =  0.2;
+double axis_radius_end   =  0.0;
+double axis_lenght       = 16.0;
+int axis_nslices = 8;
+int axis_nstacks = 1;
+
+// variaveis para a janela
+int main_window;
+GLUI  *glui2;
+
+
+RGBpixmap pixmap;

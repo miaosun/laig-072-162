@@ -6,43 +6,11 @@
 #include "RGBpixmap.h"
 #include "MainCode.h"
 
-const char *TITULO_JANEIRA = { "LAIG_T2_G06 - Gaspar & Miao" };
-// dimensoes e localizacao da janela
-#define DIMX 800
-#define DIMY 700
-#define INITIALPOS_X 200
-#define INITIALPOS_Y 200
-
-float xy_aspect;
-
-// matriz de transf. geometrica utilizada pelo botao esferico
-float view_rotate[16] = { 1,0,0,0,
-                          0,1,0,0,
-                          0,0,1,0,
-                          0,0,0,1 };
-
-// vector de posicao utilizado pelo botao de afastamento
-float obj_pos[] = { 0.0, 0.0, 0.0 };
-
-// declara珲es para os tres eixos (cilindros)
-double axis_radius_begin =  0.2;
-double axis_radius_end   =  0.0;
-double axis_lenght       = 16.0;
-int axis_nslices = 8;
-int axis_nstacks = 1;
-
-// variaveis para a janela
-int main_window;
-GLUI  *glui2;
-
-
-RGBpixmap pixmap;
-
 void camara_control(int camara)
-{		
+{	
+	//letras de identificacao da camara
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
-	
+	glEnable(GL_COLOR_MATERIAL);	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
@@ -57,9 +25,10 @@ void camara_control(int camara)
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '0'+camara);
-	
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '0'+camara);	
 	glDisable(GL_COLOR_MATERIAL);
+
+
 	// inicializacoes da matriz de visualizacao
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
@@ -69,27 +38,26 @@ void camara_control(int camara)
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
-
-
 	switch (camara)
 	{
 	case 1:		
-	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
+	  	// afasta a cena
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
 
-		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); //era -25
+		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); 
 
 		// roda a cena para ficar em perspectiva	
 		glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
-		glRotated(0.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y	
 
 		// roda a cena de acordo com o botao (esfera) de rotacao
 		glMultMatrixf( view_rotate );
 	   break;
    case 2:
+	   //vista de cima
 		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
 	   break;
    case 3:
+	   //vista sempre centrada no heliporto
 	   gluLookAt(camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz, 0.0, 1.0, 0.0);
 	   break;
    default:
@@ -113,7 +81,7 @@ void display(void)
 
 	camara_control(camera_select);
 
-	// permissao de atribuicao directa de cores
+	/*// permissao de atribuicao directa de cores
 	// para objectos que nao tem material atribuido, como
 	// e' o caso dos eixos e da esfera que simboliza a fonte de luz...
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -141,20 +109,14 @@ void display(void)
 	// nao necessita rotacao... glRotated(...);
 	gluCylinder(glQ, axis_radius_begin, axis_radius_end,
 		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
-	glPopMatrix();
-
-	
-	// NOTA: a direccao e a posicao de GL_LIGHT0 estao na rotina display(), pelo
-	//       que as isntrucoes seguntes nao sao necessarias
-	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
-	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_direction);
-	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+	glPopMatrix();*/
 
 	// Actualizacao da posicao da fonte de luz...
 	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
 	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 mantem os valores
 	light0_position[2] = light0z;	// definidos na funcao de inicializacao
 	glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light0_direction);
 
 	// ... e da esfera que a simboliza
 	glColor3f(1.0,1.0,0.0);		// cor amarela
@@ -183,80 +145,12 @@ void display(void)
 	gluQuadricTexture(glQ, GL_FALSE);		// GL_TRUE, GL_FALSE
 	//gluQuadricCallback(glQ, GLU_ERROR, <CallBackFunc>);
 
-	// Funcoes de desenho de quadraticas
-	// gluDisk(GLUquadric* quad, GLdouble inner, GLdouble outer,
-	//			GLint slices, GLint loops )
-	// gluPartialDisk(GLUquadric* quad, GLdouble inner, GLdouble outer,
-	//			GLint slices, GLint loops, GLdouble start, GLdouble sweep )
-	// gluCylinder(GLUquadric * quad, GLdouble base, GLdouble top, GLdouble height,
-	//			GLint slices, GLint stacks );
-	// gluSphere(GLUquadric* quad, GLdouble radius, GLint slices, GLint stacks )
-
-/*	glColor3f(1.0,0.0,1.0);		// magenta
-	gluSphere(glQ, 1.0, 8,8);
-
-	glColor3f(0.0,1.0,1.0);		// ciano
-	gluQuadricDrawStyle(glQ, GLU_FILL);
-	gluPartialDisk(glQ, 3, 7, 16, 4, 45, 270);
-
-	// Solidos, na GLUT: nao fazem mapeamento de texturas (excepto o Teapot)
-	// glutSolidSphere(GLdouble radius, GLint slices, GLint stacks);
-	// glutSolidCube(GLdouble size);
-	// glutSolidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks);
-	// glutSolidTorus(GLdouble innerRadius, GLdouble outerRadius, GLint nsides, GLint rings);
-	// glutSolidDodecahedron(void);
-	// glutSolidOctahedron(void);
-	// glutSolidTetrahedron(void);
-	// glutSolidIcosahedron(void);
-	// glutSolidTeapot(GLdouble size);
-
-
-	// Texto 3D, GLUT
-	// void glutStrokeCharacter(void *font, int character);	// GLUT_STROKE_ROMAN
-	// int glutStrokeWidth(GLUTstrokeFont font, int character);
-
-	glPushMatrix();
-	glTranslatef(0,0,1);
-	glScalef(0.05, 0.05, 0.05);
-	glColor3f(0.0,0.0,1.0);		// azul
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'L');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'A');
-	glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
-	glPopMatrix();
-
-
-	// Texto BitMap, GLUT
-	// glRasterPos3f(x,y,z);
-	// void glutBitmapCharacter(void *font, int character);	// valores varios...
-	// int glutBitmapWidth(GLUTbitmapFont font, int character);
-
-	glPushMatrix();
-	glColor3f(1.0,1.0,0.0);		// amarelo
-	glRasterPos3f(5,5,5);
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '\'');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'm');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'i');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '!');
-	glPopMatrix();
-*/	
 	// inibicao de atribuicao directa de cores; os objectos que se seguem DEVEM
 	// possuir materiais associados
 	glDisable(GL_COLOR_MATERIAL);
 
-
-
-	// Definicao de material a usar daqui em diante (valores declarados acima)
+	// Definicao de material a usar daqui em diante (valores declarados em materias.h)
 	material1();
-
-	//TODO
-	//INICIO DO TRABALHO
 
 	//Terreno e árvores;
 	glCallList(1);
@@ -328,7 +222,7 @@ void keyboard(unsigned char key, int x, int y)
    case '3': //tecla 3
 	   camera_select=3;
 	   break;
-   case 'j':
+   case 'j'://...
 	   camara3_x--;
 	   break;
    case 'l':
@@ -404,74 +298,20 @@ void inicializacao()
 
 	// Permitir calculos de iluminacao
 	glEnable(GL_LIGHTING);
-	// "Acender" a fonte de luz GL_LIGHT0
+	// "Acender" as fontes de luz
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 	glEnable(GL_LIGHT2);
 	glEnable(GL_LIGHT3);
 	glEnable(GL_LIGHT4);
 
-	// Declaracoe para shading
+	// Declaracoes para shading
 	glShadeModel(GL_SMOOTH);			// GL_FLAT / GL_SMOOTH
 	glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
 	// glPolygonMode(GL_FRONT, GL_LINE);	// desenha arestas dos poligonos
 
-
-	// Texturas a utilizar (ver classe RGBpixmap)
-	pixmap.readBMPFile("feup.bmp");
-	pixmap.setTexture(1);
-
-	pixmap.readBMPFile("tile.bmp");
-	pixmap.setTexture(2);
-
-	pixmap.readBMPFile("clamp.bmp");
-	pixmap.setTexture(3);
-
-	pixmap.readBMPFile("mandril.bmp");
-	pixmap.setTexture(4);
-
-	pixmap.readBMPFile("GrassTexture.bmp");
-	pixmap.setTexture(5);
-
-	pixmap.readBMPFile("wood_texture.bmp");
-	pixmap.setTexture(6);
-
-	pixmap.readBMPFile("stone_texture.bmp");
-	pixmap.setTexture(7);
-
-	pixmap.readBMPFile("janela_texture.bmp");
-	pixmap.setTexture(8);
-
-	pixmap.readBMPFile("torre_base_texture.bmp");
-	pixmap.setTexture(9);
-
-	pixmap.readBMPFile("plataform_texture.bmp");
-	pixmap.setTexture(10);
+	texturas();
 	
-	pixmap.readBMPFile("roof_texture.bmp");
-	pixmap.setTexture(11);
-
-	pixmap.readBMPFile("heliporto_texture.bmp");
-	pixmap.setTexture(12);
-
-	pixmap.readBMPFile("cauda_texture.bmp");
-	pixmap.setTexture(13);
-
-	pixmap.readBMPFile("base_texture.bmp");
-	pixmap.setTexture(14);
-
-	pixmap.readBMPFile("holo_base_texture.bmp");
-	pixmap.setTexture(15);
-
-	pixmap.readBMPFile("folha_texture.bmp");
-	pixmap.setTexture(16);
-
-	pixmap.readBMPFile("wall_texture.bmp");
-	pixmap.setTexture(17);
-
-	pixmap.readBMPFile("floor_texture.bmp");
-	pixmap.setTexture(18);
-
 //criar display lists
 
 	//Terreno e árvores
@@ -493,16 +333,15 @@ void inicializacao()
 		heliporto();
 	glEndList();
 
+	//iniciar as variaveis da animacao
 	myInitTransforms();	
 }
 
-void anim_control(int control)
+
+void anim_control(int control)//funcao que activa despoleta a animacao
 {
 	switch (control)
 	{
-	case HELI_ID:
-		heli_anim=!heli_anim;
-		break;
 	case ANIM_ID:
 		myInitTransforms();
 		heli_anim=1;
@@ -511,7 +350,7 @@ void anim_control(int control)
 	}
 }
 
-void ctr_light(int control)
+void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos checkboxes
 {
 
 	switch(control)
@@ -554,7 +393,7 @@ int main(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize (DIMX, DIMY);
 	glutInitWindowPosition (INITIALPOS_X, INITIALPOS_Y); 
-	main_window = glutCreateWindow (TITULO_JANEIRA);
+	main_window = glutCreateWindow (TITULO_JANELA);
  
 	glutDisplayFunc(display);
 	GLUI_Master.set_glutReshapeFunc(reshape);
@@ -594,11 +433,12 @@ int main(int argc, char* argv[])
 	camara3_ox=225;
 	camara3_oy=0;
 	camara3_oz=-75;
+
+	//inicializacao das variaveis da animacao
 	heli_anim=1;
 	anim_1=0;
 
-	//adicionar os ckeckboxes para 5 luzes
-	
+	//adicionar os ckeckboxes para 5 luzes	
 	glui2->add_column(true);
 	glui2->add_checkbox("Global", &light0_enabled, LIGHT0_ID, ctr_light);
 	glui2->add_checkbox("Light 1", &light1_enabled, LIGHT1_ID, ctr_light);
@@ -606,10 +446,8 @@ int main(int argc, char* argv[])
 	glui2->add_checkbox("Light 3", &light3_enabled, LIGHT3_ID, ctr_light);
 	glui2->add_checkbox("Light 4", &light4_enabled, LIGHT4_ID, ctr_light);
 
-	//adicionar radiobuttons para as camaras
+	//adicionar botao para animacao
 	glui2->add_column(true);
-	//glui2->add_checkbox("Helices", &heli_anim, HELI_ID, anim_control);
-	//glui2->add_checkbox("Animação 1", &anim_1, ANIM_ID, anim_control);
 	glui2->add_button("Animacao", ANIM_ID, anim_control);
 
 	/* We register the idle callback with GLUI, not with GLUT */
