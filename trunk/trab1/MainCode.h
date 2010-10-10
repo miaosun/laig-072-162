@@ -71,7 +71,7 @@ void chao(void)
 
 	//rectangulo 2
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 7);
+	glBindTexture(GL_TEXTURE_2D, stone_texture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
@@ -83,7 +83,7 @@ void chao(void)
 
 	//rectangulo 3
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 6);
+	glBindTexture(GL_TEXTURE_2D, wood_texture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d(dimx2, 0.0,  0.0);
@@ -101,7 +101,7 @@ void arvore_A(double x, double y, double altura, double largura)
 	
 	//tronco
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 6);
+	glBindTexture(GL_TEXTURE_2D, wood_texture);
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
@@ -111,7 +111,7 @@ void arvore_A(double x, double y, double altura, double largura)
 
 	//copa
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 5);
+	glBindTexture(GL_TEXTURE_2D, GrassTexture);
 	glPushMatrix();
 	glTranslated(x, altura/2.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
@@ -129,7 +129,7 @@ void arvore_X(double x, double y, double altura, double largura)
 	
 	//tronco
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 6);
+	glBindTexture(GL_TEXTURE_2D, wood_texture);
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glRotated(-90.0, 1.0,0.0,0.0 );
@@ -139,14 +139,14 @@ void arvore_X(double x, double y, double altura, double largura)
 
 	//copa
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 16);
+	glBindTexture(GL_TEXTURE_2D, folha_texture);
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);  
-		glVertex3d(-largura/2.0, altura/2.0,  0.0);
-		glVertex3d(0.0, altura,  0.0);
-		glVertex3d(largura/2.0, altura/2.0,  0.0);		
+		glTexCoord2f(0.0, 0.0); glVertex3d(-largura/2.0, altura/2.0,  0.0);
+		glTexCoord2f(folha_temp, folha_temp); glVertex3d(0.0, altura,  0.0);
+		glTexCoord2f(2*folha_temp, 0.0); glVertex3d(largura/2.0, altura/2.0,  0.0);		
 	glEnd();
 	glPopMatrix();
 
@@ -189,7 +189,7 @@ void arvore_X(double x, double y, double altura, double largura)
 void janela(double dim)
 {
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 8);
+	glBindTexture(GL_TEXTURE_2D, janela_texture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0); 
 		glTexCoord2f(0.0,0.0); glVertex3d(0.0, 0.0,  0.0);
@@ -213,9 +213,9 @@ void holofote(int tipo)
 	glRotated(-90.0, 1.0,0.0,0.0 );
 	
 	//poste
-	//gluQuadricTexture(glQ, GL_TRUE);
-	//glEnable(GL_TEXTURE_2D);
-   // glBindTexture(GL_TEXTURE_2D, 1);
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, holo_base_texture);
 
 	glColor3f(1.0,0.0,0.0);	
 	gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
@@ -224,8 +224,8 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
-	//glDisable(GL_TEXTURE_2D);	
-	//gluQuadricTexture(glQ, GL_FALSE);
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
 	
 	glPushMatrix();
 	switch (tipo)
@@ -371,13 +371,16 @@ void hospital(void)
 	glPushMatrix();
 	glTranslated(167.5, 0.0, -190.0);
 	
+		glEnable(GL_TEXTURE_2D);
 		//paredes
+		glBindTexture(GL_TEXTURE_2D, wall_texture);
+
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(115.0, 0.0,  0.0);
-			glVertex3d(115.0, 115.0,  0.0);	
-			glVertex3d(0.0, 115.0,  0.0);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 0.0); glVertex3d(115.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 5.0); glVertex3d(115.0, 115.0,  0.0);	
+			glTexCoord2f(0.0, 5.0); glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 
 		glPushMatrix();
@@ -385,10 +388,10 @@ void hospital(void)
 		glRotated(180.0, 0.0,1.0,0.0 );
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(115.0, 0.0,  0.0);
-			glVertex3d(115.0, 115.0,  0.0);	
-			glVertex3d(0.0, 115.0,  0.0);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 0.0); glVertex3d(115.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 5.0); glVertex3d(115.0, 115.0,  0.0);	
+			glTexCoord2f(0.0, 5.0); glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 		glPopMatrix();
 
@@ -397,10 +400,10 @@ void hospital(void)
 		glRotated(-90.0, 0.0,1.0,0.0 );
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(70.0, 0.0,  0.0);
-			glVertex3d(70.0, 115.0,  0.0);	
-			glVertex3d(0.0, 115.0,  0.0);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 0.0); glVertex3d(70.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 5.0); glVertex3d(70.0, 115.0,  0.0);	
+			glTexCoord2f(0.0, 5.0); glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 		glPopMatrix();
 
@@ -409,16 +412,15 @@ void hospital(void)
 		glRotated(90.0, 0.0,1.0,0.0 );
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(70.0, 0.0,  0.0);
-			glVertex3d(70.0, 115.0,  0.0);	
-			glVertex3d(0.0, 115.0,  0.0);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 0.0); glVertex3d(70.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 5.0); glVertex3d(70.0, 115.0,  0.0);	
+			glTexCoord2f(0.0, 5.0); glVertex3d(0.0, 115.0,  0.0);
 		glEnd();
 		glPopMatrix();
 
 		//telhado
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 11);
+		glBindTexture(GL_TEXTURE_2D, roof_texture);
 
 		glPushMatrix();
 		glTranslated(-7.5, 115.0, -77.5);
@@ -656,7 +658,7 @@ void hospital(void)
 		glPushMatrix();
 		glTranslated(45.5, 0.0, 0.1);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, 6);
+			glBindTexture(GL_TEXTURE_2D, wood_texture);
 			glBegin(GL_POLYGON);
 				glNormal3d(0.0,0.0,1.0); 
 				glTexCoord2f(0.0,0.0); glVertex3d(0.0, 0.0,  0.0);
@@ -765,7 +767,7 @@ void torre()
 	//base
 	gluQuadricTexture(glQ, GL_TRUE);
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 9);
+    glBindTexture(GL_TEXTURE_2D, torre_base_texture);
 
 	glPushMatrix();
 	glTranslated(415.0+25.0/2,0.0,-220.0-torre_r);
@@ -775,7 +777,7 @@ void torre()
 
 	//plataforma
 	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, 10);
+    glBindTexture(GL_TEXTURE_2D, plataform_texture);
 	glPushMatrix();
 	glTranslated(415.0+torre_r,torre_altura,-220.0-torre_r);
 	glRotated(-90.0, 1.0,0.0,0.0 );

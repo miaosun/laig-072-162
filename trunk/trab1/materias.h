@@ -10,6 +10,7 @@
 #define base_texture 14
 #define holo_base_texture  15
 #define folha_texture 16
+#define wall_texture 17
 
 // declaracoes para as paredes
 float mat1_shininess[] = {128.0}; 

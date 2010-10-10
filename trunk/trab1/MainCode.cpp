@@ -484,6 +484,9 @@ void inicializacao()
 	pixmap.readBMPFile("folha_texture.bmp");
 	pixmap.setTexture(16);
 
+	pixmap.readBMPFile("wall_texture.bmp");
+	pixmap.setTexture(17);
+
 //criar display lists
 
 	//Terreno e árvores
