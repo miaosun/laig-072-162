@@ -40,6 +40,22 @@ RGBpixmap pixmap;
 
 void camara_control(int camara)
 {		
+	glColor3f(0.0,0.0,1.0);	
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glRasterPos2i( 3, DIMY-25);
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'C');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'M');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'R');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '0'+camara);
+
 	// inicializacoes da matriz de visualizacao
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
@@ -48,38 +64,15 @@ void camara_control(int camara)
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+
+
+
 	switch (camara)
 	{
-	case 1:
-
-
-		// Texto BitMap, GLUT
-		// glRasterPos3f(x,y,z);
-		// void glutBitmapCharacter(void *font, int character);	// valores varios...
-		// int glutBitmapWidth(GLUTbitmapFont font, int character);
-
-		glPushMatrix();
-		glColor3f(1.0,1.0,0.0);		// amarelo
-		glRasterPos3f(5,5,5);
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'C');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'M');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'R');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '1');
-		glPopMatrix();
-
-
-
-		camera_select=1;
+	case 1:		
 	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
 		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); //era -25
-			// tambem se poderia ter feito:
-			//glTranslated(0.0,0.0,-25.0);
-			//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
 
 		// roda a cena para ficar em perspectiva	
 		glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -89,12 +82,12 @@ void camara_control(int camara)
 		glMultMatrixf( view_rotate );
 	   break;
    case 2:
-	gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
-	   camera_select=2;
+		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
 	   break;
    default:
 	   break;
 	}	
+	camera_select=camara;
 }
 
 void display(void)
@@ -253,10 +246,7 @@ void display(void)
 
 
 	// Definicao de material a usar daqui em diante (valores declarados acima)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	material1();
 
 /*	// desenha rectangulo paralelo ao plano XY, com texturas
 	glEnable(GL_TEXTURE_2D);
@@ -284,11 +274,11 @@ void display(void)
 	//INICIO DO TRABALHO
 
 	//Terreno e árvores;
-	//glCallList(1);
+	glCallList(1);
 	//Hospital (com telhado e letreiro incluídos);
-	//glCallList(2);
+	glCallList(2);
 	//Heliporto (área de aterragem e holofotes).
-	//glCallList(3);
+	glCallList(3);
 
 	//hangar(); 
 	//torre();
@@ -479,7 +469,15 @@ void inicializacao()
 	myInitTransforms();	
 }
 
-
+void anim_control(int control)
+{
+	switch (control)
+	{
+	case HELI_ID:
+		heli_anim=!heli_anim;
+		break;
+	}
+}
 
 void ctr_light(int control)
 {
@@ -487,48 +485,29 @@ void ctr_light(int control)
 	switch(control)
 	{
 	case LIGHT0_ID:
-		if(light0_enabled) {
-			glEnable(GL_LIGHT0);
-		}
-		else {
-			glDisable(GL_LIGHT0);
-		}
+		if(light0_enabled) glEnable(GL_LIGHT0);
+		else glDisable(GL_LIGHT0);
 		light0_enabled=!light0_enabled;
 		break;
 	case LIGHT1_ID:
-		if(light1_enabled) {
-			glEnable(GL_LIGHT1);
-		}
-		else {
-			glDisable(GL_LIGHT1);
-		}
+		if(light1_enabled) glEnable(GL_LIGHT1);
+		else glDisable(GL_LIGHT1);
+
 		light1_enabled=!light1_enabled;
 		break;
 	case LIGHT2_ID:
-		if(light2_enabled) {
-			glEnable(GL_LIGHT2);
-		}
-		else {
-			glDisable(GL_LIGHT2);
-		}
+		if(light2_enabled) glEnable(GL_LIGHT2);
+		else glDisable(GL_LIGHT2);
 		light2_enabled=!light2_enabled;
 		break;
 	case LIGHT3_ID:
-		if(light3_enabled) {
-			glEnable(GL_LIGHT3);
-		}
-		else {
-			glDisable(GL_LIGHT3);
-		}
+		if(light3_enabled) glEnable(GL_LIGHT3);
+		else glDisable(GL_LIGHT3);
 		light3_enabled=!light3_enabled;
 		break;
 	case LIGHT4_ID:
-		if(light4_enabled) {
-			glEnable(GL_LIGHT4);
-		}
-		else {
-			glDisable(GL_LIGHT4);
-		}
+		if(light4_enabled) glEnable(GL_LIGHT4);
+		else glDisable(GL_LIGHT4);
 		light4_enabled=!light4_enabled;
 		break;
 	default:
@@ -574,6 +553,7 @@ int main(int argc, char* argv[])
 	light3_enabled=1;
 	light4_enabled=1;
 	camera_select=0;
+	heli_anim=1;
 
 	//adicionar os ckeckboxes para 5 luzes
 	glui2->add_column(true);
@@ -585,9 +565,7 @@ int main(int argc, char* argv[])
 
 	//adicionar radiobuttons para as camaras
 	glui2->add_column(true);
-
-
-	//glui2->add_checkbox("Animação", LIGHT1_ID, ctr_light)
+	glui2->add_checkbox("Helices", &heli_anim, HELI_ID, anim_control);
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

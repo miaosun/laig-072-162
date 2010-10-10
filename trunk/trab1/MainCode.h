@@ -4,8 +4,7 @@ const int TRUE  = 1;
 const int FALSE = 0;
 
 int camera_select;
-#define CAM1_ID 1
-#define CAM2_ID 2
+#define HELI_ID 150 
 
 // declaraçoes de luz
 #define LIGHT0_ID 100
@@ -660,9 +659,10 @@ void hospital(void)
 		glPopMatrix();
 		//letreiro
 		glPushMatrix();
-		glTranslatef(20.0,115.0,-7.5);
+		glTranslatef(20.0,120.0,-7.5);
 		glScalef(0.3, 0.3, 0.3);
 		glColor3f(0.0,1.0,0.0);		// azul
+		glLineWidth(5.0);
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
@@ -777,11 +777,7 @@ void torre()
 	//Cupula semi-esferica
 	double clip_sphere[]={0.0,0.0,1.0,0.0}; 
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat2_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
-
+	material2();
 
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -795,8 +791,5 @@ void torre()
 	glDisable(GL_CLIP_PLANE1);
 	glDisable (GL_BLEND);
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	material1();
 }

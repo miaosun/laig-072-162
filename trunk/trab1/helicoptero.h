@@ -5,6 +5,7 @@ unsigned int mili_secs = 10;
 double  obj_radius, obj_rotate, delta_radius, delta_rotate;
 #define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
 #define ANGULAR_SPEED 0.5  // rotacoes por segundo
+int heli_anim;
 //#define ANIMACAO_ID			 204
 
 //variaveis para o chao
@@ -173,7 +174,8 @@ void cauda()
 
 	glPushMatrix();
 		glTranslated(4.0, 0.0, 0.0);
-		glRotated(obj_rotate, 1.0, 0.0, 0.0);
+		if(!heli_anim)
+			glRotated(obj_rotate, 1.0, 0.0, 0.0);
 		glPushMatrix();
 			glRotated(90.0, 0.0, 1.0, 0.0);
 			helice1();
@@ -199,7 +201,8 @@ void topo()
 
 	//helice
 	glPushMatrix();
-	glRotated(obj_rotate, 0.0, 1.0, 0.0);
+	if(!heli_anim)
+		glRotated(obj_rotate, 0.0, 1.0, 0.0);
 		triangulo2();
 
 		glPushMatrix();
@@ -249,10 +252,7 @@ void corpo()
 	GLUquadric* glQ;
 	glQ = gluNewQuadric();
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat2_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
+	material2();
 
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -262,10 +262,7 @@ void corpo()
 	glPopMatrix();
 	glDisable (GL_BLEND);
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+	material1();
 }
 
 void helicoptero()

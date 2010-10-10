@@ -24,3 +24,19 @@ float mat4_shininess[] = {128.0};
 float mat4_specular[] = {0.6, 0.6, 0.6, 1.0};	/* specular reflection. */
 float mat4_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
 float mat4_ambient[] =  {0.5, 0.5, 0.5, 1.0};	/* ambient reflection. */
+
+void material1()
+{
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat1_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat1_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat1_ambient);
+}
+
+void material2()
+{
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat2_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
+}
