@@ -120,6 +120,8 @@ void arvore_A(double x, double y, double altura, double largura)
 	glDisable(GL_TEXTURE_2D);
 }
 
+double folha_temp = 6.0;
+
 void arvore_X(double x, double y, double altura, double largura)
 {
 	GLUquadric* glQ;
@@ -137,7 +139,7 @@ void arvore_X(double x, double y, double altura, double largura)
 
 	//copa
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 5);
+	glBindTexture(GL_TEXTURE_2D, 16);
 	glPushMatrix();
 	glTranslated(x, 0.0, -y);
 	glBegin(GL_POLYGON);
@@ -153,9 +155,9 @@ void arvore_X(double x, double y, double altura, double largura)
 	glRotated(180.0, 0.0,1.0,0.0 );
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,-1.0);  
-		glVertex3d(-largura/2.0, altura/2.0,  0.0);
-		glVertex3d(0.0, altura,  0.0);
-		glVertex3d(largura/2.0, altura/2.0,  0.0);		
+		glTexCoord2f(0.0, 0.0); glVertex3d(-largura/2.0, altura/2.0,  0.0);
+		glTexCoord2f(folha_temp, folha_temp); glVertex3d(0.0, altura,  0.0);
+		glTexCoord2f(2*folha_temp, 0.0); glVertex3d(largura/2.0, altura/2.0,  0.0);		
 	glEnd();
 	glPopMatrix();
 
@@ -164,9 +166,9 @@ void arvore_X(double x, double y, double altura, double largura)
 	glRotated(90.0, 0.0,1.0,0.0 );
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);  
-		glVertex3d(-largura/2.0, altura/2.0,  0.0);
-		glVertex3d(0.0, altura,  0.0);
-		glVertex3d(largura/2.0, altura/2.0,  0.0);		
+		glTexCoord2f(0.0, 0.0); glVertex3d(-largura/2.0, altura/2.0,  0.0);
+		glTexCoord2f(folha_temp, folha_temp); glVertex3d(0.0, altura, 0.0);
+		glTexCoord2f(2*folha_temp, 0.0); glVertex3d(largura/2.0, altura/2.0,  0.0);		
 	glEnd();
 	glPopMatrix();
 
@@ -175,9 +177,9 @@ void arvore_X(double x, double y, double altura, double largura)
 	glRotated(-90.0, 0.0,1.0,0.0 );
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,-1.0);  
-		glVertex3d(-largura/2.0, altura/2.0,  0.0);
-		glVertex3d(0.0, altura,  0.0);
-		glVertex3d(largura/2.0, altura/2.0,  0.0);		
+		glTexCoord2f(0.0, 0.0); glVertex3d(-largura/2.0, altura/2.0,  0.0);
+		glTexCoord2f(folha_temp, folha_temp); glVertex3d(0.0, altura,  0.0);
+		glTexCoord2f(2*folha_temp, 0.0); glVertex3d(largura/2.0, altura/2.0,  0.0);		
 	glEnd();
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);

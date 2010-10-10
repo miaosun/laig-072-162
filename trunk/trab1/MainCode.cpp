@@ -72,6 +72,7 @@ void camara_control(int camara)
 	case 1:		
 	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
+
 		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-150 ); //era -25
 
 		// roda a cena para ficar em perspectiva	
@@ -479,6 +480,9 @@ void inicializacao()
 
 	pixmap.readBMPFile("holo_base.bmp");
 	pixmap.setTexture(15);
+
+	pixmap.readBMPFile("folha.bmp");
+	pixmap.setTexture(16);
 
 //criar display lists
 
