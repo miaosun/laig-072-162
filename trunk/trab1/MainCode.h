@@ -55,6 +55,10 @@ double baseInf_r = 13.0/2.0;
 double baseSup_r = 7.0/2.0;
 double base_altura = 7.0;
 
+
+
+
+
 void chao(void)
 {
 	//rectangulo 1
@@ -265,14 +269,20 @@ void holofote(int tipo)
 		break;
 	}
 
-	holofote_pos[0]=0.0;
-	holofote_pos[1]=0.0;
-	holofote_pos[2]=poste_altura;
+	holofote_pos[0]=0;
+	holofote_pos[1]=2*baseSup_r-2;
+	holofote_pos[2]=poste_altura+3;
 	holofote_pos[3]=1.0;
-	float ang[]={90.0, 90.0, 90.0, 1.0};
+
+	/*glPushMatrix();
+	glTranslated(holofote_pos[0], holofote_pos[1], holofote_pos[2]);
+	gluSphere(glQ,5.0, 5, 5); 
+	glPopMatrix();*/
+
+	float ang[]={120.0, 120.0, 120.0, 1.0};
 	glLightfv(luz, GL_POSITION, holofote_pos);
 	glLightfv(luz, GL_SPOT_DIRECTION, holofote_direction);
-	glLightfv(luz, GL_SPOT_CUTOFF, ang);
+	//glLightfv(luz, GL_SPOT_CUTOFF, ang);
 	glLightfv(luz, GL_AMBIENT, holofote_ambient);
 	glLightfv(luz, GL_DIFFUSE, holofote_diffuse);
 	glLightfv(luz, GL_SPECULAR, holofote_specular);
@@ -285,7 +295,7 @@ void holofote(int tipo)
     //abat-jour
 	gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
 	glPushMatrix();
-	glTranslated(0.0, 0.0, base_altura);
+	glTranslated(0.0, 0.0, base_altura);	
 	gluDisk(glQ, 0.0, baseSup_r, nslices, nstacks);
 
 	glDisable(GL_TEXTURE_2D);	
@@ -298,49 +308,45 @@ void holofote(int tipo)
 	glPopMatrix();
 }
 
-void plano(int x, int y)
-{
-	double i,j;
-	double di, limi=x, divisoes_i;
-	double dj, limj=y, divisoes_j;
-	divisoes_i=(int)x;
-	divisoes_j=(int)y;
-	dj = limj / divisoes_j;
-	di = limi / divisoes_i;
-	glPushMatrix();                // util se se pretender transform. geom. das strips
-	for(j=0; j<limj; j+=dj)
-	{
-		glBegin(GL_TRIANGLE_STRIP);
-			glNormal3d(0.0,1.0,0.0);
-			glVertex3d(0.0,0.0,j);
-			glVertex3d(0.0,0.0,j+dj);
-	
-			for(i=di; i<=limi; i+=di)
-			{	glVertex3d(i,0.0,j);
-				glVertex3d(i,0.0,j+dj);
-			}
-		glEnd();
-	}
-	glPopMatrix();
-}
+
 
 void heliporto(void)
 {
+
+	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
+	GLfloat ctrlpoints[4][3] = {	{dimx1+heliporto_x1, 0.5, heliporto_y1},
+									{dimx1+heliporto_x1, 0.5, heliporto_y2}, 
+									{dimx1+heliporto_x2, 0.5, heliporto_y1},
+									{dimx1+heliporto_x2, 0.5, heliporto_y2} };
+
+	GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
+									{  0.0, 1.0, 0.0}, 
+									{  0.0, 1.0, 0.0},
+									{  0.0, 1.0, 0.0} };
+
+	GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
+									{ 0.0, 1.0}, 
+									{ 1.0, 0.0},
+									{ 1.0, 1.0} };
+
+
+	// INICIALIZACOES RELACIONADAS COM OS "EVALUATORS"
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
+
+	// os interpoladores activam-se:
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_MAP2_NORMAL);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
+	glMapGrid2f(75, 0.0,1.0, 105, 0.0,1.0); 
+
+	//meu comeca aqui
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, heliporto_texture);
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y1);
-		glTexCoord2f(1.0,0.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y1);
-		glTexCoord2f(1.0,1.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y2);
-		glTexCoord2f(0.0,1.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y2);		
-	glEnd();
+	glBindTexture(GL_TEXTURE_2D, cauda_texture);//heliporto_texture);
+	glEvalMesh2(GL_FILL, 0,75, 0,105);
 	glDisable(GL_TEXTURE_2D);
 
-	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1, 0.1, heliporto_y2);
-	plano(105, 75);
-	glPopMatrix();
 
 	//canto inferior esquerdo	
 	glPushMatrix();
