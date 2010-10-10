@@ -441,10 +441,10 @@ void hospital(void)
 		glRotated(180.0, 0.0,1.0,0.0);
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  //ver normal 
-			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
-			glTexCoord2f(5.0, 0.0); glVertex3d(130.0, 0.0,  0.0);
-			glTexCoord2f(3.0, 3.0); glVertex3d(97.5, 10.0, -42.5);	
-			glTexCoord2f(0.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(5.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(0.0, 0.0); glVertex3d(130.0, 0.0,  0.0);
+			glTexCoord2f(0.0, 3.0); glVertex3d(97.5, 10.0, -42.5);	
+			glTexCoord2f(3.0, 0.0); glVertex3d(32.5, 10.0,  -42.5);
 		glEnd();
 		glPopMatrix();
 
@@ -453,8 +453,8 @@ void hospital(void)
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0); //ver normal 
 			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
-			glTexCoord2f(5.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
-			glTexCoord2f(0.0, 3.0); glVertex3d(0.0, 0.0, -85);
+			glTexCoord2f(5.0, 0.0); glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(10.0, 3.0); glVertex3d(0.0, 0.0, -85);
 		glEnd();
 		glPopMatrix();
 
@@ -464,8 +464,8 @@ void hospital(void)
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0); //ver normal 
 			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
-			glTexCoord2f(5.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
-			glTexCoord2f(0.0, 3.0); glVertex3d(0.0, 0.0, -85);
+			glTexCoord2f(5.0, 0.0); glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(10.0, 3.0); glVertex3d(0.0, 0.0, -85);
 		glEnd();
 		glPopMatrix();
 
@@ -660,17 +660,23 @@ void hospital(void)
 			glDisable(GL_TEXTURE_2D);
 		glPopMatrix();
 		//letreiro
+		
 		glPushMatrix();
+		glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+		glEnable(GL_COLOR_MATERIAL);
 		glTranslatef(20.0,120.0,-7.5);
 		glScalef(0.3, 0.3, 0.3);
-		glColor3f(0.0,1.0,0.0);		// azul
+		glColor3f(1.0,1.0,0.0);		// amarelo
 		glLineWidth(5.0);
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'H');
-		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'S');	
 		glutStrokeCharacter(GLUT_STROKE_ROMAN, 'J');
-		glPopMatrix();
+		glColor3f(1.0,1.0,1.0);	
+		glDisable(GL_COLOR_MATERIAL);
 		
+		glPopMatrix();
 	glPopMatrix();
+
 }
 
 void hangar()
