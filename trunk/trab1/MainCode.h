@@ -1,76 +1,19 @@
 #include "helicoptero.h"
 
-const int TRUE  = 1;
-const int FALSE = 0;
-
-//declaracoes das camaras
-int camera_select;
-int camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz;
-
-// declaraçoes de luz
-#define LIGHT0_ID 100
-#define LIGHT1_ID 101
-#define LIGHT2_ID 102
-#define LIGHT3_ID 103
-#define LIGHT4_ID 104
-int light0_enabled;
-int light1_enabled;
-int light2_enabled;
-int light3_enabled;
-int light4_enabled;
-
-//declaracoes para holofotes
-float holofote_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float holofote_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
-float holofote_specular[] =  {6.0, 6.0, 6.0, 1.0};
-float holofote_kc = 0.0;
-float holofote_kl = 0.1;
-float holofote_kq = 0.0;
-float ang=30.0;
-
-
-// declaraces para a fonte de luz LIGHT0;
-float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
-float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-float light0_diffuse[] =   {6.0, 6.0, 6.0, 1.0};
-float light0_specular[] =  {6.0, 6.0, 6.0, 1.0};
-float light0_kc = 0.0;
-float light0_kl = 0.0;
-float light0_kq = 0.0;
-float light0_direction[] = {0.0, -1.0, -1.0, 1.0};
-double light0x = 450.0;
-double light0y = 150.0;
-double light0z = 150.0;
-double symb_light0_radius = 0.2;
-
-
-int symb_light0_slices = 8;
-int symb_light0_stacks = 8;
-
-// fonte (global) de luz ambiente 
-float light_ambient[] = {0.6, 0.6, 0.6, 1.0}; /* Set the background ambient lighting. */// era 0.6 nos primeiros 3
-
-double poste_r = 3.0/2.0;
-double poste_altura = 47.0;
-double baseInf_r = 13.0/2.0;
-double baseSup_r = 7.0/2.0;
-double base_altura = 7.0;
-
-
-
-
 
 void chao(void)
 {
+	double chao_temp_x = 5.0;
+	double chao_temp_y = 10.0;
 	//rectangulo 1
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, GrassTexture);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d( 0.0, 0.0,  0.0);
-		glTexCoord2f(5.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
-		glTexCoord2f(5.0,10.0); glVertex3d(dimx1, 0.0,  dimy);
-		glTexCoord2f(0.0,10.0); glVertex3d(0.0, 0.0,  dimy);		
+		glTexCoord2f(chao_temp_x,0.0); glVertex3d(dimx1, 0.0,  0.0);
+		glTexCoord2f(chao_temp_x,chao_temp_y); glVertex3d(dimx1, 0.0,  dimy);
+		glTexCoord2f(0.0,chao_temp_y); glVertex3d(0.0, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
@@ -116,9 +59,9 @@ void chao(void)
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0); glVertex3d(dimx2, 0.0,  0.0);
-		glTexCoord2f(32.0,0.0); glVertex3d(dimx3, 0.0,  0.0);
-		glTexCoord2f(32.0,16.0); glVertex3d(dimx3, 0.0,  dimy);
-		glTexCoord2f(0.0,16.0); glVertex3d(dimx2, 0.0,  dimy);		
+		glTexCoord2f(3*chao_temp_x,0.0); glVertex3d(dimx3, 0.0,  0.0);
+		glTexCoord2f(3*chao_temp_x,3*chao_temp_y); glVertex3d(dimx3, 0.0,  dimy);
+		glTexCoord2f(0.0,3*chao_temp_y); glVertex3d(dimx2, 0.0,  dimy);		
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 }
@@ -229,7 +172,6 @@ void janela(double dim)
 	glDisable(GL_TEXTURE_2D);
 }
 
-
 void holofote(int LIGHT)
 {
 	GLUquadric* glQ;
@@ -291,11 +233,8 @@ void holofote(int LIGHT)
 	glPopMatrix();
 }
 
-
-
 void heliporto(void)
 {
-
 	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
 	GLfloat ctrlpoints[4][3] = {	{dimx1+heliporto_x1, 0.5, heliporto_y1},
 									{dimx1+heliporto_x1, 0.5, heliporto_y2}, 

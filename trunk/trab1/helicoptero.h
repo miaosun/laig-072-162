@@ -1,45 +1,5 @@
 #include "materias.h"
 
-// declarações para animacao
-unsigned int mili_secs = 10;
-double obj_rotate, move_x, move_y, move_z, delta_rotate, delta_rot_2, delta_r, angle, y_axis, x_axis, z_axis, heli_rot;
-#define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
-#define ANGULAR_SPEED 0.5  // rotacoes por segundo
-int heli_anim, anim_1;
-bool sobe, esquerda, tras, aterra;
-#define HELI_ID 150 
-#define ANIM_ID 151
-
-//variaveis para o chao
-double dimx1 = 150.0;
-double dimx2 = 300.0;
-double dimx3 = 450.0;
-double dimy  =-300.0;
-
-//variaveis para o heliporto
-double heliporto_x1 = 45.0/2.0;
-double heliporto_x2 = heliporto_x1+105.0;
-double heliporto_y1 = -75.0/2.0;
-double heliporto_y2 = heliporto_y1-75.0;
-
-//variaveis para helicoptero
-double base1_r = 3.0/2.0;
-double base2_r = 2.0/2.0;
-double base1_lth = 24.0;
-double base2_lth = 7.0;
-int nslices = 23;
-int nstacks = 10;
-
-double cauda_r1 = 5.0;
-double cauda_r2 = 3.0;
-double cauda_length = 30;
-
-double alpha = 15.0;
-double belta = 25.0;
-double distancia = -13;
-
-double corpo_r = 12.0;
-
 void myInitTransforms()
 {
 	delta_rotate = (double) mili_secs/1000.0 * ANGULAR_SPEED *360.0;

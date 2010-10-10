@@ -255,28 +255,6 @@ void display(void)
 	// Definicao de material a usar daqui em diante (valores declarados acima)
 	material1();
 
-/*	// desenha rectangulo paralelo ao plano XY, com texturas
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 1);	// activa a textura 1 (feup)
-	temp = 2; // cinco repeti珲es na direccao Z
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,0.0,1.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0);  glVertex3d(-1.0, 6.0, 10.0);	// associacao de
-		glTexCoord2f(1.0,0.0);  glVertex3d(-1.0, 1.0, 10.0);	// coordenadas u,v
-		glTexCoord2f(1.0,temp); glVertex3d(-1.0, 1.0,  1.0);	// das texturas, aos
-		glTexCoord2f(0.0,temp); glVertex3d(-1.0, 6.0,  1.0);	// vertices 3D do poligono
-	glEnd();
-
-	// desenha rectangulo paralelo ao plano ZY, sem texturas
-	glDisable(GL_TEXTURE_2D);
-	glBegin(GL_POLYGON);
-		glNormal3d(1.0,0.0,0.0);  // esta normal fica comum aos 4 vertices
-		glVertex3d( 1.0, 1.0,  -1.0);
-		glVertex3d(10.0, 1.0,  -1.0);
-		glVertex3d(10.0, 6.0,  -1.0);
-		glVertex3d( 1.0, 6.0,  -1.0);
-	glEnd();
-*/
 	//TODO
 	//INICIO DO TRABALHO
 
@@ -491,12 +469,15 @@ void inicializacao()
 	pixmap.readBMPFile("wall_texture.bmp");
 	pixmap.setTexture(17);
 
+	pixmap.readBMPFile("floor_texture.bmp");
+	pixmap.setTexture(18);
+
 //criar display lists
 
 	//Terreno e árvores
 	glNewList(1,GL_COMPILE);
 		chao();
-		arvore_A(30.0, 30.0, 70.0, 40.0);
+		arvore_A(30.0, 70.0, 70.0, 40.0);
 		arvore_A(100.0, 100.0, 50.0, 30.0);
 		arvore_X(30.0, 150.0, 50.0, 30.0);
 		arvore_X(100.0, 200.0, 70.0, 40.0);
