@@ -429,22 +429,22 @@ void hospital(void)
 		glTranslated(-7.5, 115.0, 7.5);
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0); //ver normal 
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(130.0, 0.0,  0.0);
-			glVertex3d(97.5, 10.0, -42.5);	
-			glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 0.0); glVertex3d(130.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 3.0); glVertex3d(97.5, 10.0, -42.5);	
+			glTexCoord2f(0.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
 		glEnd();
 		glPopMatrix();
-
+	
 		glPushMatrix();
 		glTranslated(122.5, 115.0, -77.5);
 		glRotated(180.0, 0.0,1.0,0.0);
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0);  //ver normal 
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(130.0, 0.0,  0.0);
-			glVertex3d(97.5, 10.0, -42.5);	
-			glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 0.0); glVertex3d(130.0, 0.0,  0.0);
+			glTexCoord2f(3.0, 3.0); glVertex3d(97.5, 10.0, -42.5);	
+			glTexCoord2f(0.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
 		glEnd();
 		glPopMatrix();
 
@@ -452,9 +452,9 @@ void hospital(void)
 		glTranslated(-7.5, 115.0, 7.5);
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0); //ver normal 
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(32.5, 10.0,  -42.5);
-			glVertex3d(0.0, 0.0, -85);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(0.0, 3.0); glVertex3d(0.0, 0.0, -85);
 		glEnd();
 		glPopMatrix();
 
@@ -463,9 +463,9 @@ void hospital(void)
 		glRotated(180.0, 0.0,1.0,0.0);
 		glBegin(GL_POLYGON);
 			glNormal3d(0.0,0.0,1.0); //ver normal 
-			glVertex3d(0.0, 0.0,  0.0);
-			glVertex3d(32.5, 10.0,  -42.5);
-			glVertex3d(0.0, 0.0, -85);
+			glTexCoord2f(0.0, 0.0); glVertex3d(0.0, 0.0,  0.0);
+			glTexCoord2f(5.0, 3.0); glVertex3d(32.5, 10.0,  -42.5);
+			glTexCoord2f(0.0, 3.0); glVertex3d(0.0, 0.0, -85);
 		glEnd();
 		glPopMatrix();
 
