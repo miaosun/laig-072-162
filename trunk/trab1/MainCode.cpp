@@ -77,7 +77,7 @@ void camara_control(int camara)
 	  	// afasta a cena de 25 unidades mais a dist鈔cia que...
 		// ...decorre da utilizacao do botao de afastamento (pseudo-zoom)
 
-		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-150 ); //era -25
+		glTranslatef( obj_pos[0]-225, obj_pos[1]-50, -obj_pos[2]-250 ); //era -25
 
 		// roda a cena para ficar em perspectiva	
 		glRotated( 20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X

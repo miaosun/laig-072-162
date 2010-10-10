@@ -626,30 +626,40 @@ void hangar()
 {
 	int slices = 12;
 	int smooth = TRUE;
-	double radius = 93.0/2.0;
-	double height = -145.0;
+	float radius = 93.0/2.0;
+	float height = -145.0;
 
 	const double pi = acos(-1.0);
 	double delta= pi/slices;
 	double alfa=0, beta=0;
 	double norm_x, norm_y, norm_x1, norm_y1;	//coordenadas x e y do vector normal ?superficie
 
+	float p1, p2, y2;
+	y2= radius;
+
+	//pontos de controlo da curva de bezier
+	p1=0.15;
+	p2=0.85;
+	
 	glDisable(GL_CULL_FACE);
 
-	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
-	GLfloat ctrlpoints[4][4][3] = { { {0.0, 0.0, 0.0}, {radius/2, radius*sin(pi/3.0), 0.0}, {93-radius/2, radius*sin(pi/3.0), 0.0}, {93, 0.0, 0.0} },
-		{ {0.0, 0.0, height/4}, {radius/2, radius*sin(pi/3.0), height/4}, {93-radius/2, radius*sin(pi/3.0), height/4}, {93, 0.0, height/4} },
-		{ {0.0, 0.0, height/2}, {radius/2, radius*sin(pi/3.0), height/2}, {93-radius/2, radius*sin(pi/3.0), height/2}, {93, 0.0, height/2} },
-		{ {0.0, 0.0, height}, {radius/2, radius*sin(pi/3.0), height}, {93-radius/2, radius*sin(pi/3.0), height}, {93, 0.0, height} } };
+	glPushMatrix();
+	glTranslated(307.0, 0.0, -125.0);
 
-	GLfloat nrmlcompon[4][4][3] = { { {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} }, 
+	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
+	GLfloat ctrlpoints[4][4][3] = { { {0.0, 0.0, 0.0}, {93.0*p1, y2, 0.0}, {93.0*p2, y2, 0.0}, {93.0, 0.0, 0.0} },
+		{ {0.0, 0.0, height/4}, {93.0*p1, y2, height/4}, {93.0*p2, y2, height/4}, {93, 0.0, height/4} },
+		{ {0.0, 0.0, height/2}, {93.0*p1, y2, height/2}, {93.0*p2, y2, height/2}, {93, 0.0, height/2} },
+		{ {0.0, 0.0, height}, {93.0*p1, y2, height}, {93.0*p2, y2, height}, {93.0, 0.0, height} } };
+
+	GLfloat nrmlcompon[4][4][3] = { { {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
 		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
 		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
 		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} } };
 
 	// INICIALIZACOES RELACIONADAS COM OS "EVALUATORS"
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0][0]);
-	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0][0]);
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &ctrlpoints[0][0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 4,  0.0, 1.0, 12, 4,  &nrmlcompon[0][0][0]);
 	
 	// os interpoladores activam-se:
 	glEnable(GL_MAP2_VERTEX_3);
@@ -657,14 +667,10 @@ void hangar()
 
 	glMapGrid2f(20, 0.0,1.0, 30, 0.0,1.0);
 
-	glShadeModel(GL_SMOOTH);
-
-	//meu comeca aqui
 	glEvalMesh2(GL_FILL, 0,20, 0,30);
 
 	
-	glPushMatrix();
-	glTranslated(307.0+93.0/2.0, 0.0, -125.0);
+	
 	/*
 	while(slices > 0)
 	{
