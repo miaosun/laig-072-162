@@ -15,9 +15,9 @@ float mat2_ambient[] =  {0.0, 0.1, 1.0, 0.5};	/* ambient reflection. */
 
 //declaracoes para material da cauda do helicoptero
 float mat3_shininess[] = {128.0}; 
-float mat3_specular[] = {0.6, 0.6, 0.6, 1.0};	/* specular reflection. */
-float mat3_diffuse[] =  {0.4, 0.4, 0.4, 1.0};	/* diffuse reflection. */
-float mat3_ambient[] =  {0.5, 0.5, 0.5, 1.0};	/* ambient reflection. */
+float mat3_specular[] = {0.6, 0.7, 0.8, 0.8};	/* specular reflection. */
+float mat3_diffuse[] =  {0.6, 0.7, 0.8, 0.8};	/* diffuse reflection. */
+float mat3_ambient[] =  {0.6, 0.7, 0.8, 0.8};	/* ambient reflection. */
 
 //declaracoes para material de parede do hospital
 float mat4_shininess[] = {128.0}; 
@@ -39,4 +39,12 @@ void material2()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat2_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat2_diffuse);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat2_ambient);
+}
+
+void material3()
+{
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat3_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  mat3_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE,   mat3_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,   mat3_ambient);
 }

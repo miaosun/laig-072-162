@@ -151,6 +151,13 @@ void apois_helicoptero()
 
 void base()
 {
+	GLUquadric* glQ;
+	glQ = gluNewQuadric();
+
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 14);
+
 	glPushMatrix();
 	glTranslated(0.0, 0.0, -distancia/2.0);
 	glRotated(-alpha, 1.0, 0.0, 0.0);
@@ -162,6 +169,9 @@ void base()
 	glRotated(alpha, 1.0, 0.0, 0.0);
 	apois_helicoptero();
 	glPopMatrix();
+
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
 }
 
 
@@ -218,6 +228,13 @@ void cauda()
 	glRotated(20.0, 1.0, 0.0, 0.0);
 	glTranslated(0.0, 0.0, -cauda_length);
 
+	/*material3();
+	glEnable (GL_BLEND);
+	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);*/
+	gluQuadricTexture(glQ, GL_TRUE);
+	glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 13);
+
 	glPushMatrix();
 	glPushMatrix();
 	glRotated(180.0, 0.0, 1.0, 0.0);
@@ -227,6 +244,13 @@ void cauda()
 	glTranslated(0.0, 0.0, cauda_length);
 	gluDisk(glQ, 0.0, cauda_r1, nslices, nstacks);
 	glPopMatrix();
+
+	
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
+	/*glDisable(GL_CLIP_PLANE1);
+	glDisable (GL_BLEND);
+	material1();*/
 
 	glPushMatrix();
 		glTranslated(4.0, 0.0, 0.0);
