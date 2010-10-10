@@ -16,7 +16,7 @@ const int FALSE = 0;
 #define holo_base_texture  15
 #define folha_texture 16
 #define wall_texture 17
-#define floor_texture 18
+#define hangar_texture 18
 
 //declaracoes das camaras
 int camera_select;
