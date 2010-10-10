@@ -26,6 +26,7 @@ float holofote_specular[] =  {6.0, 6.0, 6.0, 1.0};
 float holofote_kc = 0.0;
 float holofote_kl = 0.1;
 float holofote_kq = 0.0;
+float ang=30.0;
 
 
 // declaraces para a fonte de luz LIGHT0;
@@ -73,17 +74,41 @@ void chao(void)
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
+
+	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
+	GLfloat ctrlpoints[4][3] = {	{dimx1, 0.0, 0.0},
+									{dimx1, 0.0, dimy}, 
+									{dimx2, 0.0, 0.0},
+									{dimx2, 0.0, dimy} };
+
+	GLfloat nrmlcompon[4][3] = {	{  0.0, 1.0, 0.0},
+									{  0.0, 1.0, 0.0}, 
+									{  0.0, 1.0, 0.0},
+									{  0.0, 1.0, 0.0} };
+
+	GLfloat textpoints[4][2] = {	{ 0.0, 0.0},
+									{ 0.0, 4.0}, 
+									{ 8.0, 0.0},
+									{ 8.0, 4.0} };
+
+
+	// INICIALIZACOES RELACIONADAS COM OS "EVALUATORS"
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
+
+	// os interpoladores activam-se:
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_MAP2_NORMAL);
+	glEnable(GL_MAP2_TEXTURE_COORD_2);
+	glMapGrid2f(300, 0.0,1.0, 150, 0.0,1.0); 
+
 	//rectangulo 2
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, stone_texture);
-	glBegin(GL_POLYGON);
-		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
-		glTexCoord2f(0.0,0.0); glVertex3d(dimx1, 0.0,  0.0);
-		glTexCoord2f(8.0,0.0); glVertex3d(dimx2, 0.0,  0.0);
-		glTexCoord2f(8.0,4.0); glVertex3d(dimx2, 0.0,  dimy);
-		glTexCoord2f(0.0,4.0); glVertex3d(dimx1, 0.0,  dimy);		
-	glEnd();
+	glEvalMesh2(GL_FILL, 0,300, 0,150);
 	glDisable(GL_TEXTURE_2D);
+
 
 	//rectangulo 3
 	glEnable(GL_TEXTURE_2D);
@@ -229,7 +254,7 @@ void holofote(int LIGHT)
 	glPopMatrix();
 	
 	holofote_direction[0]=0.0;
-	holofote_direction[1]=0.0;
+	holofote_direction[1]=1.0;
 	holofote_direction[2]=-1.0;
 	holofote_direction[3]=1.0;
 
@@ -237,49 +262,17 @@ void holofote(int LIGHT)
 	holofote_pos[1]=5;
 	holofote_pos[2]=poste_altura+2;
 	holofote_pos[3]=1.0;
-
-	glPushMatrix();
-	glTranslated(holofote_pos[0], holofote_pos[1], holofote_pos[2]);
-	//gluSphere(glQ, 5.0, 10, 10);
-	glPopMatrix();
 	
-	/*glPushMatrix();
-	switch (tipo)
-	{
-	case 1://canto inferior esquerdo	
-		glRotated(-45.0, 0.0, 0.0, 1.0);		
-		luz=GL_LIGHT1;
-		break;
-	case 2://canto superior esquerdo		
-		glRotated(-135.0, 0.0, 0.0, 1.0);		
-		luz=GL_LIGHT2;
-		break;
-	case 3://canto superior direito	
-		glRotated(135.0, 0.0, 0.0, 1.0);		
-		luz=GL_LIGHT3;
-		break;
-	case 4://canto inferior direito	
-		glRotated(45.0, 0.0, 0.0, 1.0);		
-		luz=GL_LIGHT4;
-		break;
-	default:
-		break;
-	}/*/
-
-	
-	float ang[]={120.0, 120.0, 120.0, 1.0};
 	glLightfv(LIGHT, GL_POSITION, holofote_pos);
 	glLightfv(LIGHT, GL_SPOT_DIRECTION, holofote_direction);
-	//glLightfv(luz, GL_SPOT_CUTOFF, ang);
 	glLightfv(LIGHT, GL_AMBIENT, holofote_ambient);
 	glLightfv(LIGHT, GL_DIFFUSE, holofote_diffuse);
 	glLightfv(LIGHT, GL_SPECULAR, holofote_specular);
 	glLightf(LIGHT, GL_CONSTANT_ATTENUATION,  holofote_kc);
 	glLightf(LIGHT, GL_LINEAR_ATTENUATION,    holofote_kl);
 	glLightf(LIGHT, GL_QUADRATIC_ATTENUATION, holofote_kq);
-
-
-
+	glLightfv(LIGHT, GL_SPOT_CUTOFF, &ang);
+	
 	glTranslated(0.0, 2*baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
     //abat-jour
@@ -329,12 +322,12 @@ void heliporto(void)
 	glEnable(GL_MAP2_VERTEX_3);
 	glEnable(GL_MAP2_NORMAL);
 	glEnable(GL_MAP2_TEXTURE_COORD_2);
-	glMapGrid2f(75, 0.0,1.0, 105, 0.0,1.0); 
+	glMapGrid2f(200, 0.0,1.0, 150, 0.0,1.0); 
 
 	//meu comeca aqui
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, heliporto_texture);
-	glEvalMesh2(GL_FILL, 0,75, 0,105);
+	glEvalMesh2(GL_FILL, 0,200, 0,150);
 	glDisable(GL_TEXTURE_2D);
 
 
