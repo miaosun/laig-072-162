@@ -317,16 +317,16 @@ void plano(int x, int y)
 
 void heliporto(void)
 {
-	/*glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, 5);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 12);
 	glBegin(GL_POLYGON);
 		glNormal3d(0.0,1.0,0.0);  // esta normal fica comum aos 4 vertices
 		glTexCoord2f(0.0,0.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y1);
-		glTexCoord2f(10.0,0.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y1);
-		glTexCoord2f(10.0,5.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y2);
-		glTexCoord2f(0.0,5.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y2);		
+		glTexCoord2f(1.0,0.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y1);
+		glTexCoord2f(1.0,1.0); glVertex3d(dimx1+heliporto_x2, 0.5, heliporto_y2);
+		glTexCoord2f(0.0,1.0);  glVertex3d(dimx1+heliporto_x1, 0.5, heliporto_y2);		
 	glEnd();
-	glDisable(GL_TEXTURE_2D);*/
+	glDisable(GL_TEXTURE_2D);
 
 	glPushMatrix();
 	glTranslated(dimx1+heliporto_x1, 0.1, heliporto_y2);

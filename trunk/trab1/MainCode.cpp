@@ -468,6 +468,9 @@ void inicializacao()
 	pixmap.readBMPFile("roof.bmp");
 	pixmap.setTexture(11);
 
+	pixmap.readBMPFile("heliporto.bmp");
+	pixmap.setTexture(12);
+
 //criar display lists
 
 	//Terreno e árvores
