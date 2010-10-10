@@ -239,54 +239,54 @@ void holofote(int LIGHT)
 	float holofote_pos[4], holofote_direction[4];
 
 	glPushMatrix();
-	glRotated(-90.0, 1.0,0.0,0.0 );
+		glRotated(-90.0, 1.0,0.0,0.0 );
 	
-	//poste
-	gluQuadricTexture(glQ, GL_TRUE);
-	glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, holo_base_texture);
+		//poste
+		gluQuadricTexture(glQ, GL_TRUE);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, holo_base_texture);
 
-	glColor3f(1.0,0.0,0.0);	
-	gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
-	glPushMatrix();
-	glTranslated(0.0, 0.0, poste_altura);
-	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
-	glPopMatrix();
+		glColor3f(1.0,0.0,0.0);	
+		gluCylinder(glQ, poste_r, poste_r, poste_altura, nslices, nstacks);
+		glPushMatrix();
+			glTranslated(0.0, 0.0, poste_altura);
+			gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
+		glPopMatrix();
 	
-	holofote_direction[0]=0.0;
-	holofote_direction[1]=1.0;
-	holofote_direction[2]=-1.0;
-	holofote_direction[3]=1.0;
+		holofote_direction[0]=0.0;
+		holofote_direction[1]=1.0;
+		holofote_direction[2]=-1.0;
+		holofote_direction[3]=1.0;
 
-	holofote_pos[0]=0;
-	holofote_pos[1]=5;
-	holofote_pos[2]=poste_altura+2;
-	holofote_pos[3]=1.0;
+		holofote_pos[0]=0;
+		holofote_pos[1]=5;
+		holofote_pos[2]=poste_altura+2;
+		holofote_pos[3]=1.0;
 	
-	glLightfv(LIGHT, GL_POSITION, holofote_pos);
-	glLightfv(LIGHT, GL_SPOT_DIRECTION, holofote_direction);
-	glLightfv(LIGHT, GL_AMBIENT, holofote_ambient);
-	glLightfv(LIGHT, GL_DIFFUSE, holofote_diffuse);
-	glLightfv(LIGHT, GL_SPECULAR, holofote_specular);
-	glLightf(LIGHT, GL_CONSTANT_ATTENUATION,  holofote_kc);
-	glLightf(LIGHT, GL_LINEAR_ATTENUATION,    holofote_kl);
-	glLightf(LIGHT, GL_QUADRATIC_ATTENUATION, holofote_kq);
-	glLightfv(LIGHT, GL_SPOT_CUTOFF, &ang);
+		glLightfv(LIGHT, GL_POSITION, holofote_pos);
+		glLightfv(LIGHT, GL_SPOT_DIRECTION, holofote_direction);
+		glLightfv(LIGHT, GL_AMBIENT, holofote_ambient);
+		glLightfv(LIGHT, GL_DIFFUSE, holofote_diffuse);
+		glLightfv(LIGHT, GL_SPECULAR, holofote_specular);
+		glLightf(LIGHT, GL_CONSTANT_ATTENUATION,  holofote_kc);
+		glLightf(LIGHT, GL_LINEAR_ATTENUATION,    holofote_kl);
+		glLightf(LIGHT, GL_QUADRATIC_ATTENUATION, holofote_kq);
+		glLightfv(LIGHT, GL_SPOT_CUTOFF, &ang);
 	
-	glTranslated(0.0, 2*baseSup_r, poste_altura);
-	glRotated(45.0, 1.0, 0.0, 0.0);
-    //abat-jour
-	gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
-	glPushMatrix();
-	glTranslated(0.0, 0.0, base_altura);	
-	gluDisk(glQ, 0.0, baseSup_r, nslices, nstacks);
+		glTranslated(0.0, 2*baseSup_r, poste_altura);
+		glRotated(45.0, 1.0, 0.0, 0.0);
+		//abat-jour
+		gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
+		glPushMatrix();
+			glTranslated(0.0, 0.0, base_altura);	
+			gluDisk(glQ, 0.0, baseSup_r, nslices, nstacks);
 
-	glDisable(GL_TEXTURE_2D);	
-	gluQuadricTexture(glQ, GL_FALSE);
+			glDisable(GL_TEXTURE_2D);	
+			gluQuadricTexture(glQ, GL_FALSE);
 
-	glPopMatrix();
+		glPopMatrix();
 
-	glPopMatrix();
+		glPopMatrix();
 
 	glPopMatrix();
 }
@@ -333,30 +333,30 @@ void heliporto(void)
 
 	//canto inferior esquerdo	
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1+poste_r, 0.0, heliporto_y1-poste_r);
-	glRotated(-45.0, 0.0, 1.0, 0.0);
-	holofote(GL_LIGHT1);
+		glTranslated(dimx1+heliporto_x1+poste_r, 0.0, heliporto_y1-poste_r);
+		glRotated(-45.0, 0.0, 1.0, 0.0);
+		holofote(GL_LIGHT1);
 	glPopMatrix();
 
 	//canto superior esquerdo
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x1+poste_r, 0.0,heliporto_y2+poste_r);
-	glRotated(-135.0, 0.0, 1.0, 0.0);
-	holofote(GL_LIGHT2);
+		glTranslated(dimx1+heliporto_x1+poste_r, 0.0,heliporto_y2+poste_r);
+		glRotated(-135.0, 0.0, 1.0, 0.0);
+		holofote(GL_LIGHT2);
 	glPopMatrix();
 
 	//canto superior direito	
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y2+poste_r);
-	glRotated(135.0, 0.0, 1.0, 0.0);
-	holofote(GL_LIGHT3);
+		glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y2+poste_r);
+		glRotated(135.0, 0.0, 1.0, 0.0);
+		holofote(GL_LIGHT3);
 	glPopMatrix();
 
 	//canto inferior direito
 	glPushMatrix();
-	glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y1-poste_r);
-	glRotated(45.0, 0.0, 1.0, 0.0);
-	holofote(GL_LIGHT4);
+		glTranslated(dimx1+heliporto_x2-poste_r, 0.0, heliporto_y1-poste_r);
+		glRotated(45.0, 0.0, 1.0, 0.0);
+		holofote(GL_LIGHT4);
 	glPopMatrix();
 
 }
@@ -685,36 +685,48 @@ void hospital(void)
 
 void hangar()
 {
-	/*glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
-	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
-	glMap2f(GL_MAP2_COLOR_4,  0.0, 1.0, 4, 2,  0.0, 1.0, 8, 2,  &colorpoints[0][0]);
-	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
-
-	// os interpoladores activam-se:
-	glEnable(GL_MAP2_VERTEX_3);
-	glEnable(GL_MAP2_NORMAL);
-	glEnable(GL_MAP2_COLOR_4);
-	glEnable(GL_MAP2_TEXTURE_COORD_2);
-
-	// para este conjunto de interpoladores:
-	//    na direccao U, serao efectuadas divisoes em 40 passos
-	//        quando a variável U varia de 0 a 1
-	//    na direccao V, serao efectuadas divisoes em 60 passos
-	//        quando a variável U varia de 0 a 1
-	glMapGrid2f(40, 0.0,1.0, 60, 0.0,1.0); */
-
 	int slices = 12;
 	int smooth = TRUE;
 	double radius = 93.0/2.0;
-	double height = 145.0;
+	double height = -145.0;
 
 	const double pi = acos(-1.0);
 	double delta= pi/slices;
 	double alfa=0, beta=0;
 	double norm_x, norm_y, norm_x1, norm_y1;	//coordenadas x e y do vector normal ?superficie
+
+	glDisable(GL_CULL_FACE);
+
+	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
+	GLfloat ctrlpoints[4][4][3] = { { {0.0, 0.0, 0.0}, {radius/2, radius*sin(pi/3.0), 0.0}, {93-radius/2, radius*sin(pi/3.0), 0.0}, {93, 0.0, 0.0} },
+		{ {0.0, 0.0, height/4}, {radius/2, radius*sin(pi/3.0), height/4}, {93-radius/2, radius*sin(pi/3.0), height/4}, {93, 0.0, height/4} },
+		{ {0.0, 0.0, height/2}, {radius/2, radius*sin(pi/3.0), height/2}, {93-radius/2, radius*sin(pi/3.0), height/2}, {93, 0.0, height/2} },
+		{ {0.0, 0.0, height}, {radius/2, radius*sin(pi/3.0), height}, {93-radius/2, radius*sin(pi/3.0), height}, {93, 0.0, height} } };
+
+	GLfloat nrmlcompon[4][4][3] = { { {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} }, 
+		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
+		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
+		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} } };
+
+	// INICIALIZACOES RELACIONADAS COM OS "EVALUATORS"
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0][0]);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0][0]);
+	
+	// os interpoladores activam-se:
+	glEnable(GL_MAP2_VERTEX_3);
+	glEnable(GL_MAP2_NORMAL);
+
+	glMapGrid2f(20, 0.0,1.0, 30, 0.0,1.0);
+
+	glShadeModel(GL_SMOOTH);
+
+	//meu comeca aqui
+	glEvalMesh2(GL_FILL, 0,20, 0,30);
+
+	
 	glPushMatrix();
 	glTranslated(307.0+93.0/2.0, 0.0, -125.0);
-
+	/*
 	while(slices > 0)
 	{
 		beta= alfa+delta - (delta/2);	//ângulo auxiliar para calcular o vector normal ao plano
@@ -744,7 +756,8 @@ void hangar()
 
 		--slices;
 		alfa += delta;	//proximo angulo
-	}
+	}*/
+	glEnable(GL_CULL_FACE);
 		glPopMatrix();
 
 }
