@@ -104,7 +104,7 @@ void display(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	camara_control(1);
+	camara_control(camera_select);
 
 	// permissao de atribuicao directa de cores
 	// para objectos que nao tem material atribuido, como
@@ -334,11 +334,11 @@ void reshape(int w, int h)
 void keyboard(unsigned char key, int x, int y)
 {
    switch (key) {
-   case 49: //tecla 1
-	   camara_control(1);
+   case '1': //tecla 1
+	   camera_select=1;
 	   break;
-   case 50: //tecla 2
-	   camara_control(2);
+   case '2': //tecla 2
+	   camera_select=2;
 	   break;
    case 27:		// tecla de escape termina o programa
        exit(0);
@@ -552,7 +552,7 @@ int main(int argc, char* argv[])
 	light2_enabled=1;
 	light3_enabled=1;
 	light4_enabled=1;
-	camera_select=0;
+	camera_select=1;
 	heli_anim=1;
 
 	//adicionar os ckeckboxes para 5 luzes
