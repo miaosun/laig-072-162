@@ -343,7 +343,7 @@ void heliporto(void)
 
 	//meu comeca aqui
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, cauda_texture);//heliporto_texture);
+	glBindTexture(GL_TEXTURE_2D, heliporto_texture);
 	glEvalMesh2(GL_FILL, 0,75, 0,105);
 	glDisable(GL_TEXTURE_2D);
 
