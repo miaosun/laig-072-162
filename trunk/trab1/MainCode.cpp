@@ -84,6 +84,9 @@ void camara_control(int camara)
    case 2:
 		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
 	   break;
+   case 3:
+	   gluLookAt(camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz, 0.0, 1.0, 0.0);
+	   break;
    default:
 	   break;
 	}
@@ -339,6 +342,27 @@ void keyboard(unsigned char key, int x, int y)
    case '2': //tecla 2
 	   camera_select=2;
 	   break;
+   case '3': //tecla 3
+	   camera_select=3;
+	   break;
+   case 'j':
+	   camara3_x--;
+	   break;
+   case 'l':
+	   camara3_x++;
+	   break;
+   case 'i':
+	   camara3_y++;
+	   break;
+   case 'k':
+	   camara3_y--;
+	   break;
+   case 'q':
+	   camara3_z--;
+	   break;
+   case 'a':
+	   camara3_z++;
+	   break;
    case 27:		// tecla de escape termina o programa
        exit(0);
        break;
@@ -546,12 +570,21 @@ int main(int argc, char* argv[])
 	/*GLUI_Translation *trans_xy = glui2->add_translation( "Zoom", GLUI_TRANSLATION_XY, &obj_pos[2] );
 	trans_xy->set_speed( .02 );*/
 
+	//inicializacao das luzes
 	light0_enabled=1;
 	light1_enabled=1;
 	light2_enabled=1;
 	light3_enabled=1;
 	light4_enabled=1;
+	
+	//inicializacao das camaras
 	camera_select=1;
+	camara3_x=225;
+	camara3_y=150;
+	camara3_z=300;
+	camara3_ox=225;
+	camara3_oy=0;
+	camara3_oz=75;
 	heli_anim=1;
 
 	//adicionar os ckeckboxes para 5 luzes
