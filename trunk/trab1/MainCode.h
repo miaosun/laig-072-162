@@ -624,18 +624,14 @@ void hospital(void)
 
 void hangar()
 {
-	int slices = 12;
-	int smooth = TRUE;
-	float radius = 93.0/2.0;
-	float height = -145.0;
 
+	float hangar_r = 93.0/2.0;
+	float hangar_diametro = 93.0;
+	float hangar_height = -145.0;
 	const double pi = acos(-1.0);
-	double delta= pi/slices;
-	double alfa=0, beta=0;
 	double norm_x, norm_y, norm_x1, norm_y1;	//coordenadas x e y do vector normal ?superficie
 
-	float p1, p2, y2;
-	y2= radius;
+	float p1, p2;
 
 	//pontos de controlo da curva de bezier
 	p1=0.15;
@@ -647,10 +643,10 @@ void hangar()
 	glTranslated(307.0, 0.0, -125.0);
 
 	// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
-	GLfloat ctrlpoints[4][4][3] = { { {0.0, 0.0, 0.0}, {93.0*p1, y2, 0.0}, {93.0*p2, y2, 0.0}, {93.0, 0.0, 0.0} },
-		{ {0.0, 0.0, height/4}, {93.0*p1, y2, height/4}, {93.0*p2, y2, height/4}, {93, 0.0, height/4} },
-		{ {0.0, 0.0, height/2}, {93.0*p1, y2, height/2}, {93.0*p2, y2, height/2}, {93, 0.0, height/2} },
-		{ {0.0, 0.0, height}, {93.0*p1, y2, height}, {93.0*p2, y2, height}, {93.0, 0.0, height} } };
+	GLfloat ctrlpoints[4][4][3] = { { {0.0, 0.0, 0.0}, {hangar_diametro*p1, hangar_r, 0.0}, {hangar_diametro*p2, hangar_r, 0.0}, {hangar_diametro, 0.0, 0.0} },
+		{ {0.0, 0.0, hangar_height/4}, {hangar_diametro*p1, hangar_r, hangar_height/4}, {hangar_diametro*p2, hangar_r, hangar_height/4}, {hangar_diametro, 0.0, hangar_height/4} },
+		{ {0.0, 0.0, hangar_height/2}, {hangar_diametro*p1, hangar_r, hangar_height/2}, {hangar_diametro*p2, hangar_r, hangar_height/2}, {hangar_diametro, 0.0, hangar_height/2} },
+		{ {0.0, 0.0, hangar_height}, {hangar_diametro*p1, hangar_r, hangar_height}, {hangar_diametro*p2, hangar_r, hangar_height}, {hangar_diametro, 0.0, hangar_height} } };
 
 	GLfloat nrmlcompon[4][4][3] = { { {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
 		{ {-1.0, 0.0, 0.0}, {-0.5, sin(pi/3.0), 0.0}, {0.5, sin(pi/3.0), 0.0}, {1.0, 0.0, 0.0} },
@@ -669,41 +665,8 @@ void hangar()
 
 	glEvalMesh2(GL_FILL, 0,20, 0,30);
 
-	
-	
-	/*
-	while(slices > 0)
-	{
-		beta= alfa+delta - (delta/2);	//ângulo auxiliar para calcular o vector normal ao plano
-
-		norm_x= cos(beta)/ sqrt(cos(beta)*cos(beta)+sin(beta)*sin(beta));	//
-		norm_y= sin(beta)/ sqrt(cos(beta)*cos(beta)+sin(beta)*sin(beta));
-
-		//construçao de uma face do prisma
-		
-		//normal da 1?aresta
-		norm_x= cos(alfa)/ sqrt(cos(alfa)*cos(alfa)+sin(alfa)*sin(alfa));
-		norm_y= sin(alfa)/ sqrt(cos(alfa)*cos(alfa)+sin(alfa)*sin(alfa));
-		//normal da 2?aresta
-		norm_x1= cos(alfa+delta)/ sqrt(cos(alfa+delta)*cos(alfa+delta)+sin(alfa+delta)*sin(alfa+delta));
-		norm_y1= sin(alfa+delta)/ sqrt(cos(alfa+delta)*cos(alfa+delta)+sin(alfa+delta)*sin(alfa+delta));
-
-			//construção da face j?com smooth shading
-			glBegin(GL_POLYGON);								
-				glNormal3d(norm_x1, norm_y1, 0.0);	//normal da 2?aresta
-				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	-height);
-				glVertex3d(radius*cos(alfa+delta),	radius*sin(alfa+delta),	0.0);
-				glNormal3d(norm_x, norm_y, 0.0);	//normal da 1?aresta.
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		0.0);
-				glVertex3d(radius*cos(alfa),		radius*sin(alfa),		-height);
-			glEnd();
-
-
-		--slices;
-		alfa += delta;	//proximo angulo
-	}*/
 	glEnable(GL_CULL_FACE);
-		glPopMatrix();
+	glPopMatrix();
 
 }
 

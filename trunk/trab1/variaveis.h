@@ -1,3 +1,4 @@
+
 const int TRUE  = 1;
 const int FALSE = 0;
 
@@ -21,7 +22,7 @@ const int FALSE = 0;
 int camera_select;
 int camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz;
 
-// declaraçoes de luz
+// declaracoes de luz
 #define LIGHT0_ID 100
 #define LIGHT1_ID 101
 #define LIGHT2_ID 102
@@ -69,6 +70,7 @@ double poste_altura = 47.0;
 double baseInf_r = 13.0/2.0;
 double baseSup_r = 7.0/2.0;
 double base_altura = 7.0;
+
 
 
 // declarações para animacao
