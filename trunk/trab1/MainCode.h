@@ -224,8 +224,7 @@ void holofote(int tipo)
 	gluDisk(glQ, 0.0, poste_r, nslices, nstacks);
 	glPopMatrix();
 	
-	glDisable(GL_TEXTURE_2D);	
-	gluQuadricTexture(glQ, GL_FALSE);
+
 	
 	glPushMatrix();
 	switch (tipo)
@@ -281,7 +280,6 @@ void holofote(int tipo)
 	glLightf(luz, GL_LINEAR_ATTENUATION,    holofote_kl);
 	glLightf(luz, GL_QUADRATIC_ATTENUATION, holofote_kq);
 
-
 	glTranslated(0.0, 2*baseSup_r, poste_altura);
 	glRotated(45.0, 1.0, 0.0, 0.0);
     //abat-jour
@@ -289,6 +287,10 @@ void holofote(int tipo)
 	glPushMatrix();
 	glTranslated(0.0, 0.0, base_altura);
 	gluDisk(glQ, 0.0, baseSup_r, nslices, nstacks);
+
+	glDisable(GL_TEXTURE_2D);	
+	gluQuadricTexture(glQ, GL_FALSE);
+
 	glPopMatrix();
 
 	glPopMatrix();

@@ -40,26 +40,30 @@ RGBpixmap pixmap;
 
 void camara_control(int camara)
 {		
-	glColor3f(1.0,1.0,0.0);	//amarelo
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	glRasterPos2i( 3, DIMY-25);
+	glColor3f(1.0,1.0,0.0);	//amarelo
+	glRasterPos2i(3, DIMY-25);
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'C');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'M');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'R');
-	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'm');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
+	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
 	glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, '0'+camara);
-
+	
+	glDisable(GL_COLOR_MATERIAL);
 	// inicializacoes da matriz de visualizacao
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 2500.0 );//alcance da camara
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 1500.0 );//alcance da camara
 
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
