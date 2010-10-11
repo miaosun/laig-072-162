@@ -151,3 +151,6 @@ GLUI  *glui2;
 
 
 RGBpixmap pixmap;
+
+GLUI_Rotation *view_rot;
+GLUI_Translation *trans_z;

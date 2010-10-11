@@ -219,6 +219,8 @@ void holofote(int LIGHT)
 		glRotated(45.0, 1.0, 0.0, 0.0);
 
 		//abat-jour
+		glDisable(GL_CULL_FACE);
+		glBindTexture(GL_TEXTURE_2D, holo_base_texture);
 		gluCylinder(glQ, baseInf_r, baseSup_r, base_altura, nslices, nstacks);
 		glPushMatrix();
 			glTranslated(0.0, 0.0, base_altura);	
@@ -227,6 +229,7 @@ void holofote(int LIGHT)
 			glDisable(GL_TEXTURE_2D);	
 			gluQuadricTexture(glQ, GL_FALSE);
 		glPopMatrix();
+		glEnable(GL_CULL_FACE);
 
 	glPopMatrix();
 }
@@ -636,6 +639,8 @@ void hangar()
 	glDisable(GL_CULL_FACE);
 
 	glPushMatrix();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, hangar_texture);
 		glTranslated(307.0, 0.0, -125.0);
 
 		// DECLARACOES RELACIONADAS COM OS "EVALUATORS"
@@ -661,6 +666,7 @@ void hangar()
 
 		glEvalMesh2(GL_FILL, 0,20, 0,30);
 
+		glDisable(GL_TEXTURE_2D);
 		glEnable(GL_CULL_FACE);
 	glPopMatrix();
 

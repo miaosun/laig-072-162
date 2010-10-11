@@ -78,6 +78,7 @@
     <ClInclude Include="MainCode.h" />
     <ClInclude Include="materias.h" />
     <ClInclude Include="RGBpixmap.h" />
+    <ClInclude Include="variaveis.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainCode.cpp" />

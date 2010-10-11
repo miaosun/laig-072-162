@@ -51,14 +51,25 @@ void camara_control(int camara)
 
 		// roda a cena de acordo com o botao (esfera) de rotacao
 		glMultMatrixf( view_rotate );
+		view_rot->enable();
+		trans_z->enable();
 	   break;
    case 2:
 	   //vista de cima
 		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -1.0);
+		view_rot->disable();
+		trans_z->disable();
 	   break;
    case 3:
 	   //vista sempre centrada no heliporto
 	   gluLookAt(camara3_x, camara3_y, camara3_z, camara3_ox, camara3_oy, camara3_oz, 0.0, 1.0, 0.0);
+	   view_rot->disable();
+	   trans_z->disable();
+	   break;
+   case 4:
+	   gluLookAt(225,250,-71,225,0,-70,0,-1,0);
+	   view_rot->disable();
+	   trans_z->disable();
 	   break;
    default:
 	   break;
@@ -222,6 +233,8 @@ void keyboard(unsigned char key, int x, int y)
    case '3': //tecla 3
 	   camera_select=3;
 	   break;
+   case '4':
+	   camera_select=4;
    case 'j'://...
 	   camara3_x--;
 	   break;
@@ -409,11 +422,11 @@ int main(int argc, char* argv[])
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
 	glui2->set_main_gfx_window( main_window );
 
-	GLUI_Rotation *view_rot = glui2->add_rotation( "Rotacao", view_rotate );
+	view_rot = glui2->add_rotation( "Rotacao", view_rotate );
 	view_rot->set_spin( 1.0 );
 	
 	glui2->add_column( false );
-	GLUI_Translation *trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
+	trans_z = glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
 	trans_z->set_speed( .1 );
 	/*GLUI_Translation *trans_xy = glui2->add_translation( "Zoom", GLUI_TRANSLATION_XY, &obj_pos[2] );
 	trans_xy->set_speed( .02 );*/
@@ -428,11 +441,11 @@ int main(int argc, char* argv[])
 	//inicializacao das camaras
 	camera_select=1;
 	camara3_x=225;
-	camara3_y=150;
-	camara3_z=300;
+	camara3_y=180;
+	camara3_z=120;
 	camara3_ox=225;
-	camara3_oy=0;
-	camara3_oz=-75;
+	camara3_oy=-100;
+	camara3_oz=-300;
 
 	//inicializacao das variaveis da animacao
 	heli_anim=1;
@@ -449,6 +462,7 @@ int main(int argc, char* argv[])
 	//adicionar botao para animacao
 	glui2->add_column(true);
 	glui2->add_button("Animacao", ANIM_ID, anim_control);
+
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

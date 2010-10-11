@@ -18,13 +18,16 @@
     <ClInclude Include="RGBpixmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainCode.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="helicoptero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="materias.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="variaveis.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

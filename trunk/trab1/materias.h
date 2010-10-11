@@ -103,6 +103,6 @@ void texturas()
 	pixmap.readBMPFile("wall_texture.bmp");
 	pixmap.setTexture(17);
 
-	pixmap.readBMPFile("floor_texture.bmp");
+	pixmap.readBMPFile("hangar_texture.bmp");
 	pixmap.setTexture(18);
 }
