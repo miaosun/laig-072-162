@@ -11,7 +11,7 @@ SceneLoader::SceneLoader(const char * fileName):
 
 	if ( !loadOkay )
 	{
-	  // fazer subclassing à classe exception para dar mais informações...
+	  // fazer subclassing ?classe exception para dar mais informações...
 	  throw exception();
 	}
 	

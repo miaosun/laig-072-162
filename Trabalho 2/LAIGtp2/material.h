@@ -5,17 +5,19 @@
 #include <GL\glui.h>
 #include <string>
 
+using namespace std;
+
 class Material
 {
-	std::string id;
-	float ambiente[4];
+public:
+	string id;
+	float ambient[4];
 	float diffuse[4];
 	float specular[4];
 	float emission[4];
 	float shininess[1];
-public:
-	std::string getId();
-	Material* loadAttributes(TiXmlElement *materialsElement);
+
+	void loadMaterial(TiXmlElement *materialsElement);
 }
 
 #endif

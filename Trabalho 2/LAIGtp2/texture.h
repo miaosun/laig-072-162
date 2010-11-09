@@ -11,10 +11,12 @@ class Texture
 {
 	string id;
 	string file;
-	double length_s;
-	double length_t;
+	float length_s;
+	float length_t;
+
 public:
-	
+
+	void loadTexture(TiXmlElement* textsElement);
 }
 
 #endif
