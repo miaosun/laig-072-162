@@ -1,0 +1,337 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, para -->
+<!-- separar dos hifens -->
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
+<!-- Todas as tags e atributos sao obrigatorios, excepto onde for -->
+<!-- referido o contrario -->
+
+<sgx>
+
+
+    <!-- tem de existir, pelo menos, uma luz, uma textura, um material -->
+    <!-- e um objecto -->
+    <globals maxlights="5" maxtextures="5" maxmaterials="5"
+             maxobjects="30" root="kinect"/>
+
+
+    <view near="ff" far="ff" axisscale="ff">
+        <translation x="ff" y="ff" z="ff" />
+        <rotation axis="cc" angle="ff" />
+        <rotation axis="cc" angle="ff" />
+        <rotation axis="cc" angle="ff" />
+        <scale x="ff" y="ff" z="ff" />
+    </view>
+
+
+    <illumination doublesided="0" local="1" >
+
+        <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+        <background r="1.0" g="1.0" b="1.0" a="1.0" />
+
+        <lights>
+            <light id="light_1" enabled="1" >
+                <position x="2.0" y="2.0" z="2.0" w="1.0" />
+                <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+                <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+                <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+            </light>
+        </lights>
+
+    </illumination>
+
+  especial atencao a textura, devo fazer com que ela seja o mais simples possivel para que nao interfira com as esferas
+    <textures>
+        <!-- Deve existir um ou mais blocos "texture" -->
+        <!-- (até ao máximo declarado em "globals") -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <!-- s e t: factores de escala (ver notas finais) -->
+        <texture id="tex_1" file="ss" length_s="ff" length_t="ff" /> 
+    </textures>
+
+  
+    <materials>
+        <!-- Deve existir um ou mais blocos "material" -->
+        <!-- (até ao máximo declarado em "globals") -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+
+        <material id="mat_1">
+            <emission r="ff" g="ff" b="ff" a="ff" />
+            <ambient r="ff" g="ff" b="ff" a="ff" />
+            <diffuse r="ff" g="ff" b="ff" a="ff" />
+            <specular r="ff" g="ff" b="ff" a="ff" />
+            <shininess value="ff" />
+        </material>
+
+	<material id="mat_2">
+            <emission r="ff" g="ff" b="ff" a="ff" />
+            <ambient r="ff" g="ff" b="ff" a="ff" />
+            <diffuse r="ff" g="ff" b="ff" a="ff" />
+            <specular r="ff" g="ff" b="ff" a="ff" />
+            <shininess value="ff" />
+        </material>
+    </materials>
+
+  
+    <objects>
+
+        <!-- caixa preta -->
+        <object id="caixa" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+
+            <children>
+                <objectref id="topo" />
+		<objectref id="baixo" />
+		<objectref id="l_esq" />
+		<objectref id="l_dir" />
+		<objectref id="tras" />
+		<objectref id="frente" />
+		<objectref id="camaras" />
+            </children>
+        </object>
+
+	<!-- camaras na frente -->
+	<object id="camaras" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="mat_2" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="projector" />
+		<objectref id="cam_1" />
+		<objectref id="cam_2" />
+            </children>
+        </object>
+
+	<!-- base piramidal com cabo -->
+	<object id="base" type="compound">
+            <transformations>
+		<translation x="0.0" y="-1.5" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="b_frente" />
+		<objectref id="b_tras" />
+		<objectref id="b_l_esq" />
+		<objectref id="b_l_dir" />
+		<objectref id="b_baixo" />
+		<objectref id="b_cabo" />
+            </children>
+        </object>
+
+	<!-- raiz com os tres conjuntos: camaras, caixa e base -->
+	<object id="kinect" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="mat_1" />
+            <texture id="null" />
+
+            <children>
+                <objectref id="caixa" />
+		<objectref id="camaras" />
+		<objectref id="base" />
+            </children>
+        </object>
+
+
+
+	<!-- começam os objectos simples -->
+
+	<!-- topo da caixa -->
+	<object id="topo" type="simple">
+            <transformations>
+                <rotation axis="x" angle="-90.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="0.5" x2="2.0" y2="-0.5" />
+        </object>
+
+	<!-- parte de baixo da caixa -->
+	<object id="baixo" type="simple">
+            <transformations>
+                <rotation axis="x" angle="90.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="0.5" x2="2.0" y2="-0.5" />
+        </object>
+
+	<!-- lado esquerdo da caixa -->
+	<object id="l_esq" type="simple">
+            <transformations>
+		<translation x="-2.0" y="0.0" z="-1.0" />
+                <rotation axis="y" angle="-90.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="0.0" y1="0.0" x2="1.0" y2="-1.0" />
+        </object>
+
+	<!-- lado direito da caixa -->
+	<object id="l_dir" type="simple">
+            <transformations>
+		<translation x="2.0" y="0.0" z="0.0" />
+                <rotation axis="y" angle="90.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="0.0" y1="0.0" x2="1.0" y2="-1.0" />
+        </object>
+
+	<!-- parte da frente da caixa, com textura -->
+	<object id="frente" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="tex_1" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="0.0" x2="2.0" y2="-1.0" />
+        </object>
+
+	<!-- parte de tras da caixa -->
+	<object id="tras" type="simple">
+            <transformations>
+		<translation x="0.0" y="0.0" z="-1.0" />
+                <rotation axis="y" angle="180.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="0.0" x2="2.0" y2="-1.0" />
+        </object>
+
+	<!-- triangulo frontal da base -->
+	<object id="b_frente" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="-0.5" y1="0.0" z1="-0.5"
+                                      x2="0.5" y2="0.0" z2="-0.5"
+                                      x3="0.0" y3="0.5" z3="0.0" />
+        </object>
+
+	<!-- triangulo de tras da base -->
+	<object id="b_tras" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.5" y1="0.0" z1="0.5"
+                                      x2="-0.5" y2="0.0" z2="0.5"
+                                      x3="0.0" y3="0.5" z3="0.0" />
+        </object>
+
+	<!-- triangulo do lado esquerdo da base -->
+	<object id="b_l_esq" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="-0.5" y1="0.0" z1="0.5"
+                                      x2="-0.5" y2="0.0" z2="-0.5"
+                                      x3="0.0" y3="0.5" z3="0.0" />
+        </object>
+
+	<!-- triangulo do lado direito da base -->
+	<object id="b_l_dir" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.5" y1="0.0" z1="-0.5"
+                                      x2="0.5" y2="0.0" z2="0.5"
+                                      x3="0.0" y3="0.5" z3="0.0" />
+        </object>
+
+	<!-- parte de baixo da base -->
+	<object id="b_baixo" type="simple">
+            <transformations>
+		<rotation axis="x" angle="90.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="rectangle" x1=-0.5"" y1="0.5" x2="0.5" y2="-0.5" />
+        </object>
+
+	<!-- cilindro que representa o cabo na base -->
+	<object id="b_cabo" type="simple">
+            <transformations>
+		<translation x="0.0" y="0.0" z="-2.5" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="cylinder" base="0.1" top="0.1" height="2.0"
+                            slices="10" stacks="10" />
+        </object>
+	
+	<!-- disco representativo do projector IV -->
+	<object id="projector" type="simple">
+            <transformations>
+		<translation x="-1.0" y="-1.0" z="0.6" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="disk" inner="0.0" outer="0.5" slices="10" loops="10" />
+        </object>
+
+	<!-- esfera representativa do camara IV -->
+	<object id="cam_1" type="simple">
+            <transformations>
+		<translation x="0.0" y="-1.0" z="0.5" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="sphere" radius="0.5" slices="10" stacks="10" />
+        </object>
+
+	<!-- esfera representativa do camara cores -->
+	<object id="cam_2" type="simple">
+            <transformations>
+		<translation x="1.0" y="-1.0" z="0.5" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+          
+            <geometry type="sphere" radius="0.5" slices="10" stacks="10" />
+        </object>
+
+    </objects>
+</sgx>
+
