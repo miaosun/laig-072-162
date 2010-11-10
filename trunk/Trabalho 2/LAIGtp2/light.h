@@ -14,8 +14,8 @@ public:
 	float diffuse[4];
 	float specular[4];
 	float position[4];
-
-	void loadLight(TiXmlElement* lightmElement);
+	TiXmlElement* lightElement;
+	void loadLight();
 }
 
 

@@ -1,7 +1,7 @@
 
 #include "texture.h"
 
-void Texture::loadTexture(TiXmlElement* textsElement)
+void Texture::loadTexture()
 {
 	this->id = textsElement->Attribute("id");
 	this->file = textsElement->Attribute("file");
@@ -12,7 +12,8 @@ void Texture::loadTexture(TiXmlElement* textsElement)
 		printf("File: %s\n", this->file);
 		printf("Length_S: %f\n", this->length_s);
 		printf("Length_T: %f\n", this->length_t);
-	} else{
-		printf("Erro parsing texture: %s\n", this->id);
 	}
+	else
+		printf("Erro parsing texture: %s\n", this->id);
+	
 }
