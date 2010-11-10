@@ -15,8 +15,8 @@ class Texture
 	float length_t;
 
 public:
-
-	void loadTexture(TiXmlElement* textsElement);
+	TiXmlElement* textsElement;
+	void loadTexture();
 }
 
 #endif

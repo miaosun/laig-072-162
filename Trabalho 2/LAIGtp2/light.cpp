@@ -1,7 +1,7 @@
 
 #include "light.h"
 
-void Light::loadLight(TiXmlElement* lightElement)
+void Light::loadLight()
 {
 	this->id = lightElement->Attribute("id");
 	lightElement->QueryIntAttribute("enabled", &this->enabled);

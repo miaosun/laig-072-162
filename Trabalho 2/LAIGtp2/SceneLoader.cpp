@@ -67,51 +67,6 @@ void SceneLoader::loadGeometry()
 	}
 }
 
-void SceneLoader::loadObjects()
-{
-	materialElement = objects->FirstChildElement( "material" );
-
-	if (materialElement == NULL) {
-		cout << "Bloco material nao encontrado\n";
-	}
-	else {
-		loadObject();
-	}
-
-	//Percorrer todos os elementos Point dentro do grupo Points do XML
-	for(TiXmlElement *child(objectsElement->FirstChildElement()); child != NULL; child = child->NextSiblingElement())
-	{
-		vector<string> objs;
-		const string tag_objects(child->Value());
-
-		//Este bloco so pode conter tag's "Point"
-		if(tag_objects == "object") {
-
-			point point_coord;
-			
-			//Ler o id do point
-			const string object_name(child->Attribute("id"));
-			if(object_name=="tampa")
-			{
-				objs.push_back(object_name);
-			}
-			//Ler os valor x,y,z do point
-			if(child->QueryFloatAttribute("x", &point_coord.x) == TIXML_SUCCESS &&
-				child->QueryFloatAttribute("y", &point_coord.y) == TIXML_SUCCESS &&
-				child->QueryFloatAttribute("z", &point_coord.z) == TIXML_SUCCESS)
-			{
-				//Guarda-los no map de points
-				pointsMap[point_name]=point_coord;
-			}
-		}
-		else {
-			//Erro
-			return;
-		}
-	}
-}
-
-
 //Carregar os poligonos
 void SceneLoader::loadPolygons(){
 	
