@@ -1,0 +1,74 @@
+﻿Build started 11-11-2010 18:30:54.
+     1>Project "C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\LAIGtp2.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\LAIGtp2.unsuccessfulbuild".
+       ClCompile:
+         F:\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\illumination.cpp src\light.cpp src\material.cpp src\object.cpp src\texture.cpp src\view.cpp
+         view.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\view.cpp(5): error C2533: 'View::{ctor}' : constructors not allowed a return type
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\view.cpp(6): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\view.cpp(7): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\view.cpp(8): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         texture.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.cpp(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.cpp(4): error C2628: 'Texture' followed by 'void' is illegal (did you forget a ';'?)
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.cpp(5): error C2556: 'Texture Texture::loadTexture(void)' : overloaded function differs only by return type from 'void Texture::loadTexture(void)'
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.h(19) : see declaration of 'Texture::loadTexture'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.cpp(5): error C2371: 'Texture::loadTexture' : redefinition; different basic types
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\texture.h(19) : see declaration of 'Texture::loadTexture'
+         object.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\object.cpp(4): error C2628: 'Object' followed by 'void' is illegal (did you forget a ';'?)
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\object.cpp(5): error C2556: 'Object Object::loadObject(TiXmlElement *)' : overloaded function differs only by return type from 'void Object::loadObject(TiXmlElement *)'
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\object.h(16) : see declaration of 'Object::loadObject'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\object.cpp(5): error C2371: 'Object::loadObject' : redefinition; different basic types
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\object.h(16) : see declaration of 'Object::loadObject'
+         material.cpp
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(205): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(796): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(810): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(811): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(852): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(894): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(955): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(999): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1286): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1386): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1481): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1531): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1646): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\material.cpp(5): error C2628: 'Material' followed by 'void' is illegal (did you forget a ';'?)
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\material.cpp(6): error C2556: 'Material Material::loadMaterial(TiXmlElement *)' : overloaded function differs only by return type from 'void Material::loadMaterial(TiXmlElement *)'
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\material.h(20) : see declaration of 'Material::loadMaterial'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\material.cpp(6): error C2371: 'Material::loadMaterial' : redefinition; different basic types
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\material.h(20) : see declaration of 'Material::loadMaterial'
+         light.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\light.cpp(4): error C2628: 'Light' followed by 'void' is illegal (did you forget a ';'?)
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\light.cpp(5): error C2556: 'Light Light::loadLight(void)' : overloaded function differs only by return type from 'void Light::loadLight(void)'
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\light.h(18) : see declaration of 'Light::loadLight'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\light.cpp(5): error C2371: 'Light::loadLight' : redefinition; different basic types
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\light.h(18) : see declaration of 'Light::loadLight'
+         illumination.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\illumination.cpp(4): error C2628: 'Illumination' followed by 'void' is illegal (did you forget a ';'?)
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\illumination.cpp(5): error C2556: 'Illumination Illumination::loadIllumination(TiXmlElement *)' : overloaded function differs only by return type from 'void Illumination::loadIllumination(TiXmlElement *)'
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\illumination.h(15) : see declaration of 'Illumination::loadIllumination'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\illumination.cpp(5): error C2371: 'Illumination::loadIllumination' : redefinition; different basic types
+                 c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\src\illumination.h(15) : see declaration of 'Illumination::loadIllumination'
+         Generating Code...
+     1>Done Building Project "C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\LAIGtp2.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.06
