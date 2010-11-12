@@ -41,20 +41,24 @@ public:
 	}
 };
 
-class View
+struct Translation
 {
-public:
-	float near;
-	float far;
-	float axisscale;
+	float x;
+	float y;
+	float z;
+};
 
-	View(){};
-	View(float near, float far, float axisscalse)
-	{
-		this->near = near;
-		this->far = far;
-		this->axisscale = axisscale;
-	}
+struct Rotation
+{
+	string axis;
+	float angle;
+};
+
+struct Scale
+{
+	float x;
+	float y;
+	float z;
 };
 
 
@@ -137,14 +141,7 @@ public:
 	}
 };
 
-class Translation
-{
-public:
-	float x;
-	float y;
-	float z;
-	Translation(){};
-};
+
 
 class View
 {
@@ -153,7 +150,10 @@ public:
 	float near;
 	float far;
 	float axisscale;
+	//transformacoes
 	Translation trans;
+	Rotation rots[3];
+	Scale scl;
 
 
 	View(){};
@@ -201,7 +201,7 @@ public:
 	////////////////
 
 	SceneLoader(const char * fileName);
-	void loadScene();
+	bool loadScene();
 
 private:
   
@@ -236,8 +236,8 @@ private:
 
 	////////adicionado
 	void loadSgx();
-	void loadGlobals();
-	void loadView();
+	bool loadGlobals();
+	bool loadView();
 	void loadLight();
 	void loadMaterial();
 	void loadTexture();

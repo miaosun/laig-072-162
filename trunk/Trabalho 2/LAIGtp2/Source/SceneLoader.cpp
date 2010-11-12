@@ -41,7 +41,7 @@ void SceneLoader::loadSgx()
 
 }
 
-void SceneLoader::loadGlobals()
+bool SceneLoader::loadGlobals()
 {
 	global.root = globalsElement->Attribute("root");
 
@@ -50,14 +50,15 @@ void SceneLoader::loadGlobals()
 	 (globalsElement->QueryIntAttribute("maxtextures", &global.maxtextures)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxobjects", &global.maxobjects)) == TIXML_SUCCESS)
 	{
-		cout<<"MaxLights: "<<global.maxlights<<", MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl<<"Root: "<<global.root<<endl; 
+		cout<<"MaxLights:"<<global.maxlights<<", MaxMaterials:"<<global.maxmaterials<<", MaxTextures:"<<global.maxtextures<<", MaxObjects:"<<global.maxobjects<<endl<<"Root: "<<global.root<<endl;
+		return true;
 	} 
 	else
 		cout<<"Erro parsing global."<<endl;
-
+	return false;
 }
 
-void SceneLoader::loadView()
+bool SceneLoader::loadView()
 {
 	
 
@@ -65,12 +66,12 @@ void SceneLoader::loadView()
 		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("axisscale", &view.axisscale)) == TIXML_SUCCESS)
 	{
-		cout<<"Near: "<<view.near<<", Far: "<<view.far<<", AxisScale: "<<view.axisscale<<endl; 
+		cout<<"Near:"<<view.near<<", Far:"<<view.far<<", AxisScale:"<<view.axisscale<<endl; 
 	} 
 	else
 	{
 		cout<<"Erro parsing frustum."<<endl;
-		return;
+		return false;
 	}
 
 	translationElement=viewElement->FirstChildElement("translation");
@@ -80,13 +81,80 @@ void SceneLoader::loadView()
 		if(translationElement->QueryFloatAttribute("x", &view.trans.x) == TIXML_SUCCESS &&
 			translationElement->QueryFloatAttribute("y", &view.trans.y) == TIXML_SUCCESS &&
 			translationElement->QueryFloatAttribute("z", &view.trans.z) == TIXML_SUCCESS)
-			cout<<"translation: x: "<<view.trans.x<<" y: "<<view.trans.y<<" z: "<<view.trans.z<<endl;
+			cout<<"translation: x:"<<view.trans.x<<" y:"<<view.trans.y<<" z:"<<view.trans.z<<endl;
 		else
 			cout<<"Erro parsing translation\n";
 	}
 	else
+	{
 		cout<<"problema com a translation"<<endl;
+		return false;
+	}
+
+	rotationElement=viewElement->FirstChildElement("rotation");
+
+	if(rotationElement!=NULL)
+	{
+		view.rots[0].axis=rotationElement->Attribute("axis");
+		if(rotationElement->QueryFloatAttribute("angle", &view.rots[0].angle) != TIXML_SUCCESS)
+			return false;
+		cout<<"rotacao "<<view.rots[0].axis<<" ang:"<<view.rots[0].angle<<endl;
+	}
+	else
+	{
+		cout<<"problema com a rotation de x\n";
+		return false;
+	}
+
+	rotationElement=rotationElement->NextSiblingElement("rotation");
 	
+	if(rotationElement!=NULL)
+	{
+		view.rots[1].axis=rotationElement->Attribute("axis");
+		if(rotationElement->QueryFloatAttribute("angle", &view.rots[1].angle) != TIXML_SUCCESS)
+			return false;
+		cout<<"rotacao "<<view.rots[1].axis<<" ang:"<<view.rots[1].angle<<endl;
+	}
+	else
+	{
+		cout<<"problema com a rotation de y\n";
+		return false;
+	}
+
+	rotationElement=rotationElement->NextSiblingElement("rotation");
+	
+	if(rotationElement!=NULL)
+	{
+		view.rots[2].axis=rotationElement->Attribute("axis");
+		if(rotationElement->QueryFloatAttribute("angle", &view.rots[2].angle) != TIXML_SUCCESS)
+			return false;
+		cout<<"rotacao "<<view.rots[2].axis<<" ang:"<<view.rots[2].angle<<endl;
+	}
+	else
+	{
+		cout<<"problema com a rotation de z\n";
+		return false;
+	}
+
+	scaleElement=rotationElement->NextSiblingElement("scale");
+
+	if(scaleElement!=NULL)
+	{
+		if(scaleElement->QueryFloatAttribute("x", &view.scl.x) != TIXML_SUCCESS)
+			return false;
+		if(scaleElement->QueryFloatAttribute("y", &view.scl.y) != TIXML_SUCCESS)
+			return false;
+		if(scaleElement->QueryFloatAttribute("z", &view.scl.z) != TIXML_SUCCESS)
+			return false;
+		cout<<"scale x:"<<view.scl.x<<" y:"<<view.scl.y<<" z:"<<view.scl.z<<endl;
+	}
+	else
+	{
+		cout<<"problema com a scale\n";
+		return false;
+	}
+	
+	return true;
 }
 
 void SceneLoader::loadTexture()
@@ -447,7 +515,7 @@ SceneLoader::SceneLoader(const char * fileName):
 
 //-------------------------------------------------------
 
-void SceneLoader::loadScene()
+bool SceneLoader::loadScene()
 { 
 	sgxElement = doc.FirstChildElement( "sgx" );
 	globalsElement = sgxElement->FirstChildElement( "globals" );
@@ -464,13 +532,23 @@ void SceneLoader::loadScene()
 	}
 	
 	if(globalsElement)
-		loadGlobals();
+	{
+		if(!loadGlobals())
+			return false;
+	}
 	else
+	{
 		cout<<"Bloco globals nao encontrado\n";
+		return false;
+	}
+
 
 
 	if (viewElement) 
-		loadView();	
+	{
+		if(!loadView())
+			return false;
+	}
 	else
 		cout << "Bloco view nao encontrado\n";
 
