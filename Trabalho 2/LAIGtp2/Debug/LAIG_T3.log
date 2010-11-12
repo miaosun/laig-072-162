@@ -1,0 +1,82 @@
+﻿Build started 12-11-2010 15:33:17.
+     1>Project "C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\LAIG_T3.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\LAIG_T3.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         F:\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Source\MainCode.cpp Source\RGBpixmap.cpp Source\SceneLoader.cpp
+         SceneLoader.cpp
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\source\sceneloader.cpp(361): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+         RGBpixmap.cpp
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(796): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(810): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(811): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(852): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(894): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(955): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(999): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(1286): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(1386): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(1481): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(1531): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\glui.h(1646): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>c:\users\answer\desktop\laig_trabalho\trabalho 2\laigtp2\source\rgbpixmap.cpp(52): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(234) : see declaration of 'fopen'
+         MainCode.cpp
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(205): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(796): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(810): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(811): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(852): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(894): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(955): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(999): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\string.h(105) : see declaration of 'strcpy'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1286): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1386): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1481): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1531): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+     1>f:\microsoft visual studio 10.0\vc\include\gl\glui.h(1646): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\microsoft visual studio 10.0\vc\include\stdio.h(371) : see declaration of 'sprintf'
+         Generating Code...
+       Link:
+         F:\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\LAIG_T3.exe" /INCREMENTAL /NOLOGO glui32.lib glut32.lib tinyxml.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /DEBUG /PDB:"C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\LAIG_T3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\LAIG_T3.lib" /MACHINE:X86 Debug\MainCode.obj
+         Debug\RGBpixmap.obj
+         Debug\SceneLoader.obj
+     1>LINK : warning LNK4098: defaultlib 'LIBCMTD' conflicts with use of other libs; use /NODEFAULTLIB:library
+     1>tinyxml.lib(tinystr.obj) : warning LNK4099: PDB 'vc90.pdb' was not found with 'tinyxml.lib(tinystr.obj)' or at 'C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\vc90.pdb'; linking object as if no debug info
+     1>tinyxml.lib(tinyxml.obj) : warning LNK4099: PDB 'vc90.pdb' was not found with 'tinyxml.lib(tinyxml.obj)' or at 'C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\vc90.pdb'; linking object as if no debug info
+     1>tinyxml.lib(tinyxmlerror.obj) : warning LNK4099: PDB 'vc90.pdb' was not found with 'tinyxml.lib(tinyxmlerror.obj)' or at 'C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\vc90.pdb'; linking object as if no debug info
+     1>tinyxml.lib(tinyxmlparser.obj) : warning LNK4099: PDB 'vc90.pdb' was not found with 'tinyxml.lib(tinyxmlparser.obj)' or at 'C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\vc90.pdb'; linking object as if no debug info
+         LAIG_T3.vcxproj -> C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\Debug\LAIG_T3.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\LAIG_T3.unsuccessfulbuild".
+         Touching "Debug\LAIG_T3.lastbuildstate".
+     1>Done Building Project "C:\Users\Answer\Desktop\laig_trabalho\Trabalho 2\LAIGtp2\LAIG_T3.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.90
