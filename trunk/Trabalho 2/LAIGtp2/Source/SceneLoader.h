@@ -61,12 +61,30 @@ struct Scale
 	float z;
 };
 
+struct Ambient
+{
+	float r;
+	float g;
+	float b;
+	float a;
+};
+
+struct Background
+{
+	float r;
+	float g;
+	float b;
+	float a;
+}
 
 class Illumination
 {
 public:
 	double doublesided;
 	double local;
+
+	Ambient ambient;
+	Background backgroud;
 
 	Illumination(){};
 	Illumination(double doublesided, double local)
