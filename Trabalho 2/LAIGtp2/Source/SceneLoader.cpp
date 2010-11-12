@@ -167,14 +167,13 @@ void SceneLoader::loadIllumination()
 
 	ambientElement = illuminationElement->FirstChildElement("ambient");
 
-	float r, g, b, a;
 	if(ambientElement)
 	{
-		if(ambientElement->QueryFloatAttribute("r", &r) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("g", &g) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("b", &b) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("a", &a) == TIXML_SUCCESS)
-			cout<<"\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+		if(ambientElement->QueryFloatAttribute("r", &illumination.ambient.r) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("g", &illumination.ambient.g) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("b", &illumination.ambient.b) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("a", &illumination.ambient.a) == TIXML_SUCCESS)
+			cout<<"\tAmbient R, G, B, A: "<<illumination.ambient.r<<", "<<illumination.ambient.g<<", "<<illumination.ambient.b<<", "<<illumination.ambient.a<<endl;
 		else
 			cout<<"Erro parsing ambiente de illumination\n";
 	}
@@ -184,11 +183,11 @@ void SceneLoader::loadIllumination()
 	backgroundElement = illuminationElement->FirstChildElement("background");
 	if(backgroundElement)
 	{
-		if(backgroundElement->QueryFloatAttribute("r", &r) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("g", &g) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("b", &b) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("a", &a) == TIXML_SUCCESS)
-			cout<<"\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+		if(backgroundElement->QueryFloatAttribute("r", &illumination.backgroud.r) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("g", &illumination.backgroud.g) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("b", &illumination.backgroud.b) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("a", &illumination.backgroud.a) == TIXML_SUCCESS)
+			cout<<"\tBackground R, G, B, A: "<<illumination.backgroud.r<<", "<<illumination.backgroud.g<<", "<<illumination.backgroud.b<<", "<<illumination.backgroud.a<<endl;
 		else
 			cout<<"Erro parsing ambiente de illumination\n";
 	}
