@@ -41,24 +41,6 @@ public:
 	}
 };
 
-class View
-{
-public:
-	string id;
-	float near;
-	float far;
-	float axisscale;
-
-	View(){};
-	View(string id, float near, float far, float axisscalse)
-	{
-		this->id = id;
-		this->near = near;
-		this->far = far;
-		this->axisscale = axisscale;
-	}
-};
-
 class Illumination
 {
 public:
@@ -137,6 +119,35 @@ public:
 		this->type = type;
 	}
 };
+
+class Translation
+{
+public:
+	float x;
+	float y;
+	float z;
+	Translation(){};
+};
+
+class View
+{
+public:
+	string id;
+	float near;
+	float far;
+	float axisscale;
+	Translation trans;
+
+
+	View(){};
+	View(string id, float near, float far, float axisscalse)
+	{
+		this->id = id;
+		this->near = near;
+		this->far = far;
+		this->axisscale = axisscale;
+	}
+};
 ///////////////////////////////////
 
 
@@ -187,6 +198,10 @@ private:
 	TiXmlElement* materialsElement;
 	TiXmlElement* texturesElement;
 	TiXmlElement* pointsElement;
+	//transformacoes
+	TiXmlElement* translationElement;
+	TiXmlElement* rotationElement;
+	TiXmlElement* scaleElement;
 
 
 
