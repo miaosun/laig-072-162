@@ -74,23 +74,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\illumination.cpp" />
-    <ClCompile Include="src\light.cpp" />
     <ClCompile Include="src\MainCode.cpp" />
-    <ClCompile Include="src\material.cpp" />
-    <ClCompile Include="src\object.cpp" />
+    <ClCompile Include="src\RGBpixmap.cpp" />
     <ClCompile Include="src\SceneLoader.cpp" />
-    <ClCompile Include="src\texture.cpp" />
-    <ClCompile Include="src\view.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\illumination.h" />
-    <ClInclude Include="src\light.h" />
-    <ClInclude Include="src\material.h" />
-    <ClInclude Include="src\object.h" />
+    <ClInclude Include="src\RGBpixmap.h" />
     <ClInclude Include="src\SceneLoader.h" />
-    <ClInclude Include="src\texture.h" />
-    <ClInclude Include="src\view.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
