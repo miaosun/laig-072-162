@@ -50,7 +50,7 @@ void SceneLoader::loadGlobals()
 	 (globalsElement->QueryIntAttribute("maxtextures", &global.maxtextures)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxobjects", &global.maxobjects)) == TIXML_SUCCESS)
 	{
-		cout<<"MaxLights: "<<global.maxlights<<", MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl; 
+		cout<<"MaxLights: "<<global.maxlights<<", MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl<<"Root: "<<global.root<<endl; 
 	} 
 	else
 		cout<<"Erro parsing global."<<endl;
@@ -447,7 +447,7 @@ SceneLoader::SceneLoader(const char * fileName):
 
 //-------------------------------------------------------
 
-bool SceneLoader::loadScene()
+void SceneLoader::loadScene()
 { 
 	sgxElement = doc.FirstChildElement( "sgx" );
 	globalsElement = sgxElement->FirstChildElement( "globals" );
@@ -459,42 +459,28 @@ bool SceneLoader::loadScene()
 	// Inicialização
 	// Um exemplo de um conjunto de nós bem conhecidos e obrigatórios
 
-	if (sgxElement == NULL) {
+	if(sgxElement == NULL) {
 		cout << "Bloco sgx nao encontrado\n";
-		return false;
 	}
-	if (globalsElement == NULL)
-	{
-		cout<<"Bloco globals nao encontrado\n";
-		return false;
-	}
-	else
-	{
+	
+	if(globalsElement)
 		loadGlobals();
-		//return true;
-	}
-
-	if (viewElement == NULL) 
-	{
-		cout << "Bloco view nao encontrado\n";
-		return false;
-	}
 	else
-	{
-		loadView();
-		//return true;
-	}
+		cout<<"Bloco globals nao encontrado\n";
+
+
+	if (viewElement) 
+		loadView();	
+	else
+		cout << "Bloco view nao encontrado\n";
 
 	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
-		return false;
 	}
 	else if(polygonsElement == NULL) {
 		cout << "Bloco Polygons nao encontrado\n";
-		return false;
 
 	}*/
-	return true;
 }
 
 //Carregar os pontos
