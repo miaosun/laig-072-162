@@ -59,7 +59,6 @@ void SceneLoader::loadGlobals()
 
 void SceneLoader::loadView()
 {
-	view.id = viewElement->Attribute("id");
 
 	if((viewElement->QueryFloatAttribute("near", &view.near)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
@@ -333,7 +332,7 @@ void loadScene_exemplo2(void)
 
 	// Read string from file
 
-	TiXmlDocument doc( "demograph.xml" );
+	TiXmlDocument doc( "cena.xml" );
 	bool loadOkay = doc.LoadFile();
 
 	if ( !loadOkay )
@@ -454,10 +453,10 @@ bool SceneLoader::loadScene()
 	else
 	{
 		loadGlobals();
-		return true;
+		//return true;
 	}
 
-	/*if (viewElement == NULL) 
+	if (viewElement == NULL) 
 	{
 		cout << "Bloco view nao encontrado\n";
 		return false;
@@ -465,8 +464,8 @@ bool SceneLoader::loadScene()
 	else
 	{
 		loadView();
-		return true;
-	}*/
+		//return true;
+	}
 
 	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
@@ -475,8 +474,9 @@ bool SceneLoader::loadScene()
 	else if(polygonsElement == NULL) {
 		cout << "Bloco Polygons nao encontrado\n";
 		return false;
-	}*/
 
+	}*/
+	return true;
 }
 
 //Carregar os pontos
