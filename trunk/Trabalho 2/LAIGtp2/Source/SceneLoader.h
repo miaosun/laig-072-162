@@ -206,7 +206,7 @@ public:
 	////////////////
 
 	SceneLoader(const char * fileName);
-	void loadScene();
+	bool loadScene();
 
 private:
   
