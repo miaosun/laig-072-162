@@ -33,7 +33,7 @@ public:
 		this->far = far;
 		this->axisscale = axisscale;
 	}
-}
+};
 
 class Illumination
 {
@@ -48,8 +48,7 @@ public:
 		this->doublesided = doublesided;
 		this->local = local;
 	}
-
-}
+};
 
 class Light
 {
@@ -66,7 +65,7 @@ public:
 		this->id = id;
 		this->enabled = enabled;
 	}
-}
+};
 
 class Material
 {
@@ -82,7 +81,7 @@ public:
 	{
 		this->id = id;
 	}
-}
+};
 
 
 class Texture
@@ -100,7 +99,7 @@ public:
 		this->length_s = length_s;
 		this->length_t = length_t;
 	}
-}
+};
 
 class Object
 {
@@ -113,7 +112,7 @@ public:
 		this->id = id;
 		this->type = type;
 	}
-}
+};
 
 
 
@@ -135,6 +134,7 @@ public:
   
 	TiXmlElement* viewsElement;
 	TiXmlElement* objectsElement;
+	TiXmlElement* objectElement;
 	TiXmlElement* lightsElement;
 	TiXmlElement* materiaisElement;
 	TiXmlElement* texturesElement;
