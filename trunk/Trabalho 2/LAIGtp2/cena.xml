@@ -40,7 +40,7 @@
 
     <textures>
         <!-- Deve existir um ou mais blocos "texture" -->
-        <!-- (até ao máximo declarado em "globals") -->
+        <!-- (at?ao mé†²imo declarado em "globals") -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <!-- s e t: factores de escala (ver notas finais) -->
         <texture id="frente_texture" file="frente.bmp" length_s="1.0" length_t="4.0" /> 
@@ -48,7 +48,7 @@
 
     <materials>
         <!-- Deve existir um ou mais blocos "material" -->
-        <!-- (até ao máximo declarado em "globals") -->
+        <!-- (at?ao mé†²imo declarado em "globals") -->
         <!-- Os identificadores "id" nao podem ser repetidos -->
 
         <material id="preta">
@@ -141,7 +141,7 @@
 
 
 
-		<!-- começam os objectos simples -->
+		<!-- comeé°m os objectos simples -->
 
 		<!-- topo da caixa -->
 		<object id="topo" type="simple">

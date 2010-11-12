@@ -36,24 +36,22 @@ TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const
 
 
 //////////////////////////////////////////////////////////////////
-void SceneLoader::loadView(TiXmlElement* viewsElement)
+void SceneLoader::loadView()
 {
-	string id = viewsElement->Attribute("id");
-	float near, far, axisscale;
-	if((viewsElement->QueryFloatAttribute("near", &near)) == TIXML_SUCCESS &&
-		(viewsElement->QueryFloatAttribute("far", &far)) == TIXML_SUCCESS &&
-		(viewsElement->QueryFloatAttribute("axisscale", &axisscale)) == TIXML_SUCCESS)
+	view.id = viewElement->Attribute("id");
+
+	if((viewElement->QueryFloatAttribute("near", &view.near)) == TIXML_SUCCESS &&
+		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
+		(viewElement->QueryFloatAttribute("axisscale", &view.axisscale)) == TIXML_SUCCESS)
 	{
-		View* view = new View(id, near, far, axisscale);
-		views.push_back(view);
-		cout<<"Near: "<<near<<", Far: "<<far<<", AxisScale: "<<axisscale<<endl; 
+		cout<<"Near: "<<view.near<<", Far: "<<view.far<<", AxisScale: "<<view.axisscale<<endl; 
 	} 
 	else
 		cout<<"Erro parsing frustum."<<endl;
 	
 }
 
-void SceneLoader::loadTexture(TiXmlElement* texturesElement)
+void SceneLoader::loadTexture()
 {
 	string id = texturesElement->Attribute("id");
 	const string file = texturesElement->Attribute("file");
@@ -71,9 +69,9 @@ void SceneLoader::loadTexture(TiXmlElement* texturesElement)
 }
 
 
-void SceneLoader::loadMaterial(TiXmlElement* materiaisElement)
+void SceneLoader::loadMaterial()
 {
-	string id = materiaisElement->Attribute("id");
+	string id = materialsElement->Attribute("id");
 	float r, g, b, a, shininess;
 
 	Material* mat = new Material(id);
@@ -81,7 +79,7 @@ void SceneLoader::loadMaterial(TiXmlElement* materiaisElement)
 
 	cout<<"Material ID: "<<id<<endl;
 
-	TiXmlElement* child = materiaisElement->FirstChildElement();
+	TiXmlElement* child = materialsElement->FirstChildElement();
 	while(child)
 	{
 		if(strcmp(child->Value(), "emission")==0)
@@ -155,7 +153,7 @@ void SceneLoader::loadMaterial(TiXmlElement* materiaisElement)
 	}
 }
 
-void SceneLoader::loadLight(TiXmlElement* lightsElement)
+void SceneLoader::loadLight()
 {
 	string id = lightsElement->Attribute("id");
 	string enabled_s = lightsElement->Attribute("enabled");
@@ -413,13 +411,24 @@ SceneLoader::SceneLoader(const char * fileName):
 
 bool SceneLoader::loadScene()
 { 
+	sgxElement = root->FirstChildElement( "sgx" );
+	viewElement = root->FirstChildElement( "view" );
+
 	pointsElement = root->FirstChildElement( "Points" );
 	polygonsElement = root->FirstChildElement( "Polygons" );
 
 	// Inicialização
 	// Um exemplo de um conjunto de nós bem conhecidos e obrigatórios
 
-	if (pointsElement == NULL) {
+	if (sgxElement == NULL) {
+		cout << "Bloco sgx nao encontrado\n";
+		return false;
+	}
+	else if (viewElement == NULL) {
+		cout << "Bloco view nao encontrado\n";
+		return false;
+	}
+	else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
 		return false;
 	}
@@ -428,6 +437,8 @@ bool SceneLoader::loadScene()
 		return false;
 	}
 	else {
+		//loadSgx();
+		loadView();
 		loadPoints();
 		loadPolygons();
 		return true;

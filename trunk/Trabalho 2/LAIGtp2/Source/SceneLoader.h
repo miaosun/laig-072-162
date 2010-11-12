@@ -31,6 +31,7 @@ public:
 	float far;
 	float axisscale;
 
+	View(){};
 	View(string id, float near, float far, float axisscalse)
 	{
 		this->id = id;
@@ -128,10 +129,27 @@ public:
 	map<string, vector<string>> polygonsMap;
 
 	////////////adiconado
-	vector<View *> views;
 	vector<Material *> materiais;
 	vector<Texture *> textures;
 	vector<Light *> lights;
+
+	View view;
+
+	SceneLoader()
+	{
+		sgxElement = NULL;
+		viewElement = NULL;
+		objectsElement = NULL;
+		lightsElement = NULL;
+		materialsElement = NULL;
+		texturesElement = NULL;
+		pointsElement = NULL;
+		polygonsElement = NULL;
+
+
+	}
+
+
 	////////////////
 
 	SceneLoader(const char * fileName);
@@ -140,13 +158,18 @@ public:
 private:
   
 	//////////////////
-	TiXmlElement* viewsElement;
+	TiXmlElement* sgxElement;
+	TiXmlElement* viewElement;
 	TiXmlElement* objectsElement;
 	TiXmlElement* objectElement;
 	TiXmlElement* lightsElement;
-	TiXmlElement* materiaisElement;
+	TiXmlElement* materialsElement;
 	TiXmlElement* texturesElement;
 	TiXmlElement* pointsElement;
+
+
+
+
 	//////////////////
 
 
@@ -159,10 +182,10 @@ private:
 
 
 	////////adicionado
-	void loadView(TiXmlElement* viewsElement);
-	void loadLight(TiXmlElement* lightsElement);
-	void loadMaterial(TiXmlElement* materialElement);
-	void loadTexture(TiXmlElement* textureElement);
+	void loadView();
+	void loadLight();
+	void loadMaterial();
+	void loadTexture();
 	void loadGeometry();
 };
 
