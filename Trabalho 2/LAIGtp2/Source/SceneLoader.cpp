@@ -569,7 +569,7 @@ SceneLoader::SceneLoader(const char * fileName):
 
 //-------------------------------------------------------
 
-void SceneLoader::loadScene()
+bool SceneLoader::loadScene()
 { 
 	sgxElement = doc.FirstChildElement( "sgx" );
 	globalsElement = sgxElement->FirstChildElement( "globals" );
@@ -584,22 +584,38 @@ void SceneLoader::loadScene()
 
 	if(sgxElement == NULL) {
 		cout << "Bloco sgx nao encontrado\n";
+		return false;
 	}
 	
-	if(globalsElement)
-		loadGlobals();
+	if(globalsElement != NULL)
+	{
+		if(!loadGlobals())
+			return false;
+	}
 	else
+	{
 		cout<<"Bloco globals nao encontrado\n";
+		return false;
+	}
 
-	if (viewElement) 
-		loadView();
+	if (viewElement != NULL) 
+	{
+		if(!loadView())
+			return false;
+	}
 	else
+	{
 		cout << "Bloco view nao encontrado\n";
+		return false;
+	}
 
-	if(illuminationElement)
+	if(illuminationElement != NULL)
 		loadIllumination();
 	else
+	{
 		cout<<"Bloco illumination nao econtrado\n";
+		return false;
+	}
 
 	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
@@ -608,6 +624,7 @@ void SceneLoader::loadScene()
 		cout << "Bloco Polygons nao encontrado\n";
 
 	}*/
+	return true;
 }
 
 //Carregar os pontos
