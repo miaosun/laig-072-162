@@ -157,6 +157,60 @@ bool SceneLoader::loadView()
 	return true;
 }
 
+void SceneLoader::loadIllumination()
+{
+	if((illuminationElement->QueryDoubleAttribute("doublesided", &illumination.doublesided)) == TIXML_SUCCESS &&
+		(illuminationElement->QueryDoubleAttribute("local", &illumination.local) == TIXML_SUCCESS))
+		cout<<"Illumination:\n\tDoubleSided: "<<illumination.doublesided<<", Local: "<<illumination.local<<endl;
+	else
+		cout<<"Erro parsing illumination\n";
+
+	ambientElement = illuminationElement->FirstChildElement("ambient");
+
+	float r, g, b, a;
+	if(ambientElement)
+	{
+		if(ambientElement->QueryFloatAttribute("r", &r) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("g", &g) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("b", &b) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("a", &a) == TIXML_SUCCESS)
+			cout<<"\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+		else
+			cout<<"Erro parsing ambiente de illumination\n";
+	}
+	else
+		cout<<"problema com ambient de illumination\n";
+
+	backgroundElement = illuminationElement->FirstChildElement("background");
+	if(backgroundElement)
+	{
+		if(backgroundElement->QueryFloatAttribute("r", &r) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("g", &g) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("b", &b) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("a", &a) == TIXML_SUCCESS)
+			cout<<"\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+		else
+			cout<<"Erro parsing ambiente de illumination\n";
+	}
+
+	TiXmlElement *child=lightsElement->FirstChildElement();
+
+	int nLights = 0;
+	while(child)
+	{
+		if(nLights == global.maxlights)
+			cout<<"Ja chegou limite de maxLights\n";
+		else if(strcmp(child->Value(), "light") == 0)
+			loadLight();
+		else
+			cout<<"Erro parsing light de lights de illumination\n";
+
+		child = child->NextSiblingElement();
+		nLights++;
+
+	}
+}
+
 void SceneLoader::loadTexture()
 {
 	string id = texturesElement->Attribute("id");
@@ -515,11 +569,12 @@ SceneLoader::SceneLoader(const char * fileName):
 
 //-------------------------------------------------------
 
-bool SceneLoader::loadScene()
+void SceneLoader::loadScene()
 { 
 	sgxElement = doc.FirstChildElement( "sgx" );
 	globalsElement = sgxElement->FirstChildElement( "globals" );
 	viewElement = sgxElement->FirstChildElement( "view" );
+	illuminationElement = sgxElement->FirstChildElement("illumination");
 
 	pointsElement = doc.FirstChildElement( "Points" );
 	polygonsElement = doc.FirstChildElement( "Polygons" );
@@ -532,25 +587,19 @@ bool SceneLoader::loadScene()
 	}
 	
 	if(globalsElement)
-	{
-		if(!loadGlobals())
-			return false;
-	}
+		loadGlobals();
 	else
-	{
 		cout<<"Bloco globals nao encontrado\n";
-		return false;
-	}
-
-
 
 	if (viewElement) 
-	{
-		if(!loadView())
-			return false;
-	}
+		loadView();
 	else
 		cout << "Bloco view nao encontrado\n";
+
+	if(illuminationElement)
+		loadIllumination();
+	else
+		cout<<"Bloco illumination nao econtrado\n";
 
 	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";

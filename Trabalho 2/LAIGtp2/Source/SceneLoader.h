@@ -65,13 +65,12 @@ struct Scale
 class Illumination
 {
 public:
-	string id;
 	double doublesided;
 	double local;
 
-	Illumination(string id, double doublesided, double local)
+	Illumination(){};
+	Illumination(double doublesided, double local)
 	{
-		this->id = id;
 		this->doublesided = doublesided;
 		this->local = local;
 	}
@@ -181,12 +180,18 @@ public:
 
 	Global global;
 	View view;
+	Illumination illumination;
 
 	SceneLoader()
 	{
 		sgxElement = NULL;
 		globalsElement = NULL;
 		viewElement = NULL;
+		illuminationElement = NULL;
+
+		ambientElement = NULL;
+		backgroundElement = NULL;
+
 		objectsElement = NULL;
 		lightsElement = NULL;
 		materialsElement = NULL;
@@ -201,7 +206,7 @@ public:
 	////////////////
 
 	SceneLoader(const char * fileName);
-	bool loadScene();
+	void loadScene();
 
 private:
   
@@ -209,6 +214,11 @@ private:
 	TiXmlElement* sgxElement;
 	TiXmlElement* globalsElement;
 	TiXmlElement* viewElement;
+	TiXmlElement* illuminationElement;
+
+	TiXmlElement* ambientElement;
+	TiXmlElement* backgroundElement;
+
 	TiXmlElement* objectsElement;
 	TiXmlElement* objectElement;
 	TiXmlElement* lightsElement;
@@ -238,6 +248,7 @@ private:
 	void loadSgx();
 	bool loadGlobals();
 	bool loadView();
+	void loadIllumination();
 	void loadLight();
 	void loadMaterial();
 	void loadTexture();
