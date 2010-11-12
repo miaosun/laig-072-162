@@ -59,6 +59,7 @@ void SceneLoader::loadGlobals()
 
 void SceneLoader::loadView()
 {
+	
 
 	if((viewElement->QueryFloatAttribute("near", &view.near)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
@@ -67,7 +68,24 @@ void SceneLoader::loadView()
 		cout<<"Near: "<<view.near<<", Far: "<<view.far<<", AxisScale: "<<view.axisscale<<endl; 
 	} 
 	else
+	{
 		cout<<"Erro parsing frustum."<<endl;
+		return;
+	}
+
+	translationElement=viewElement->FirstChildElement("translation");
+
+	if(translationElement!=NULL)
+	{
+		if(translationElement->QueryFloatAttribute("x", &view.trans.x) == TIXML_SUCCESS &&
+			translationElement->QueryFloatAttribute("y", &view.trans.y) == TIXML_SUCCESS &&
+			translationElement->QueryFloatAttribute("z", &view.trans.z) == TIXML_SUCCESS)
+			cout<<"translation: x: "<<view.trans.x<<" y: "<<view.trans.y<<" z: "<<view.trans.z<<endl;
+		else
+			cout<<"Erro parsing translation\n";
+	}
+	else
+		cout<<"problema com a translation"<<endl;
 	
 }
 
