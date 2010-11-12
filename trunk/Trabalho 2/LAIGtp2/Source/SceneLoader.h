@@ -41,6 +41,23 @@ public:
 	}
 };
 
+class View
+{
+public:
+	float near;
+	float far;
+	float axisscale;
+
+	View(){};
+	View(float near, float far, float axisscalse)
+	{
+		this->near = near;
+		this->far = far;
+		this->axisscale = axisscale;
+	}
+};
+
+
 class Illumination
 {
 public:
@@ -184,7 +201,7 @@ public:
 	////////////////
 
 	SceneLoader(const char * fileName);
-	bool loadScene();
+	void loadScene();
 
 private:
   
