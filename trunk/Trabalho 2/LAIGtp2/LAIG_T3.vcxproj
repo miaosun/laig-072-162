@@ -100,7 +100,9 @@
     <ClInclude Include="Source\SceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cena.xml" />
+    <None Include="cena.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="demograph.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

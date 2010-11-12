@@ -22,6 +22,24 @@ struct point {
 ///////////////////
 /////adcionado/////
 ///////////////////
+class Global
+{
+public:
+	int maxlights;
+	int maxtextures;
+	int maxmaterials;
+	int maxobjects;
+	string root;
+
+	Global()
+	{
+		this->maxlights = maxlights;
+		this->maxtextures = maxtextures;
+		this->maxmaterials = maxmaterials;
+		this->maxobjects = maxobjects;
+		this->root = root;
+	}
+};
 
 class View
 {
@@ -133,11 +151,13 @@ public:
 	vector<Texture *> textures;
 	vector<Light *> lights;
 
+	Global global;
 	View view;
 
 	SceneLoader()
 	{
 		sgxElement = NULL;
+		globalsElement = NULL;
 		viewElement = NULL;
 		objectsElement = NULL;
 		lightsElement = NULL;
@@ -159,6 +179,7 @@ private:
   
 	//////////////////
 	TiXmlElement* sgxElement;
+	TiXmlElement* globalsElement;
 	TiXmlElement* viewElement;
 	TiXmlElement* objectsElement;
 	TiXmlElement* objectElement;
@@ -182,6 +203,8 @@ private:
 
 
 	////////adicionado
+	void loadSgx();
+	void loadGlobals();
 	void loadView();
 	void loadLight();
 	void loadMaterial();

@@ -36,6 +36,26 @@ TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const
 
 
 //////////////////////////////////////////////////////////////////
+void SceneLoader::loadSgx()
+{
+
+}
+
+void SceneLoader::loadGlobals()
+{
+	global.root = globalsElement->Attribute("root");
+
+	if((globalsElement->QueryIntAttribute("maxlights", &global.maxlights)) == TIXML_SUCCESS &&
+	 (globalsElement->QueryIntAttribute("maxmaterials", &global.maxmaterials)) == TIXML_SUCCESS &&
+	 (globalsElement->QueryIntAttribute("maxtextures", &global.maxtextures)) == TIXML_SUCCESS &&
+	 (globalsElement->QueryIntAttribute("maxobjects", &global.maxobjects)) == TIXML_SUCCESS)
+	{
+		cout<<"MaxLights: "<<global.maxlights<<", ~MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl; 
+	} 
+	else
+		cout<<"Erro parsing global."<<endl;
+}
+
 void SceneLoader::loadView()
 {
 	view.id = viewElement->Attribute("id");
@@ -412,6 +432,7 @@ SceneLoader::SceneLoader(const char * fileName):
 bool SceneLoader::loadScene()
 { 
 	sgxElement = root->FirstChildElement( "sgx" );
+	globalsElement = root->FirstChildElement( "globals" );
 	viewElement = root->FirstChildElement( "view" );
 
 	pointsElement = root->FirstChildElement( "Points" );
@@ -422,6 +443,11 @@ bool SceneLoader::loadScene()
 
 	if (sgxElement == NULL) {
 		cout << "Bloco sgx nao encontrado\n";
+		return false;
+	}
+	else if (globalsElement == NULL)
+	{
+		cout<<"Bloco globals nao encontrado\n";
 		return false;
 	}
 	else if (viewElement == NULL) {
@@ -438,6 +464,7 @@ bool SceneLoader::loadScene()
 	}
 	else {
 		//loadSgx();
+		loadGlobals();
 		loadView();
 		loadPoints();
 		loadPolygons();
