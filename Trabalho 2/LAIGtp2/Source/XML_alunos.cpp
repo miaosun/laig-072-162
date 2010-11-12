@@ -391,9 +391,9 @@ void inicializacao()
 
 int main(int argc, char* argv[])
 {
-	loadScene_exemplo2();
+	//loadScene_exemplo2();
 
-	scene = new SceneLoader("demograph.xml");
+	scene = new SceneLoader("cena.xml");
 
 	scene->loadScene();
 
