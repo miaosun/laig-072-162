@@ -50,10 +50,11 @@ void SceneLoader::loadGlobals()
 	 (globalsElement->QueryIntAttribute("maxtextures", &global.maxtextures)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxobjects", &global.maxobjects)) == TIXML_SUCCESS)
 	{
-		cout<<"MaxLights: "<<global.maxlights<<", ~MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl; 
+		cout<<"MaxLights: "<<global.maxlights<<", MaxMaterials: "<<global.maxmaterials<<", MaxTextures: "<<global.maxtextures<<", MaxObjects: "<<global.maxobjects<<endl; 
 	} 
 	else
 		cout<<"Erro parsing global."<<endl;
+
 }
 
 void SceneLoader::loadView()
@@ -431,12 +432,12 @@ SceneLoader::SceneLoader(const char * fileName):
 
 bool SceneLoader::loadScene()
 { 
-	sgxElement = root->FirstChildElement( "sgx" );
-	globalsElement = root->FirstChildElement( "globals" );
-	viewElement = root->FirstChildElement( "view" );
+	sgxElement = doc.FirstChildElement( "sgx" );
+	globalsElement = sgxElement->FirstChildElement( "globals" );
+	viewElement = sgxElement->FirstChildElement( "view" );
 
-	pointsElement = root->FirstChildElement( "Points" );
-	polygonsElement = root->FirstChildElement( "Polygons" );
+	pointsElement = doc.FirstChildElement( "Points" );
+	polygonsElement = doc.FirstChildElement( "Polygons" );
 
 	// Inicialização
 	// Um exemplo de um conjunto de nós bem conhecidos e obrigatórios
@@ -445,31 +446,37 @@ bool SceneLoader::loadScene()
 		cout << "Bloco sgx nao encontrado\n";
 		return false;
 	}
-	else if (globalsElement == NULL)
+	if (globalsElement == NULL)
 	{
 		cout<<"Bloco globals nao encontrado\n";
 		return false;
 	}
-	else if (viewElement == NULL) {
+	else
+	{
+		loadGlobals();
+		return true;
+	}
+
+	/*if (viewElement == NULL) 
+	{
 		cout << "Bloco view nao encontrado\n";
 		return false;
 	}
-	else if (pointsElement == NULL) {
+	else
+	{
+		loadView();
+		return true;
+	}*/
+
+	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
 		return false;
 	}
 	else if(polygonsElement == NULL) {
 		cout << "Bloco Polygons nao encontrado\n";
 		return false;
-	}
-	else {
-		//loadSgx();
-		loadGlobals();
-		loadView();
-		loadPoints();
-		loadPolygons();
-		return true;
-	}
+	}*/
+
 }
 
 //Carregar os pontos
