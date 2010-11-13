@@ -3,6 +3,7 @@
 
 #include "../tinyxml.h"
 #include "Object.h"
+#include "RGBpixmap.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -133,11 +134,12 @@ private:
 	bool aplicaMaterials(Object * o, Material * mat);
 	bool aplicaTextures(Object * o, Texture * tex);
 	
+	int pix_textures(Texture* tex);
+
 	bool loadGeometry();
 };
 
 void loadScene_exemplo2(void);
-
 
 
 #endif
