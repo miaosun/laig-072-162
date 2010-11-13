@@ -15,16 +15,16 @@ Object::Object(string id, string type, string mat_id, string tex_id, vector<Tran
 
 
 
-Compound::Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<string> s_objs):
-Object(id, "compound", mat, tex, transf)
+Compound::Compound(string id, string mat_id, string tex_id, vector<Transformation *> transf, vector<string> s_objs):
+Object(id, "compound", mat_id, tex_id, transf)
 {
 	this->s_objs=s_objs;
 }
 
 
 
-Rectangle::Rectangle(string id, string mat, string tex, vector<Transformation *> transf, float x1, float y1, float x2, float y2):
-Object(id, "rectangle", mat, tex, transf)
+Rectangle::Rectangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float x2, float y2):
+Object(id, "rectangle", mat_id, tex_id, transf)
 {
 	this->x1=x1;
 	this->x2=x2;
@@ -57,8 +57,8 @@ void Rectangle::draw()
 	glEnd();
 }
 */
-Triangle::Triangle(string id, string mat, string tex, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3):
-Object(id, "triangle", mat, tex, transf)
+Triangle::Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3):
+Object(id, "triangle", mat_id, tex_id, transf)
 {
 	this->x1=x1;
 	this->x2=x2;
@@ -76,16 +76,16 @@ void Triangle::draw()
 
 }
 */
-Sphere::Sphere(string id, string mat, string tex, vector<Transformation *> transf, float r, int slices, int stacks):
-Object(id, "sphere", mat, tex, transf)
+Sphere::Sphere(string id, string mat_id, string tex_id, vector<Transformation *> transf, float r, int slices, int stacks):
+Object(id, "sphere", mat_id, tex_id, transf)
 {
 	this->radius=r;
 	this->slices=slices;
 	this->stacks=stacks;
 }
 
-Cylinder::Cylinder(string id, string mat, string tex, vector<Transformation *> transf, float base, float top, float height, int slices, int stacks):
-Object(id, "cylinder", mat, tex, transf)
+Cylinder::Cylinder(string id, string mat_id, string tex_id, vector<Transformation *> transf, float base, float top, float height, int slices, int stacks):
+Object(id, "cylinder", mat_id, tex_id, transf)
 {
 	this->base=base;
 	this->top=top;
@@ -94,8 +94,8 @@ Object(id, "cylinder", mat, tex, transf)
 	this->stacks=stacks;
 }
 
-Disk::Disk(string id, string mat, string tex, vector<Transformation *> transf, float inner, float outer, int slices, int loops):
-Object(id, "disk", mat, tex, transf)
+Disk::Disk(string id, string mat_id, string tex_id, vector<Transformation *> transf, float inner, float outer, int slices, int loops):
+Object(id, "disk", mat_id, tex_id, transf)
 {
 	this->inner=inner;
 	this->outer=outer;
