@@ -1,4 +1,6 @@
 #include "Transformation.h"
+//#include "SceneLoader.h"
+#include <glui.h>
 
 using namespace std;
 
@@ -7,11 +9,15 @@ class Object
 public:
 	string id;
 	string type;
-	string mat;
-	string tex;
+	string mat_id;
+	string tex_id;
+
+
 	bool visited;
 	vector<Transformation *> transf;
 	Object(string id, string type, string mat, string tex, vector<Transformation *> transf);
+
+
 
 	//funcoes
 	virtual vector<Object *> * getObjs()=0;
@@ -33,6 +39,8 @@ public:
 	virtual float getHeight()=0;
 	virtual float getInner()=0;
 	virtual float getOuter()=0;
+
+	//virtual void draw()=0;
 };
 
 class Compound:public Object
@@ -62,6 +70,7 @@ public:
 	float getHeight(){return NULL;};
 	float getInner(){return NULL;};
 	float getOuter(){return NULL;};
+	//void draw();
 };
 
 class Rectangle:public Object
@@ -75,6 +84,9 @@ public:
 	float getX2(){return this->x2;};
 	float getY1(){return this->y1;};
 	float getY2(){return this->y2;};
+
+	//void draw();
+
 	float getX3(){return NULL;};
 	float getY3(){return NULL;};
 	float getZ1(){return NULL;};
@@ -90,6 +102,7 @@ public:
 	float getOuter(){return NULL;};
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
+
 };
 
 class Triangle:public Object
@@ -118,6 +131,7 @@ public:
 	float getOuter(){return NULL;};
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
+	//void draw();
 };
 
 class Sphere:public Object
@@ -131,6 +145,10 @@ public:
 	int getSlices(){return this->slices;};
 	int getStacks(){return this->stacks;};
 	float getRadius(){return this->radius;};
+
+
+	//void draw();
+
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
 	float getX3(){return NULL;};
@@ -147,6 +165,7 @@ public:
 	float getOuter(){return NULL;};
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
+
 };
 
 class Cylinder:public Object
@@ -162,6 +181,10 @@ public:
 	float getBase(){return this->base;};
 	float getTop(){return this->top;};
 	float getHeight(){return this->height;};
+
+
+	//void draw();
+
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
 	float getX3(){return NULL;};
@@ -176,6 +199,7 @@ public:
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
 	float getRadius(){return NULL;};
+
 };
 
 class Disk:public Object
@@ -190,6 +214,10 @@ public:
 	int getStacks(){return this->loops;};
 	float getInner(){return this->inner;};
 	float getOuter(){return this->outer;};
+
+
+	//void draw();
+
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
 	float getX3(){return NULL;};
@@ -205,4 +233,5 @@ public:
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
 	float getRadius(){return NULL;};
+
 };

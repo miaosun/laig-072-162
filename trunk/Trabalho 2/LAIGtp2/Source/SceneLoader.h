@@ -11,7 +11,7 @@ using namespace std;
 
 // Apontadores para os principais grupos
 // declarados aqui como globais por conveniência
-// idealmente tudo seria incluído numa classe
+// idealmente tudo seria incluido numa classe
 
 struct point {
 	float x;
@@ -103,6 +103,7 @@ public:
 	float emission[4];
 	float shininess;
 
+	Material(){};
 	Material(string id)
 	{
 		this->id = id;
@@ -119,6 +120,7 @@ public:
 	float length_s;
 	float length_t;
 
+	Texture(){};
 	Texture(string id, string file, float length_s, float length_t)
 	{
 		this->id = id;
@@ -238,9 +240,8 @@ private:
 	bool loadMaterials();
 	bool loadTexture();
 	bool loadTextures();
-
-	bool loadObjects();
 	bool loadObject();
+	bool loadObjects();
 	bool loadGeometry();
 };
 
