@@ -390,27 +390,36 @@ void SceneLoader::loadMaterial()
 	}
 }
 
-void SceneLoader::loadLight()
+bool SceneLoader::loadLight()
 {
+	int i_enabled;
+	bool enabled;
 	string id = lightsElement->Attribute("id");
-	string enabled_s = lightsElement->Attribute("enabled");
-	int enabled;
-	if(enabled_s == "1")
-		enabled = 1;
-	else
-		enabled = 0;
+	lightsElement->QueryIntAttribute("enabled", &i_enabled);
 	float r, g, b, a, x, y, z, w;
+
+	if(i_enabled==1)
+		enabled=true;
+	else if(i_enabled==0)
+		enabled=false;
+	else
+	{
+		cout<<"enabled deve ser um valor boleano!\n";
+		system("pause");
+		return false;
+	}
 
 	Light* light = new Light(id, enabled);
 	lights.push_back(light);
 
 	cout<<"Light ID: "<<id<<", Enabled: ";
-	if(enabled==1)
+	if(enabled)
 		cout<<"Sim"<<endl;
 	else
 		cout<<"Nao"<<endl;
 
-	TiXmlElement* child = lightsElement->FirstChildElement();
+	TiXmlElement* child = lightsElement->FirstChildElement("position");
+
 	while(child)
 	{
 		if(strcmp(child->Value(), "ambient")==0)
@@ -470,16 +479,14 @@ void SceneLoader::loadLight()
 			} 
 		}
 		else
+		{
 			cout<<"Erro parsing light"<<endl;
+		}
+
 		child=child->NextSiblingElement();
 	}
 }
-/////////////////////////////////////////////////
 
-
-
-
-//-------------------------------------------------------
 
 void processGraphNode(TiXmlElement *parent, int nivel)
 // funcao recursiva de processamento do grafo
@@ -662,6 +669,7 @@ bool SceneLoader::loadScene()
 
 	if(sgxElement == NULL) {
 		cout << "Bloco sgx nao encontrado\n";
+		system("pause");
 		return false;
 	}
 	
