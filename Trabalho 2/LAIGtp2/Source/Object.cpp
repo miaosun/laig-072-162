@@ -12,10 +12,10 @@ Object::Object(string id, string type, string mat, string tex, vector<Transforma
 	this->visited=false;
 }
 
-Compound::Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<Object *> objs):
+Compound::Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<string> s_objs):
 Object(id, "compound", mat, tex, transf)
 {
-	this->objs=objs;
+	this->s_objs=s_objs;
 }
 
 

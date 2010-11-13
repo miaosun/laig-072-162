@@ -14,7 +14,8 @@ public:
 	Object(string id, string type, string mat, string tex, vector<Transformation *> transf);
 
 	//funcoes
-	virtual vector<Object *> getObjs()=0;
+	virtual vector<Object *> * getObjs()=0;
+	virtual vector<string> * getSObjs()=0;
 	virtual float getX1()=0;
 	virtual float getX2()=0;
 	virtual float getX3()=0;
@@ -38,10 +39,29 @@ class Compound:public Object
 {
 public:
 	vector<Object *> objs;
-	Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<Object *> objs);
+	vector<string> s_objs;
+	Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<string> s_objs);
 
 	//funcoes
-	vector<Object *> getObjs(){return this->objs;};
+	vector<Object *> * getObjs(){return &this->objs;};
+	vector<string> * getSObjs(){return &this->s_objs;};
+	float getX1(){return NULL;};
+	float getX2(){return NULL;};
+	float getX3(){return NULL;};
+	float getY1(){return NULL;};
+	float getY2(){return NULL;};
+	float getY3(){return NULL;};
+	float getZ1(){return NULL;};
+	float getZ2(){return NULL;};
+	float getZ3(){return NULL;};
+	int getSlices(){return NULL;};
+	int getStacks(){return NULL;};
+	float getRadius(){return NULL;};
+	float getBase(){return NULL;};
+	float getTop(){return NULL;};
+	float getHeight(){return NULL;};
+	float getInner(){return NULL;};
+	float getOuter(){return NULL;};
 };
 
 class Rectangle:public Object
@@ -55,6 +75,21 @@ public:
 	float getX2(){return this->x2;};
 	float getY1(){return this->y1;};
 	float getY2(){return this->y2;};
+	float getX3(){return NULL;};
+	float getY3(){return NULL;};
+	float getZ1(){return NULL;};
+	float getZ2(){return NULL;};
+	float getZ3(){return NULL;};
+	int getSlices(){return NULL;};
+	int getStacks(){return NULL;};
+	float getRadius(){return NULL;};
+	float getBase(){return NULL;};
+	float getTop(){return NULL;};
+	float getHeight(){return NULL;};
+	float getInner(){return NULL;};
+	float getOuter(){return NULL;};
+	vector<Object *> * getObjs(){return NULL;};
+	vector<string> * getSObjs(){return NULL;};
 };
 
 class Triangle:public Object
@@ -73,7 +108,16 @@ public:
 	float getZ1(){return this->z1;};
 	float getZ2(){return this->z2;};
 	float getZ3(){return this->z3;};
-
+	int getSlices(){return NULL;};
+	int getStacks(){return NULL;};
+	float getRadius(){return NULL;};
+	float getBase(){return NULL;};
+	float getTop(){return NULL;};
+	float getHeight(){return NULL;};
+	float getInner(){return NULL;};
+	float getOuter(){return NULL;};
+	vector<Object *> * getObjs(){return NULL;};
+	vector<string> * getSObjs(){return NULL;};
 };
 
 class Sphere:public Object
@@ -87,6 +131,22 @@ public:
 	int getSlices(){return this->slices;};
 	int getStacks(){return this->stacks;};
 	float getRadius(){return this->radius;};
+	float getX1(){return NULL;};
+	float getX2(){return NULL;};
+	float getX3(){return NULL;};
+	float getY1(){return NULL;};
+	float getY2(){return NULL;};
+	float getY3(){return NULL;};
+	float getZ1(){return NULL;};
+	float getZ2(){return NULL;};
+	float getZ3(){return NULL;};
+	float getBase(){return NULL;};
+	float getTop(){return NULL;};
+	float getHeight(){return NULL;};
+	float getInner(){return NULL;};
+	float getOuter(){return NULL;};
+	vector<Object *> * getObjs(){return NULL;};
+	vector<string> * getSObjs(){return NULL;};
 };
 
 class Cylinder:public Object
@@ -102,6 +162,20 @@ public:
 	float getBase(){return this->base;};
 	float getTop(){return this->top;};
 	float getHeight(){return this->height;};
+	float getX1(){return NULL;};
+	float getX2(){return NULL;};
+	float getX3(){return NULL;};
+	float getY1(){return NULL;};
+	float getY2(){return NULL;};
+	float getY3(){return NULL;};
+	float getZ1(){return NULL;};
+	float getZ2(){return NULL;};
+	float getZ3(){return NULL;};
+	float getInner(){return NULL;};
+	float getOuter(){return NULL;};
+	vector<Object *> * getObjs(){return NULL;};
+	vector<string> * getSObjs(){return NULL;};
+	float getRadius(){return NULL;};
 };
 
 class Disk:public Object
@@ -116,4 +190,19 @@ public:
 	int getStacks(){return this->loops;};
 	float getInner(){return this->inner;};
 	float getOuter(){return this->outer;};
+	float getX1(){return NULL;};
+	float getX2(){return NULL;};
+	float getX3(){return NULL;};
+	float getY1(){return NULL;};
+	float getY2(){return NULL;};
+	float getY3(){return NULL;};
+	float getZ1(){return NULL;};
+	float getZ2(){return NULL;};
+	float getZ3(){return NULL;};
+	float getBase(){return NULL;};
+	float getTop(){return NULL;};
+	float getHeight(){return NULL;};
+	vector<Object *> * getObjs(){return NULL;};
+	vector<string> * getSObjs(){return NULL;};
+	float getRadius(){return NULL;};
 };
