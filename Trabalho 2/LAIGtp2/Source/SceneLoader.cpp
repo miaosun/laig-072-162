@@ -157,17 +157,44 @@ bool SceneLoader::loadView()
 	return true;
 }
 
-void SceneLoader::loadIllumination()
+bool SceneLoader::loadIllumination()
 {
-	if((illuminationElement->QueryDoubleAttribute("doublesided", &illumination.doublesided)) == TIXML_SUCCESS &&
-		(illuminationElement->QueryDoubleAttribute("local", &illumination.local) == TIXML_SUCCESS))
+	int doublesided, local;
+	if((illuminationElement->QueryIntAttribute("doublesided", &doublesided)) == TIXML_SUCCESS &&
+		(illuminationElement->QueryIntAttribute("local", &local) == TIXML_SUCCESS))
+	{
+		if(doublesided==1)
+			illumination.doublesided=true;
+		else if(doublesided==0)
+			illumination.doublesided=false;
+		else
+		{
+			cout<<"erro: doublesided deve ter valor boleano!\n";
+			system("pause");
+			return false;
+		}
+		if(local==1)
+			illumination.local=true;
+		else if(local==0)
+			illumination.local=false;
+		else
+		{
+			cout<<"erro: local deve ter valor boleano!\n";
+			system("pause");
+			return false;
+		}
 		cout<<"Illumination:\n\tDoubleSided: "<<illumination.doublesided<<", Local: "<<illumination.local<<endl;
+	}
 	else
+	{
 		cout<<"Erro parsing illumination\n";
+		system("pause");
+		return false;
+	}
 
 	ambientElement = illuminationElement->FirstChildElement("ambient");
 
-	if(ambientElement)
+	if(ambientElement!=NULL)
 	{
 		if(ambientElement->QueryFloatAttribute("r", &illumination.ambient.r) == TIXML_SUCCESS &&
 			ambientElement->QueryFloatAttribute("g", &illumination.ambient.g) == TIXML_SUCCESS &&
@@ -175,39 +202,66 @@ void SceneLoader::loadIllumination()
 			ambientElement->QueryFloatAttribute("a", &illumination.ambient.a) == TIXML_SUCCESS)
 			cout<<"\tAmbient R, G, B, A: "<<illumination.ambient.r<<", "<<illumination.ambient.g<<", "<<illumination.ambient.b<<", "<<illumination.ambient.a<<endl;
 		else
+		{
 			cout<<"Erro parsing ambiente de illumination\n";
+			system("pause");
+			return false;
+		}
 	}
 	else
+	{
 		cout<<"problema com ambient de illumination\n";
+		system("pause");
+		return false;
+	}
 
 	backgroundElement = illuminationElement->FirstChildElement("background");
-	if(backgroundElement)
+	if(backgroundElement!=NULL)
 	{
 		if(backgroundElement->QueryFloatAttribute("r", &illumination.backgroud.r) == TIXML_SUCCESS &&
 			backgroundElement->QueryFloatAttribute("g", &illumination.backgroud.g) == TIXML_SUCCESS &&
 			backgroundElement->QueryFloatAttribute("b", &illumination.backgroud.b) == TIXML_SUCCESS &&
 			backgroundElement->QueryFloatAttribute("a", &illumination.backgroud.a) == TIXML_SUCCESS)
-			cout<<"\tBackground R, G, B, A: "<<illumination.backgroud.r<<", "<<illumination.backgroud.g<<", "<<illumination.backgroud.b<<", "<<illumination.backgroud.a<<endl;
+			cout<<"\tBackground R, G, B, A: "<<illumination.backgroud.r<<", "<<illumination.backgroud.g
+			<<", "<<illumination.backgroud.b<<", "<<illumination.backgroud.a<<endl;
 		else
-			cout<<"Erro parsing ambiente de illumination\n";
+		{
+			cout<<"Erro parsing background de illumination\n";
+			system("pause");
+			return false;
+		}
 	}
+	else
+	{
+		cout<<"Erro parsing background de illumination\n";
+		system("pause");
+		return false;
+	}	
 
-	TiXmlElement *child=lightsElement->FirstChildElement();
-
+	TiXmlElement *luzes=illuminationElement->FirstChildElement("lights");
+	lightsElement=luzes->FirstChildElement("light");
 	int nLights = 0;
-	while(child)
+	while(lightsElement!=NULL)
 	{
 		if(nLights == global.maxlights)
+		{
 			cout<<"Ja chegou limite de maxLights\n";
-		else if(strcmp(child->Value(), "light") == 0)
+			system("pause");
+			return false;
+		}
+		else if(strcmp(lightsElement->Value(), "light") == 0)
 			loadLight();
 		else
+		{
 			cout<<"Erro parsing light de lights de illumination\n";
+			system("pause");
+			return false;
+		}
 
-		child = child->NextSiblingElement();
+		lightsElement = lightsElement->NextSiblingElement();
 		nLights++;
-
 	}
+	return true;
 }
 
 void SceneLoader::loadTexture()
@@ -594,6 +648,7 @@ bool SceneLoader::loadScene()
 	else
 	{
 		cout<<"Bloco globals nao encontrado\n";
+		system("pause");
 		return false;
 	}
 
@@ -605,14 +660,19 @@ bool SceneLoader::loadScene()
 	else
 	{
 		cout << "Bloco view nao encontrado\n";
+		system("pause");
 		return false;
 	}
 
 	if(illuminationElement != NULL)
-		loadIllumination();
+	{
+		if(!loadIllumination())
+			return false;
+	}
 	else
 	{
 		cout<<"Bloco illumination nao econtrado\n";
+		system("pause");
 		return false;
 	}
 
