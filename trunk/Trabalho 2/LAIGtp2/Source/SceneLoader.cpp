@@ -843,12 +843,257 @@ bool SceneLoader::loadScene()
 bool SceneLoader::loadObject()
 {
 	Object *o;
-	string id, type;
-	id=objectsElement->Attribute("id");
-	type=objectsElement->Attribute("type");
+	string id, type, axis, mat, tex;
+	vector<Transformation *> transf_v;
+	vector<string> s_id;
+	Transformation * transf;
+	float x, y, z, angle, x1, x2, x3, y1, y2, y3, z1, z2, z3, base, top, height, radius, inner, outer;
+	int slices, stacks;
 
-	
+	objectElement=objectsElement;
 
+	id=objectElement->Attribute("id");
+	type=objectElement->Attribute("type");
+
+	transformationElement=objectElement->FirstChildElement("transformations");
+	transformationElement=transformationElement->FirstChildElement();
+	while(transformationElement)
+	{
+		if(strcmp(transformationElement->Value(),"translation")==0)
+		{
+			if(transformationElement->QueryFloatAttribute("x", &x) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("y", &y) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("z", &z) == TIXML_SUCCESS)
+			{
+				transf=new Translation(x, y, z);
+				transf_v.push_back(transf);
+				cout<<"translation: x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing translation do objecto "<<id<<endl;
+				system("pause");
+				return false;
+			}
+		}
+		else if(strcmp(transformationElement->Value(),"rotation")==0)
+		{
+			axis=transformationElement->Attribute("axis");
+			if(transformationElement->QueryFloatAttribute("angle", &angle) == TIXML_SUCCESS)
+			{
+				transf = new Rotation(axis, angle);
+				transf_v.push_back(transf);
+				cout<<"rotacao "<<transf_v.back()->getAxis()<<" ang:"<<transf_v.back()->getAngle()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing rotation do objecto "<<id<<endl;
+				system("pause");
+				return false;
+			}
+		}
+		else if(strcmp(transformationElement->Value(),"scale")==0)
+		{
+			if(transformationElement->QueryFloatAttribute("x", &x) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("y", &y) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("z", &z) == TIXML_SUCCESS)
+			{
+				transf = new Scale(x, y, z);
+				transf_v.push_back(transf);
+				cout<<"scale x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing scale do objecto "<<id<<endl;
+				system("pause");
+				return false;
+			}
+		}
+		else
+		{
+			cout<<"erro na tag da transformacao: tem que ser ou translation ou rotation ou scale. do objecto "<<id<<endl;
+			system("pause");
+			return false;
+		}
+		transformationElement=transformationElement->NextSiblingElement();
+	}
+
+	objectElement=objectElement->FirstChildElement("material");
+	if(objectElement)
+		mat=objectElement->Attribute("id");
+	else
+	{
+		cout<<"o objecto "<<id<<" nao tem material definido\n";
+		system("pause");
+		return false;
+	}
+
+	objectElement=objectElement->NextSiblingElement("texture");
+	if(objectElement)
+		tex=objectElement->Attribute("id");
+	else
+	{
+		cout<<"o objecto "<<id<<" nao tem textura definida\n";
+		system("pause");
+		return false;
+	}
+
+	if(type=="simple")
+	{
+		objectElement=objectElement->NextSiblingElement("geometry");
+		if(objectElement)
+		{
+			if(strcmp(objectElement->Attribute("type"),"rectangle")==0)
+			{
+				if(objectElement->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS)
+				{
+					o=new Rectangle(id, mat, tex, transf_v, x1, y1, x2, y2);
+					objs.push_back(o);
+					cout<<"rectangulo x1:"<<o->getX1()<<" y1:"<<o->getY1()<<" x2:"<<o->getX2()<<" y2:"<<o->getY2()<<endl;
+				}
+				else
+				{
+					cout<<"problema na declaracao de rectangle do objecto "<<id<<endl;
+					system("pause");
+					return false;
+				}
+			}
+			else if(strcmp(objectElement->Attribute("type"),"triangle")==0)
+			{
+				if(objectElement->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("x3", &x3) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("y3", &y3) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("z1", &z1) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("z2", &z2) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("z3", &z3) == TIXML_SUCCESS)
+				{
+					o=new Triangle(id, mat, tex, transf_v, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+					objs.push_back(o);
+					cout<<"Triangulo x1:"<<o->getX1()<<" y1:"<<o->getY1()<<" z1:"<<o->getZ1()
+						<<"\n x2:"<<o->getX2()<<" y2:"<<o->getY2()<<" z2:"<<o->getZ2()
+						<<"\n x3:"<<o->getX3()<<" y3:"<<o->getY3()<<" z3:"<<o->getZ3()<<endl;
+				}
+				else
+				{
+					cout<<"problema na declaracao de triangle do objecto "<<id<<endl;
+					system("pause");
+					return false;
+				}
+			}
+			else if(strcmp(objectElement->Attribute("type"),"cylinder")==0)
+			{
+				if(objectElement->QueryFloatAttribute("base", &base) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("top", &top) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("height", &height) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
+				{
+					o=new Cylinder(id, mat, tex, transf_v, base, top, height, slices, stacks);
+					objs.push_back(o);
+					cout<<"Cilindro base:"<<o->getBase()<<" topo:"<<o->getTop()<<" altura:"
+						<<o->getHeight()<<" stacks:"<<o->getStacks()<<" slices:"<<o->getSlices()<<endl;
+				}
+				else
+				{
+					cout<<"problema na declaracao de cylinder do objecto "<<id<<endl;
+					system("pause");
+					return false;
+				}
+
+			}
+			else if(strcmp(objectElement->Attribute("type"),"sphere")==0)
+			{
+				if(objectElement->QueryFloatAttribute("radius", &radius) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
+				{
+					o=new Sphere(id, mat, tex, transf_v, radius, slices, stacks);
+					objs.push_back(o);
+					cout<<"Esfera raio:"<<o->getRadius()<<" slices:"<<o->getSlices()<<" stacks:"<<o->getStacks()<<endl;
+				}
+				else
+				{
+					cout<<"problema na declaracao de sphere do objecto "<<id<<endl;
+					system("pause");
+					return false;
+				}
+			}
+			else if(strcmp(objectElement->Attribute("type"),"disk")==0)
+			{
+				if(objectElement->QueryFloatAttribute("inner", &inner) == TIXML_SUCCESS &&
+					objectElement->QueryFloatAttribute("outer", &outer) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					objectElement->QueryIntAttribute("loops", &stacks) == TIXML_SUCCESS)
+				{
+					o=new Disk(id, mat, tex, transf_v, inner, outer, slices, stacks);
+					objs.push_back(o);
+					cout<<"Disco inner:"<<o->getInner()<<" outer:"<<o->getOuter()<<" slices:"<<o->getSlices()<<" loops:"<<o->getStacks()<<endl;
+				}
+				else
+				{
+					cout<<"problema na declaracao de disk do objecto "<<id<<endl;
+					system("pause");
+					return false;
+				}
+			}
+			else
+			{
+				cout<<"tipo geometrico nao contemplado no objecto "<<id<<endl;
+				system("pause");
+				return false;
+			}
+		}
+		else
+		{
+			cout<<"bloco geometry inexistente no objecto "<<id<<endl;
+			system("pause");
+			return false;
+		}	
+	}
+	else if(type=="compound")
+	{
+		objectElement=objectElement->NextSiblingElement("children");
+		if(objectElement)
+		{
+			objectElement=objectElement->FirstChildElement();
+			while(objectElement)
+			{
+				if(strcmp(objectElement->Value(), "objectref")==0)
+				{
+					s_id.push_back(objectElement->Attribute("id"));
+					cout<<"objref: "<<s_id.back()<<endl;
+				}
+				else
+				{
+					cout<<"tag do tipo objectref incorrecta\n";
+					system("pause");
+					return false;
+				}
+				objectElement=objectElement->NextSiblingElement();
+			}
+			o=new Compound(id, mat, tex, transf_v, s_id);
+			objs.push_back(o);
+			cout<<"Compound "<<o->id<<endl;
+		}
+		else
+		{
+			cout<<"bloco children inexistente no objecto compound "<<id<<endl;
+			system("pause");
+			return false;
+		}	
+	}
+	else
+	{
+		cout<<"problema no tipo no objecto: "<<id<<endl;
+		system("pause");
+		return false;
+	}
 	return true;
 }
 
@@ -876,7 +1121,7 @@ bool SceneLoader::loadObjects()
 			system("pause");
 			return false;
 		}
-		objectsElement = objectsElement->NextSiblingElement();
+		objectsElement=objectsElement->NextSiblingElement();
 		nObjects++;
 	}
 	return true;
