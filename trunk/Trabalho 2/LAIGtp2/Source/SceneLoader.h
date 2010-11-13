@@ -77,6 +77,23 @@ struct Background
 	float a;
 };
 
+class Illumination
+{
+public:
+	double doublesided;
+	double local;
+
+	Ambient ambient;
+	Background backgroud;
+
+	Illumination(){};
+	Illumination(double doublesided, double local)
+	{
+		this->doublesided = doublesided;
+		this->local = local;
+	}
+};
+
 class Light
 {
 public:
@@ -272,6 +289,7 @@ private:
 	void loadLight();
 	void loadMaterial();
 	void loadTexture();
+	bool loadTextures();
 	void loadGeometry();
 };
 
