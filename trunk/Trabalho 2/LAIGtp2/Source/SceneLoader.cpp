@@ -44,17 +44,17 @@ void SceneLoader::loadSgx()
 bool SceneLoader::loadGlobals()
 {
 	global.root = globalsElement->Attribute("root");
-
+	
 	if((globalsElement->QueryIntAttribute("maxlights", &global.maxlights)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxmaterials", &global.maxmaterials)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxtextures", &global.maxtextures)) == TIXML_SUCCESS &&
 	 (globalsElement->QueryIntAttribute("maxobjects", &global.maxobjects)) == TIXML_SUCCESS)
 	{
-		cout<<"MaxLights:"<<global.maxlights<<", MaxMaterials:"<<global.maxmaterials<<", MaxTextures:"<<global.maxtextures<<", MaxObjects:"<<global.maxobjects<<endl<<"Root: "<<global.root<<endl;
+		cout<<"Global:\n\tMaxLights:"<<global.maxlights<<", MaxMaterials:"<<global.maxmaterials<<", MaxTextures:"<<global.maxtextures<<", MaxObjects:"<<global.maxobjects<<"\n\tRoot: "<<global.root<<endl<<endl;
 		return true;
 	} 
 	else
-		cout<<"Erro parsing global."<<endl;
+		cout<<"Erro parsing global.\n";
 	return false;
 }
 
@@ -66,7 +66,7 @@ bool SceneLoader::loadView()
 		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("axisscale", &view.axisscale)) == TIXML_SUCCESS)
 	{
-		cout<<"Near:"<<view.near<<", Far:"<<view.far<<", AxisScale:"<<view.axisscale<<endl; 
+		cout<<"View:\n\tNear:"<<view.near<<", Far:"<<view.far<<", AxisScale:"<<view.axisscale<<endl; 
 	} 
 	else
 	{
@@ -81,7 +81,7 @@ bool SceneLoader::loadView()
 		if(translationElement->QueryFloatAttribute("x", &view.trans.x) == TIXML_SUCCESS &&
 			translationElement->QueryFloatAttribute("y", &view.trans.y) == TIXML_SUCCESS &&
 			translationElement->QueryFloatAttribute("z", &view.trans.z) == TIXML_SUCCESS)
-			cout<<"translation: x:"<<view.trans.x<<" y:"<<view.trans.y<<" z:"<<view.trans.z<<endl;
+			cout<<"\ttranslation: x:"<<view.trans.x<<" y:"<<view.trans.y<<" z:"<<view.trans.z<<endl;
 		else
 			cout<<"Erro parsing translation\n";
 	}
@@ -98,7 +98,7 @@ bool SceneLoader::loadView()
 		view.rots[0].axis=rotationElement->Attribute("axis");
 		if(rotationElement->QueryFloatAttribute("angle", &view.rots[0].angle) != TIXML_SUCCESS)
 			return false;
-		cout<<"rotacao "<<view.rots[0].axis<<" ang:"<<view.rots[0].angle<<endl;
+		cout<<"\trotacao "<<view.rots[0].axis<<" ang:"<<view.rots[0].angle<<endl;
 	}
 	else
 	{
@@ -113,7 +113,7 @@ bool SceneLoader::loadView()
 		view.rots[1].axis=rotationElement->Attribute("axis");
 		if(rotationElement->QueryFloatAttribute("angle", &view.rots[1].angle) != TIXML_SUCCESS)
 			return false;
-		cout<<"rotacao "<<view.rots[1].axis<<" ang:"<<view.rots[1].angle<<endl;
+		cout<<"\trotacao "<<view.rots[1].axis<<" ang:"<<view.rots[1].angle<<endl;
 	}
 	else
 	{
@@ -128,7 +128,7 @@ bool SceneLoader::loadView()
 		view.rots[2].axis=rotationElement->Attribute("axis");
 		if(rotationElement->QueryFloatAttribute("angle", &view.rots[2].angle) != TIXML_SUCCESS)
 			return false;
-		cout<<"rotacao "<<view.rots[2].axis<<" ang:"<<view.rots[2].angle<<endl;
+		cout<<"\trotacao "<<view.rots[2].axis<<" ang:"<<view.rots[2].angle<<endl;
 	}
 	else
 	{
@@ -146,14 +146,14 @@ bool SceneLoader::loadView()
 			return false;
 		if(scaleElement->QueryFloatAttribute("z", &view.scl.z) != TIXML_SUCCESS)
 			return false;
-		cout<<"scale x:"<<view.scl.x<<" y:"<<view.scl.y<<" z:"<<view.scl.z<<endl;
+		cout<<"\tscale x:"<<view.scl.x<<" y:"<<view.scl.y<<" z:"<<view.scl.z<<endl;
 	}
 	else
 	{
 		cout<<"problema com a scale\n";
 		return false;
 	}
-	
+	cout<<endl;
 	return true;
 }
 
@@ -261,6 +261,7 @@ bool SceneLoader::loadIllumination()
 		lightsElement = lightsElement->NextSiblingElement();
 		nLights++;
 	}
+	cout<<endl;
 	return true;
 }
 
@@ -275,7 +276,7 @@ bool SceneLoader::loadTexture()
 		Texture* tex = new Texture(id, file, length_s, length_t);
 		textures.push_back(tex);
 
-		cout<<"Texture ID: "<<id<<", File: "<<file<<", Length_s: "<<length_s<<", Length_t: "<<length_t<<endl;
+		cout<<"\tTexture ID: "<<id<<", File: "<<file<<", Length_s: "<<length_s<<", Length_t: "<<length_t<<endl;
 	}
 	else
 	{
@@ -289,7 +290,7 @@ bool SceneLoader::loadTexture()
 bool SceneLoader::loadTextures()
 {
 	texturesElement=texturesElement->FirstChildElement();
-
+	cout<<"Textures:\n";
 	int nTextures = 0;
 	while(texturesElement)
 	{
@@ -314,21 +315,22 @@ bool SceneLoader::loadTextures()
 		texturesElement = texturesElement->NextSiblingElement();
 		nTextures++;
 	}
+	cout<<endl;
 	return true;
 }
 
-void SceneLoader::loadMaterial()
+bool SceneLoader::loadMaterial()
 {
-	string id = materialsElement->Attribute("id");
+	string id = materialElement->Attribute("id");
 	float r, g, b, a, shininess;
 
 	Material* mat = new Material(id);
 	materiais.push_back(mat);
 
-	cout<<"Material ID: "<<id<<endl;
+	cout<<"\tMaterial ID: "<<id<<endl;
 
-	TiXmlElement* child = materialsElement->FirstChildElement();
-	while(child)
+	TiXmlElement* child = materialElement->FirstChildElement();
+	while(child != NULL)
 	{
 		if(strcmp(child->Value(), "emission")==0)
 		{
@@ -341,8 +343,14 @@ void SceneLoader::loadMaterial()
 				materiais.back()->emission[1] = g;
 				materiais.back()->emission[2] = b;
 				materiais.back()->emission[3] = a;
-				cout<<"Emission R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tEmission R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"Erro parsing emission de material\n";
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "ambient")==0)
 		{
@@ -355,8 +363,14 @@ void SceneLoader::loadMaterial()
 				materiais.back()->ambient[1] = g;
 				materiais.back()->ambient[2] = b;
 				materiais.back()->ambient[3] = a;
-				cout<<"Material Ambient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"Erro parsing ambient de material\n";
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "diffuse")==0)
 		{
@@ -369,8 +383,14 @@ void SceneLoader::loadMaterial()
 				materiais.back()->diffuse[1] = g;
 				materiais.back()->diffuse[2] = b;
 				materiais.back()->diffuse[3] = a;
-				cout<<"Material Diffuse R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tDiffuse R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"Erro parsing diffuse de material\n";
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "specular")==0)
 		{
@@ -383,23 +403,72 @@ void SceneLoader::loadMaterial()
 				materiais.back()->specular[1] = g;
 				materiais.back()->specular[2] = b;
 				materiais.back()->specular[3] = a;
-				cout<<"Material Specular R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tSpecular R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"Erro parsing specular de material\n";
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "shininess")==0)
 		{
-			if(child->QueryFloatAttribute("shininess", &shininess))
+			if(child->QueryFloatAttribute("value", &shininess) == TIXML_SUCCESS)
 			{
-				materiais.back()->shininess[0] = shininess;
-				cout<<"Material Shininess: "<<shininess<<endl;
+				materiais.back()->shininess = shininess;
+				cout<<"\t\tShininess: "<<shininess<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing shininess de material\n";
+				system("pause");
+				return false;
 			}
 		}
 		else
-			cout<<"Erro parsing material"<<endl;
+		{
+			cout<<"Erro parsing material\n";
+			system("pause");
+			return false;
+		}
 		child=child->NextSiblingElement();
-
 	}
+	return true;
 }
+
+bool SceneLoader::loadMaterials()
+{
+	materialElement=materialsElement->FirstChildElement();
+	cout<<"Materials:\n";
+	int nMaterials = 0;
+	while(materialElement)
+	{
+		if(nMaterials == global.maxtextures)
+		{
+			cout<<"Ja chegou limite de maxMaterials\n";
+			system("pause");
+			return false;
+		}
+		else if(strcmp(materialElement->Value(), "material") == 0)
+		{
+			if(!loadMaterial())
+				return false;
+		}
+		else
+		{
+			cout<<"Erro parsing material de materials\n";
+			system("pause");
+			return false;
+		}
+
+		materialElement = materialElement->NextSiblingElement();
+		nMaterials++;
+	}
+	return true;
+
+}
+
 
 bool SceneLoader::loadLight()
 {
@@ -423,7 +492,7 @@ bool SceneLoader::loadLight()
 	Light* light = new Light(id, enabled);
 	lights.push_back(light);
 
-	cout<<"Light ID: "<<id<<", Enabled: ";
+	cout<<"\tLight ID: "<<id<<", Enabled: ";
 	if(enabled)
 		cout<<"Sim"<<endl;
 	else
@@ -443,7 +512,7 @@ bool SceneLoader::loadLight()
 				lights.back()->ambient[1] = g;
 				lights.back()->ambient[2] = b;
 				lights.back()->ambient[3] = a;
-				cout<<"Light Ambient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tAmbient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
 			else
 			{
@@ -463,7 +532,7 @@ bool SceneLoader::loadLight()
 				lights.back()->diffuse[1] = g;
 				lights.back()->diffuse[2] = b;
 				lights.back()->diffuse[3] = a;
-				cout<<"Light Diffuse R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tDiffuse R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
 			else
 			{
@@ -483,7 +552,7 @@ bool SceneLoader::loadLight()
 				lights.back()->specular[1] = g;
 				lights.back()->specular[2] = b;
 				lights.back()->specular[3] = a;
-				cout<<"Light Specular R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
+				cout<<"\t\tSpecular R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
 			else
 			{
@@ -503,7 +572,7 @@ bool SceneLoader::loadLight()
 				lights.back()->position[1] = y;
 				lights.back()->position[2] = z;
 				lights.back()->position[3] = w;
-				cout<<"Light Position X, Y, Z, W: "<<x<<", "<<y<<", "<<z<<", "<<w<<endl;
+				cout<<"\t\tPosition X, Y, Z, W: "<<x<<", "<<y<<", "<<z<<", "<<w<<endl;
 			} 
 			else
 			{
@@ -689,6 +758,7 @@ bool SceneLoader::loadScene()
 	viewElement = sgxElement->FirstChildElement( "view" );
 	illuminationElement = sgxElement->FirstChildElement("illumination");
 	texturesElement = sgxElement->FirstChildElement("textures");
+	materialsElement = sgxElement->FirstChildElement("materials");
 
 	pointsElement = doc.FirstChildElement( "Points" );
 	polygonsElement = doc.FirstChildElement( "Polygons" );
@@ -746,6 +816,19 @@ bool SceneLoader::loadScene()
 	else
 	{
 		cout<<"Bloco textures nao econtrado\n";
+		system("pause");
+		return false;
+	}
+
+	if(materialsElement != NULL)
+	{
+		if(!loadMaterials())
+			return false;
+	}
+	else
+	{
+		cout<<"Bloco materials nao econtrado\n";
+		system("pause");
 		return false;
 	}
 

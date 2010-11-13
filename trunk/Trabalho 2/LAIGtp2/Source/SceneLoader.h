@@ -120,11 +120,12 @@ public:
 	float diffuse[4];
 	float specular[4];
 	float emission[4];
-	float shininess[1];
+	float shininess;
 
 	Material(string id)
 	{
 		this->id = id;
+		this->shininess = 0;
 	}
 };
 
@@ -213,6 +214,7 @@ public:
 
 		objectsElement = NULL;
 		lightsElement = NULL;
+		materialElement = NULL;
 		materialsElement = NULL;
 		texturesElement = NULL;
 		pointsElement = NULL;
@@ -241,6 +243,7 @@ private:
 	TiXmlElement* objectsElement;
 	TiXmlElement* objectElement;
 	TiXmlElement* lightsElement;
+	TiXmlElement* materialElement;
 	TiXmlElement* materialsElement;
 	TiXmlElement* texturesElement;
 	TiXmlElement* pointsElement;
@@ -269,7 +272,8 @@ private:
 	bool loadView();
 	bool loadIllumination();
 	bool loadLight();
-	void loadMaterial();
+	bool loadMaterial();
+	bool loadMaterials();
 	bool loadTexture();
 	bool loadTextures();
 	void loadGeometry();
