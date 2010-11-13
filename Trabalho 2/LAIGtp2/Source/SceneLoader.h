@@ -240,8 +240,11 @@ private:
 	bool loadMaterials();
 	bool loadTexture();
 	bool loadTextures();
+
+	bool loadCompound();
 	bool loadObject();
 	bool loadObjects();
+	
 	bool loadGeometry();
 };
 
