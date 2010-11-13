@@ -952,7 +952,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Rectangle(id, mat, tex, transf_v, x1, y1, x2, y2);
 					objs.push_back(o);
-					cout<<"rectangulo x1:"<<o->getX1()<<" y1:"<<o->getY1()<<" x2:"<<o->getX2()<<" y2:"<<o->getY2()<<endl;
+					cout<<"rectangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<endl;
 				}
 				else
 				{
@@ -975,9 +975,9 @@ bool SceneLoader::loadObject()
 				{
 					o=new Triangle(id, mat, tex, transf_v, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 					objs.push_back(o);
-					cout<<"Triangulo x1:"<<o->getX1()<<" y1:"<<o->getY1()<<" z1:"<<o->getZ1()
-						<<"\n x2:"<<o->getX2()<<" y2:"<<o->getY2()<<" z2:"<<o->getZ2()
-						<<"\n x3:"<<o->getX3()<<" y3:"<<o->getY3()<<" z3:"<<o->getZ3()<<endl;
+					cout<<"Triangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" z1:"<<objs.back()->getZ1()
+						<<"\n x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<" z2:"<<objs.back()->getZ2()
+						<<"\n x3:"<<objs.back()->getX3()<<" y3:"<<objs.back()->getY3()<<" z3:"<<objs.back()->getZ3()<<endl;
 				}
 				else
 				{
@@ -996,8 +996,8 @@ bool SceneLoader::loadObject()
 				{
 					o=new Cylinder(id, mat, tex, transf_v, base, top, height, slices, stacks);
 					objs.push_back(o);
-					cout<<"Cilindro base:"<<o->getBase()<<" topo:"<<o->getTop()<<" altura:"
-						<<o->getHeight()<<" stacks:"<<o->getStacks()<<" slices:"<<o->getSlices()<<endl;
+					cout<<"Cilindro base:"<<objs.back()->getBase()<<" topo:"<<objs.back()->getTop()<<" altura:"
+						<<objs.back()->getHeight()<<" stacks:"<<objs.back()->getStacks()<<" slices:"<<objs.back()->getSlices()<<endl;
 				}
 				else
 				{
@@ -1015,7 +1015,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Sphere(id, mat, tex, transf_v, radius, slices, stacks);
 					objs.push_back(o);
-					cout<<"Esfera raio:"<<o->getRadius()<<" slices:"<<o->getSlices()<<" stacks:"<<o->getStacks()<<endl;
+					cout<<"Esfera raio:"<<objs.back()->getRadius()<<" slices:"<<objs.back()->getSlices()<<" stacks:"<<objs.back()->getStacks()<<endl;
 				}
 				else
 				{
@@ -1033,7 +1033,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Disk(id, mat, tex, transf_v, inner, outer, slices, stacks);
 					objs.push_back(o);
-					cout<<"Disco inner:"<<o->getInner()<<" outer:"<<o->getOuter()<<" slices:"<<o->getSlices()<<" loops:"<<o->getStacks()<<endl;
+					cout<<"Disco inner:"<<objs.back()->getInner()<<" outer:"<<objs.back()->getOuter()<<" slices:"<<objs.back()->getSlices()<<" loops:"<<objs.back()->getStacks()<<endl;
 				}
 				else
 				{
@@ -1061,6 +1061,7 @@ bool SceneLoader::loadObject()
 		objectElement=objectElement->NextSiblingElement("children");
 		if(objectElement)
 		{
+			cout<<"Compound:"<<id<<endl;
 			objectElement=objectElement->FirstChildElement();
 			while(objectElement)
 			{
@@ -1079,7 +1080,6 @@ bool SceneLoader::loadObject()
 			}
 			o=new Compound(id, mat, tex, transf_v, s_id);
 			objs.push_back(o);
-			cout<<"Compound "<<o->id<<endl;
 		}
 		else
 		{
