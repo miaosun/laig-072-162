@@ -281,6 +281,30 @@ void SceneLoader::loadTexture()
 		cout<<"Erro parsing texture: "<<id<<endl;
 }
 
+bool SceneLoader::loadTextures()
+{
+	TiXmlElement *child=texturesElement->FirstChildElement();
+
+	int nTextures = 0;
+	while(child)
+	{
+		if(nTextures == global.maxtextures)
+		{
+			cout<<"Ja chegou limite de maxTextures\n";
+			return false;
+		}
+		else if(strcmp(child->Value(), "texture") == 0)
+			loadTexture();
+		else
+		{
+			cout<<"Erro parsing texture de textures\n";
+			return false;
+		}
+
+		child = child->NextSiblingElement();
+		nTextures++;
+	}
+}
 
 void SceneLoader::loadMaterial()
 {
@@ -628,6 +652,7 @@ bool SceneLoader::loadScene()
 	globalsElement = sgxElement->FirstChildElement( "globals" );
 	viewElement = sgxElement->FirstChildElement( "view" );
 	illuminationElement = sgxElement->FirstChildElement("illumination");
+	texturesElement = sgxElement->FirstChildElement("textures");
 
 	pointsElement = doc.FirstChildElement( "Points" );
 	polygonsElement = doc.FirstChildElement( "Polygons" );
@@ -673,6 +698,17 @@ bool SceneLoader::loadScene()
 	{
 		cout<<"Bloco illumination nao econtrado\n";
 		system("pause");
+		return false;
+	}
+	
+	if(texturesElement != NULL)
+	{
+		if(!loadTextures())
+			return false;
+	}
+	else
+	{
+		cout<<"Bloco textures nao econtrado\n";
 		return false;
 	}
 
