@@ -270,7 +270,7 @@ private:
 	bool loadIllumination();
 	bool loadLight();
 	void loadMaterial();
-	void loadTexture();
+	bool loadTexture();
 	bool loadTextures();
 	void loadGeometry();
 };
