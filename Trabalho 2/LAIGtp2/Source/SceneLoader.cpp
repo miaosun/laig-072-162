@@ -104,7 +104,7 @@ bool SceneLoader::loadView()
 			{
 				transf=new Translation(x, y, z);
 				view.trans.push_back(transf);
-				cout<<"translation: x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
+				cout<<"\ttranslation: x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
 			}
 			else
 			{
@@ -120,7 +120,7 @@ bool SceneLoader::loadView()
 			{
 				transf = new Rotation(axis, angle);
 				view.trans.push_back(transf);
-				cout<<"rotacao "<<view.trans.back()->getAxis()<<" ang:"<<view.trans.back()->getAngle()<<endl;
+				cout<<"\trotacao "<<view.trans.back()->getAxis()<<" ang:"<<view.trans.back()->getAngle()<<endl;
 			}
 			else
 			{
@@ -137,7 +137,7 @@ bool SceneLoader::loadView()
 			{
 				transf = new Scale(x, y, z);
 				view.trans.push_back(transf);
-				cout<<"scale x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
+				cout<<"\tscale x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
 			}
 			else
 			{
@@ -154,6 +154,7 @@ bool SceneLoader::loadView()
 		}
 		transformationElement=transformationElement->NextSiblingElement();
 	}	
+	cout<<endl;
 	return true;
 }
 
@@ -465,6 +466,7 @@ bool SceneLoader::loadMaterials()
 		materialElement = materialElement->NextSiblingElement();
 		nMaterials++;
 	}
+	cout<<endl;
 	return true;
 
 }
@@ -867,7 +869,7 @@ bool SceneLoader::loadObject()
 			{
 				transf=new Translation(x, y, z);
 				transf_v.push_back(transf);
-				cout<<"translation: x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
+				cout<<"\t\ttranslation: x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
 			}
 			else
 			{
@@ -883,7 +885,7 @@ bool SceneLoader::loadObject()
 			{
 				transf = new Rotation(axis, angle);
 				transf_v.push_back(transf);
-				cout<<"rotacao "<<transf_v.back()->getAxis()<<" ang:"<<transf_v.back()->getAngle()<<endl;
+				cout<<"\t\trotacao "<<transf_v.back()->getAxis()<<" ang:"<<transf_v.back()->getAngle()<<endl;
 			}
 			else
 			{
@@ -900,7 +902,7 @@ bool SceneLoader::loadObject()
 			{
 				transf = new Scale(x, y, z);
 				transf_v.push_back(transf);
-				cout<<"scale x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
+				cout<<"\t\tscale x:"<<transf_v.back()->getX()<<" y:"<<transf_v.back()->getY()<<" z:"<<transf_v.back()->getZ()<<endl;
 			}
 			else
 			{
@@ -952,7 +954,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Rectangle(id, mat, tex, transf_v, x1, y1, x2, y2);
 					objs.push_back(o);
-					cout<<"rectangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<endl;
+					cout<<"\t\trectangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<endl;
 				}
 				else
 				{
@@ -975,9 +977,9 @@ bool SceneLoader::loadObject()
 				{
 					o=new Triangle(id, mat, tex, transf_v, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 					objs.push_back(o);
-					cout<<"Triangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" z1:"<<objs.back()->getZ1()
-						<<"\n x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<" z2:"<<objs.back()->getZ2()
-						<<"\n x3:"<<objs.back()->getX3()<<" y3:"<<objs.back()->getY3()<<" z3:"<<objs.back()->getZ3()<<endl;
+					cout<<"\t\tTriangulo x1:"<<objs.back()->getX1()<<" y1:"<<objs.back()->getY1()<<" z1:"<<objs.back()->getZ1()
+						<<"\n\t\t  x2:"<<objs.back()->getX2()<<" y2:"<<objs.back()->getY2()<<" z2:"<<objs.back()->getZ2()
+						<<"\n\t\t  x3:"<<objs.back()->getX3()<<" y3:"<<objs.back()->getY3()<<" z3:"<<objs.back()->getZ3()<<endl;
 				}
 				else
 				{
@@ -996,7 +998,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Cylinder(id, mat, tex, transf_v, base, top, height, slices, stacks);
 					objs.push_back(o);
-					cout<<"Cilindro base:"<<objs.back()->getBase()<<" topo:"<<objs.back()->getTop()<<" altura:"
+					cout<<"\n\tCilindro base:"<<objs.back()->getBase()<<" topo:"<<objs.back()->getTop()<<" altura:"
 						<<objs.back()->getHeight()<<" stacks:"<<objs.back()->getStacks()<<" slices:"<<objs.back()->getSlices()<<endl;
 				}
 				else
@@ -1015,7 +1017,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Sphere(id, mat, tex, transf_v, radius, slices, stacks);
 					objs.push_back(o);
-					cout<<"Esfera raio:"<<objs.back()->getRadius()<<" slices:"<<objs.back()->getSlices()<<" stacks:"<<objs.back()->getStacks()<<endl;
+					cout<<"\n\tEsfera raio:"<<objs.back()->getRadius()<<" slices:"<<objs.back()->getSlices()<<" stacks:"<<objs.back()->getStacks()<<endl;
 				}
 				else
 				{
@@ -1033,7 +1035,7 @@ bool SceneLoader::loadObject()
 				{
 					o=new Disk(id, mat, tex, transf_v, inner, outer, slices, stacks);
 					objs.push_back(o);
-					cout<<"Disco inner:"<<objs.back()->getInner()<<" outer:"<<objs.back()->getOuter()<<" slices:"<<objs.back()->getSlices()<<" loops:"<<objs.back()->getStacks()<<endl;
+					cout<<"\n\tDisco inner:"<<objs.back()->getInner()<<" outer:"<<objs.back()->getOuter()<<" slices:"<<objs.back()->getSlices()<<" loops:"<<objs.back()->getStacks()<<endl;
 				}
 				else
 				{
@@ -1061,14 +1063,14 @@ bool SceneLoader::loadObject()
 		objectElement=objectElement->NextSiblingElement("children");
 		if(objectElement)
 		{
-			cout<<"Compound:"<<id<<endl;
+			cout<<"\n\tCompound:"<<id<<endl;
 			objectElement=objectElement->FirstChildElement();
 			while(objectElement)
 			{
 				if(strcmp(objectElement->Value(), "objectref")==0)
 				{
 					s_id.push_back(objectElement->Attribute("id"));
-					cout<<"objref: "<<s_id.back()<<endl;
+					cout<<"\tobjref: "<<s_id.back()<<endl;
 				}
 				else
 				{
@@ -1101,6 +1103,7 @@ bool SceneLoader::loadObjects()
 {
 	int nObjects=0;
 	objectsElement=objectsElement->FirstChildElement("object");
+	cout<<"Objects:";
 
 	while(objectsElement)
 	{
@@ -1124,6 +1127,7 @@ bool SceneLoader::loadObjects()
 		objectsElement=objectsElement->NextSiblingElement();
 		nObjects++;
 	}
+	cout<<endl;
 	return true;
 }
 

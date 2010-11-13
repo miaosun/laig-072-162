@@ -393,7 +393,7 @@ int main(int argc, char* argv[])
 {
 	//loadScene_exemplo2();
 
-	scene = new SceneLoader("cena.xml");
+	scene = new SceneLoader("bridge.xml");
 
 	scene->loadScene();
 
