@@ -18,7 +18,7 @@ TiXmlElement* graphElement=NULL;
 
 //-------------------------------------------------------
 
-TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val)
+/*TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val)
 // Funcao de pesquisa de um n?filho por comparacao de um atributo (normalmente um id) com um valor de referencia
 // numa versao mais alto nivel seria utilizada uma expressao XPath
 {
@@ -32,10 +32,23 @@ TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const
 			child=child->NextSiblingElement();
 
 	return child;
+}*/
+
+SceneLoader::SceneLoader(const char * fileName):
+  doc(fileName)
+{
+  // Read string from file
+	bool loadOkay = doc.LoadFile();
+
+	if ( !loadOkay )
+	{
+	  // fazer subclassing ?classe exception para dar mais informações...
+	  throw exception();
+	}
+	
+	this->root = doc.RootElement();
 }
 
-
-//////////////////////////////////////////////////////////////////
 void SceneLoader::loadSgx()
 {
 
@@ -74,86 +87,73 @@ bool SceneLoader::loadView()
 		return false;
 	}
 
-	translationElement=viewElement->FirstChildElement("translation");
+	float x, y, z, angle;
+	string axis;
+	Transformation * transf;
 
-	if(translationElement!=NULL)
+
+	transformationElement=viewElement->FirstChildElement();
+
+	while(transformationElement)
 	{
-		if(translationElement->QueryFloatAttribute("x", &view.trans.x) == TIXML_SUCCESS &&
-			translationElement->QueryFloatAttribute("y", &view.trans.y) == TIXML_SUCCESS &&
-			translationElement->QueryFloatAttribute("z", &view.trans.z) == TIXML_SUCCESS)
-			cout<<"\ttranslation: x:"<<view.trans.x<<" y:"<<view.trans.y<<" z:"<<view.trans.z<<endl;
+		if(strcmp(transformationElement->Value(),"translation")==0)
+		{
+			if(transformationElement->QueryFloatAttribute("x", &x) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("y", &y) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("z", &z) == TIXML_SUCCESS)
+			{
+				transf=new Translation(x, y, z);
+				view.trans.push_back(transf);
+				cout<<"translation: x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing translation da view\n";
+				system("pause");
+				return false;
+			}
+		}
+		else if(strcmp(transformationElement->Value(),"rotation")==0)
+		{
+			axis=transformationElement->Attribute("axis");
+			if(transformationElement->QueryFloatAttribute("angle", &angle) == TIXML_SUCCESS)
+			{
+				transf = new Rotation(axis, angle);
+				view.trans.push_back(transf);
+				cout<<"rotacao "<<view.trans.back()->getAxis()<<" ang:"<<view.trans.back()->getAngle()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing rotation da view\n";
+				system("pause");
+				return false;
+			}
+		}
+		else if(strcmp(transformationElement->Value(),"scale")==0)
+		{
+			if(transformationElement->QueryFloatAttribute("x", &x) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("y", &y) == TIXML_SUCCESS &&
+				transformationElement->QueryFloatAttribute("z", &z) == TIXML_SUCCESS)
+			{
+				transf = new Scale(x, y, z);
+				view.trans.push_back(transf);
+				cout<<"scale x:"<<view.trans.back()->getX()<<" y:"<<view.trans.back()->getY()<<" z:"<<view.trans.back()->getZ()<<endl;
+			}
+			else
+			{
+				cout<<"Erro parsing scale da view\n";
+				system("pause");
+				return false;
+			}
+		}
 		else
-			cout<<"Erro parsing translation\n";
-	}
-	else
-	{
-		cout<<"problema com a translation"<<endl;
-		return false;
-	}
-
-	rotationElement=viewElement->FirstChildElement("rotation");
-
-	if(rotationElement!=NULL)
-	{
-		view.rots[0].axis=rotationElement->Attribute("axis");
-		if(rotationElement->QueryFloatAttribute("angle", &view.rots[0].angle) != TIXML_SUCCESS)
+		{
+			cout<<"erro na tag da transformacao: tem que ser ou translation ou rotation ou scale\n";
+			system("pause");
 			return false;
-		cout<<"\trotacao "<<view.rots[0].axis<<" ang:"<<view.rots[0].angle<<endl;
-	}
-	else
-	{
-		cout<<"problema com a rotation de x\n";
-		return false;
-	}
-
-	rotationElement=rotationElement->NextSiblingElement("rotation");
-	
-	if(rotationElement!=NULL)
-	{
-		view.rots[1].axis=rotationElement->Attribute("axis");
-		if(rotationElement->QueryFloatAttribute("angle", &view.rots[1].angle) != TIXML_SUCCESS)
-			return false;
-		cout<<"\trotacao "<<view.rots[1].axis<<" ang:"<<view.rots[1].angle<<endl;
-	}
-	else
-	{
-		cout<<"problema com a rotation de y\n";
-		return false;
-	}
-
-	rotationElement=rotationElement->NextSiblingElement("rotation");
-	
-	if(rotationElement!=NULL)
-	{
-		view.rots[2].axis=rotationElement->Attribute("axis");
-		if(rotationElement->QueryFloatAttribute("angle", &view.rots[2].angle) != TIXML_SUCCESS)
-			return false;
-		cout<<"\trotacao "<<view.rots[2].axis<<" ang:"<<view.rots[2].angle<<endl;
-	}
-	else
-	{
-		cout<<"problema com a rotation de z\n";
-		return false;
-	}
-
-	scaleElement=rotationElement->NextSiblingElement("scale");
-
-	if(scaleElement!=NULL)
-	{
-		if(scaleElement->QueryFloatAttribute("x", &view.scl.x) != TIXML_SUCCESS)
-			return false;
-		if(scaleElement->QueryFloatAttribute("y", &view.scl.y) != TIXML_SUCCESS)
-			return false;
-		if(scaleElement->QueryFloatAttribute("z", &view.scl.z) != TIXML_SUCCESS)
-			return false;
-		cout<<"\tscale x:"<<view.scl.x<<" y:"<<view.scl.y<<" z:"<<view.scl.z<<endl;
-	}
-	else
-	{
-		cout<<"problema com a scale\n";
-		return false;
-	}
-	cout<<endl;
+		}
+		transformationElement=transformationElement->NextSiblingElement();
+	}	
 	return true;
 }
 
@@ -592,7 +592,7 @@ bool SceneLoader::loadLight()
 	return true;
 }
 
-
+/*
 void processGraphNode(TiXmlElement *parent, int nivel)
 // funcao recursiva de processamento do grafo
 // ao encontrar um n? aplica as definicoes declaradas e itera sobre os seus descendentes
@@ -733,23 +733,10 @@ void loadScene_exemplo2(void)
 	// iteracao recursiva
 	processGraphNode(graphElement,0);
 
-}
+}*/
 
 
-SceneLoader::SceneLoader(const char * fileName):
-  doc(fileName)
-{
-  // Read string from file
-	bool loadOkay = doc.LoadFile();
 
-	if ( !loadOkay )
-	{
-	  // fazer subclassing ?classe exception para dar mais informações...
-	  throw exception();
-	}
-	
-	this->root = doc.RootElement();
-}
 
 bool SceneLoader::loadScene()
 { 
@@ -758,6 +745,7 @@ bool SceneLoader::loadScene()
 	viewElement = sgxElement->FirstChildElement( "view" );
 	illuminationElement = sgxElement->FirstChildElement("illumination");
 	texturesElement = sgxElement->FirstChildElement("textures");
+	objectsElement = sgxElement->FirstChildElement("objects");
 	materialsElement = sgxElement->FirstChildElement("materials");
 
 	pointsElement = doc.FirstChildElement( "Points" );
@@ -819,7 +807,6 @@ bool SceneLoader::loadScene()
 		system("pause");
 		return false;
 	}
-
 	if(materialsElement != NULL)
 	{
 		if(!loadMaterials())
@@ -831,6 +818,17 @@ bool SceneLoader::loadScene()
 		system("pause");
 		return false;
 	}
+	if(objectsElement!=NULL)
+	{
+		if(loadObjects())
+			return false;
+	}
+	else
+	{
+		cout<<"Bloco objects nao econtrado\n";
+		system("pause");
+		return false;
+	}
 
 	/*else if (pointsElement == NULL) {
 		cout << "Bloco Points nao encontrado\n";
@@ -839,6 +837,63 @@ bool SceneLoader::loadScene()
 		cout << "Bloco Polygons nao encontrado\n";
 
 	}*/
+	return true;
+}
+
+bool SceneLoader::loadObject()
+{
+	Object *o;
+	string id, type;
+	id=objectsElement->Attribute("id");
+	type=objectsElement->Attribute("type");
+
+	o=new Object(id, type);
+
+	return true;
+}
+
+bool SceneLoader::loadObjects()
+{
+	int nObjects=0;
+	objectsElement->FirstChildElement("object");
+
+	while(objectsElement)
+	{
+		if(nObjects==global.maxobjects)
+		{
+			cout<<"Ja chegou limite de objectos\n";
+			system("pause");
+			return false;
+		}
+		else if(strcmp(objectsElement->Value(), "object") == 0)
+		{
+			if(!loadObject())
+				return false;
+		}
+		else
+		{
+			cout<<"Erro na tag objecto na "<<nObjects<<endl;
+			system("pause");
+			return false;
+		}
+		objectsElement = objectsElement->NextSiblingElement();
+		nObjects++;
+	}
+	return true;
+}
+
+bool SceneLoader::loadGeometry()
+{
+	vector<string> geos;
+	for(TiXmlElement *child(objectElement->FirstChildElement()); child!=NULL; child=child->NextSiblingElement())
+	{
+		const string tag_geo(child->Value());
+		if(tag_geo=="geometry")
+		{
+			const string geo(child->Attribute("id"));
+			geos.push_back(geo);
+		}
+	}
 	return true;
 }
 
@@ -914,18 +969,3 @@ void SceneLoader::loadPolygons(){
 	}
 }
 
-
-
-void SceneLoader::loadGeometry()
-{
-	vector<string> geos;
-	for(TiXmlElement *child(objectElement->FirstChildElement()); child!=NULL; child=child->NextSiblingElement())
-	{
-		const string tag_geo(child->Value());
-		if(tag_geo=="geometry")
-		{
-			const string geo(child->Attribute("id"));
-			geos.push_back(geo);
-		}
-	}
-}

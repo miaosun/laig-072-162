@@ -2,6 +2,7 @@
 #define SCENE_LOADER
 
 #include "../tinyxml.h"
+#include "Transformation.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -39,26 +40,6 @@ public:
 		this->maxobjects = maxobjects;
 		this->root = root;
 	}
-};
-
-struct Translation
-{
-	float x;
-	float y;
-	float z;
-};
-
-struct Rotation
-{
-	string axis;
-	float angle;
-};
-
-struct Scale
-{
-	float x;
-	float y;
-	float z;
 };
 
 struct Ambient
@@ -170,9 +151,7 @@ public:
 	float far;
 	float axisscale;
 	//transformacoes
-	Translation trans;
-	Rotation rots[3];
-	Scale scl;
+	vector<Transformation *> trans;
 
 
 	View(){};
@@ -197,6 +176,7 @@ public:
 	vector<Material *> materiais;
 	vector<Texture *> textures;
 	vector<Light *> lights;
+	vector<Object *> objs;
 
 	Global global;
 	View view;
@@ -248,10 +228,7 @@ private:
 	TiXmlElement* texturesElement;
 	TiXmlElement* pointsElement;
 	//transformacoes
-	TiXmlElement* translationElement;
-	TiXmlElement* rotationElement;
-	TiXmlElement* scaleElement;
-
+	TiXmlElement* transformationElement;
 
 
 
@@ -276,7 +253,10 @@ private:
 	bool loadMaterials();
 	bool loadTexture();
 	bool loadTextures();
-	void loadGeometry();
+
+	bool loadObjects();
+	bool loadObject();
+	bool loadGeometry();
 };
 
 void loadScene_exemplo2(void);
