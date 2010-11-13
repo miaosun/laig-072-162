@@ -1,5 +1,5 @@
 #include "Transformation.h"
-//#include "SceneLoader.h"
+#include "globals.h"
 #include <glui.h>
 
 using namespace std;
@@ -9,13 +9,14 @@ class Object
 public:
 	string id;
 	string type;
-	string mat_id;
-	string tex_id;
+	Material * mat;
+	Texture * tex;
+	string mat_id, tex_id;
 
 
 	bool visited;
 	vector<Transformation *> transf;
-	Object(string id, string type, string mat, string tex, vector<Transformation *> transf);
+	Object(string id, string type, string mat_id, string tex_id, vector<Transformation *> transf);
 
 
 
@@ -48,7 +49,7 @@ class Compound:public Object
 public:
 	vector<Object *> objs;
 	vector<string> s_objs;
-	Compound(string id, string mat, string tex, vector<Transformation *> transf, vector<string> s_objs);
+	Compound(string id, string mat_id, string tex_id, vector<Transformation *> transf, vector<string> s_objs);
 
 	//funcoes
 	vector<Object *> * getObjs(){return &this->objs;};
@@ -77,7 +78,7 @@ class Rectangle:public Object
 {
 public:
 	float x1, x2, y1, y2;
-	Rectangle(string id, string mat, string tex, vector<Transformation *> transf, float x1, float y1, float x2, float y2);
+	Rectangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float x2, float y2);
 
 	//funcoes
 	float getX1(){return this->x1;};
@@ -109,7 +110,7 @@ class Triangle:public Object
 {
 public:
 	float x1, x2, x3, y1, y2, y3, z1, z2, z3;
-	Triangle(string id, string mat, string tex, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
+	Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 
 	//funcoes
 	float getX1(){return this->x1;};
@@ -139,7 +140,7 @@ class Sphere:public Object
 public:
 	float radius;
 	int slices, stacks;
-	Sphere(string id, string mat, string tex, vector<Transformation *> transf, float r, int slices, int stacks);
+	Sphere(string id, string mat_id, string tex_id, vector<Transformation *> transf, float r, int slices, int stacks);
 
 	//funcoes
 	int getSlices(){return this->slices;};
@@ -173,7 +174,7 @@ class Cylinder:public Object
 public:
 	float base, top, height;
 	int slices, stacks;
-	Cylinder(string id, string mat, string tex, vector<Transformation *> transf, float base, float top, float height, int slices, int stacks);
+	Cylinder(string id, string mat_id, string tex_id, vector<Transformation *> transf, float base, float top, float height, int slices, int stacks);
 
 	//funcoes
 	int getSlices(){return this->slices;};
@@ -207,7 +208,7 @@ class Disk:public Object
 public:
 	float inner, outer;
 	int slices, loops;
-	Disk(string id, string mat, string tex, vector<Transformation *> transf, float inner, float outer, int slices, int loops);
+	Disk(string id, string mat_id, string tex_id, vector<Transformation *> transf, float inner, float outer, int slices, int loops);
 
 	//funcoes
 	int getSlices(){return this->slices;};

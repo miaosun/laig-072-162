@@ -45,7 +45,28 @@ SceneLoader::SceneLoader(const char * fileName):
 	  // fazer subclassing ?classe exception para dar mais informações...
 	  throw exception();
 	}
-	
+
+	this->mat_base=new Material();
+
+	this->mat_base->ambient[0]=0.6;
+	this->mat_base->ambient[1]=0.6;
+	this->mat_base->ambient[2]=0.6;
+	this->mat_base->ambient[3]=1.0;
+	this->mat_base->diffuse[0]=0.6;
+	this->mat_base->diffuse[1]=0.6;
+	this->mat_base->diffuse[2]=0.6;
+	this->mat_base->diffuse[3]=1.0;
+	this->mat_base->id="_base";
+	this->mat_base->specular[0]=0.4;
+	this->mat_base->specular[1]=0.4;
+	this->mat_base->specular[2]=0.4;
+	this->mat_base->specular[3]=1.0;
+	this->mat_base->shininess=128.0; 
+
+	this->no_tex=new Texture();
+
+	this->no_tex->id="NO_TEXTURE";
+
 	this->root = doc.RootElement();
 }
 
@@ -753,6 +774,10 @@ bool SceneLoader::loadScene()
 	pointsElement = doc.FirstChildElement( "Points" );
 	polygonsElement = doc.FirstChildElement( "Polygons" );
 
+	Material * mat;
+	Texture * tex;
+
+
 	// Inicialização
 	// Um exemplo de um conjunto de nós bem conhecidos e obrigatórios
 
@@ -826,6 +851,30 @@ bool SceneLoader::loadScene()
 			return false;
 		if(!loadCompound())
 			return false;
+		root_object=findObject(global.root);
+		if(root_object==NULL)
+			return false;
+		if(root_object->mat_id=="null")
+			mat=this->mat_base;
+		else
+		{
+			mat=findMaterial(root_object->mat_id);
+			if(mat==NULL)
+				return false;
+		}
+		if(!aplicaMaterials(root_object, mat))
+			return false;
+
+		if(root_object->tex_id=="null"||root_object->tex_id=="clear")
+			tex=this->no_tex;
+		else
+		{
+			tex=findTexture(root_object->tex_id);
+			if(tex==NULL)
+				return false;
+		}
+		if(!aplicaTextures(root_object, tex))
+			return false;
 	}
 	else
 	{
@@ -868,6 +917,94 @@ bool SceneLoader::loadCompound()
 				system("pause");
 				return false;
 			}
+		}
+	}
+	return true;
+}
+
+Texture * SceneLoader::findTexture(string id)
+{
+	for(unsigned int i=0; i<textures.size(); i++)
+	{
+		if(textures.at(i)->id==id)
+			return textures.at(i);
+	}
+	cout<<"texture "<<id<<" nao encontrada\n";
+	system("pause");
+	return NULL;
+}
+
+Material * SceneLoader::findMaterial(string id)
+{
+	for(unsigned int i=0; i<materiais.size(); i++)
+	{
+		if(materiais.at(i)->id==id)
+			return materiais.at(i);
+	}
+	cout<<"material "<<id<<" nao encontrado\n";
+	system("pause");
+	return NULL;
+}
+
+Object * SceneLoader::findObject(string id)
+{
+	for(unsigned int i=0; i<objs.size(); i++)
+	{
+		if(objs.at(i)->id==id)
+			return objs.at(i);
+	}
+	cout<<"nao foi possivel encontrar o objecto "<<id<<endl;
+	system("pause");
+	return NULL;
+}
+
+bool SceneLoader::aplicaMaterials(Object * o, Material * mat)
+{
+	Material * mat2;
+
+	if(o->mat_id=="null")
+		o->mat=mat;
+	else
+	{
+		mat2=findMaterial(o->mat_id);
+		if(mat2==NULL)
+			return false;
+		o->mat=mat2;
+	}
+
+	if(o->type=="compound")
+	{
+		for(unsigned int i=0; i<o->getObjs()->size(); i++)
+		{
+			if(!aplicaMaterials(o->getObjs()->at(i), o->mat))
+				return false;
+		}
+	}
+	return true;
+}
+
+bool SceneLoader::aplicaTextures(Object * o, Texture * tex)
+{
+	Texture * tex2;
+
+	if(o->tex_id=="null")
+		o->tex=tex;
+	else if(o->tex_id=="clear")
+		o->tex=this->no_tex;
+	else
+	{
+		tex2=findTexture(o->tex_id);
+		if(tex2==NULL)
+			return false;
+		o->tex=tex2;
+	}
+
+	if(o->type=="compound")
+	{
+		for(unsigned int i=0; i<o->getObjs()->size(); i++)
+		{
+			if(!aplicaTextures(o->getObjs()->at(i), o->tex))
+				return false;
 		}
 	}
 	return true;
