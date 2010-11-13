@@ -77,34 +77,17 @@ struct Background
 	float a;
 };
 
-class Illumination
-{
-public:
-	double doublesided;
-	double local;
-
-	Ambient ambient;
-	Background backgroud;
-
-	Illumination(){};
-	Illumination(double doublesided, double local)
-	{
-		this->doublesided = doublesided;
-		this->local = local;
-	}
-};
-
 class Light
 {
 public:
 	string id;
-	int enabled;
+	bool enabled;
 	float ambient[4];
 	float diffuse[4];
 	float specular[4];
 	float position[4];
 
-	Light(string id, int enabled)
+	Light(string id, bool enabled)
 	{
 		this->id = id;
 		this->enabled = enabled;
@@ -120,10 +103,9 @@ public:
 	Ambient ambient;
 	Background backgroud;
 
-	vector<Light *> lights;
 
 	Illumination(){};
-	Illumination(double doublesided, double local)
+	Illumination(bool doublesided, bool local)
 	{
 		this->doublesided = doublesided;
 		this->local = local;
@@ -286,7 +268,7 @@ private:
 	bool loadGlobals();
 	bool loadView();
 	bool loadIllumination();
-	void loadLight();
+	bool loadLight();
 	void loadMaterial();
 	void loadTexture();
 	bool loadTextures();
