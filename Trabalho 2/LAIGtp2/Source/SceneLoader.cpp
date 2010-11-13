@@ -847,7 +847,7 @@ bool SceneLoader::loadObject()
 	id=objectsElement->Attribute("id");
 	type=objectsElement->Attribute("type");
 
-	o=new Object(id, type);
+	
 
 	return true;
 }
@@ -855,7 +855,7 @@ bool SceneLoader::loadObject()
 bool SceneLoader::loadObjects()
 {
 	int nObjects=0;
-	objectsElement->FirstChildElement("object");
+	objectsElement=objectsElement->FirstChildElement("object");
 
 	while(objectsElement)
 	{

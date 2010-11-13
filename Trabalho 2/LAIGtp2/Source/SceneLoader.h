@@ -2,7 +2,7 @@
 #define SCENE_LOADER
 
 #include "../tinyxml.h"
-#include "Transformation.h"
+#include "Object.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -127,21 +127,6 @@ public:
 		this->length_t = length_t;
 	}
 };
-
-class Object
-{
-public:
-	string id;
-	string type;
-
-	Object(string id, string type)
-	{
-		this->id = id;
-		this->type = type;
-	}
-};
-
-
 
 class View
 {
