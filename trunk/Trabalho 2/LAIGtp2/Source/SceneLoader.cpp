@@ -822,7 +822,9 @@ bool SceneLoader::loadScene()
 	}
 	if(objectsElement!=NULL)
 	{
-		if(loadObjects())
+		if(!loadObjects())
+			return false;
+		if(!loadCompound())
 			return false;
 	}
 	else
@@ -839,6 +841,35 @@ bool SceneLoader::loadScene()
 		cout << "Bloco Polygons nao encontrado\n";
 
 	}*/
+	return true;
+}
+
+bool SceneLoader::loadCompound()
+{
+	for(unsigned int i=0; i<objs.size(); i++)
+	{
+		if(objs.at(i)->type=="compound")
+		{
+			cout<<"Compound object "<<objs.at(i)->id<<endl;
+			for(unsigned int ii=0; ii<objs.at(i)->getSObjs()->size();ii++)
+			{
+				for(unsigned int j=0; j<objs.size(); j++)
+				{
+					if(objs.at(i)->getSObjs()->at(ii)==objs.at(j)->id)
+					{
+						cout<<"encontrou o objecto "<<objs.at(i)->getSObjs()->at(ii)<<endl;
+						objs.at(i)->getObjs()->push_back(objs.at(j));
+					}
+				}
+			}
+			if(objs.at(i)->getObjs()->size() !=objs.at(i)->getSObjs()->size())
+			{
+				cout<<"nao encontrou todos os objectos referenciados em "<<objs.at(i)->id<<endl;
+				system("pause");
+				return false;
+			}
+		}
+	}
 	return true;
 }
 
