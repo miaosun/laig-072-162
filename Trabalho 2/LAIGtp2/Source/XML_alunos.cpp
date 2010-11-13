@@ -127,9 +127,12 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  
 	// inicializacoes da matriz de visualizacao
+	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, .1, 50.0 );
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
+
+
 
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
@@ -151,31 +154,35 @@ void display(void)
 	// para objectos ue nao tem material atribuido
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
+	
+	glScalef(scene->view.axisscale, scene->view.axisscale, scene->view.axisscale);
 
 	// Actualizacao da posicao da fonte de luz
-	light0_position[0] = light0x;	// por razoes de eficiencia, os restantes 
-	light0_position[1] = light0y;	// parametros _invariaveis_ da LIGHT0 estao
-	light0_position[2] = light0z;	// definidos na rotina inicializacao
-	glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-	// esfera que simboliza a LIGHT0
-	glColor3f(1.0,1.0,0.0);		// cor amarela
-	gluQuadricOrientation( glQ, GLU_INSIDE);
-	glPushMatrix();
-	glTranslated(light0x,light0y,light0z);
-	gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
-    glPopMatrix();
+	for(unsigned int i=0; i<scene->lights.size(); i++)
+	{
+		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
 
-	gluQuadricOrientation(glQ, GLU_OUTSIDE);
+		// esferas que simboliza as fontes d luzes
 
+		glColor3f(1.0,1.0,0.0);		// cor amarela
+		gluQuadricOrientation( glQ, GLU_INSIDE);
+		glPushMatrix();
+		glTranslated(scene->lights[i]->position[0],scene->lights[i]->position[1],scene->lights[i]->position[2]);
+		gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
+		glPopMatrix();
+
+		gluQuadricOrientation(glQ, GLU_OUTSIDE);
+
+		//  aumentar e diminuir a atenuação
+		glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION,  light0_kc);
+		glLightf(GL_LIGHT0+i, GL_LINEAR_ATTENUATION,    light0_kl);
+		glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, light0_kq);
+	}
 
 //	//desenhar a esfera no centro
 	glColor3f(1.0,1.0,1.0);		
 	gluSphere(glQ, orig_radius, orig_slices, orig_stacks);
 
-//  aumentar e diminuir a atenuação
-	glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION,  light0_kc);
-    glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION,    light0_kl);
-    glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, light0_kq);
 
 	// esfera representativa da origem das coordenadas
 	// falta declarar a cor
@@ -208,6 +215,9 @@ void display(void)
 	// inibicao de atribuicao directa de cores
 	glDisable(GL_COLOR_MATERIAL);
 
+	////////////////////////////////////
+	////////desenhar a cena/////////////
+	////////////////////////////////////
 
 	// define caracteristicas de cor do material do plano e da caixa
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
@@ -391,7 +401,6 @@ void inicializacao()
 
 int main(int argc, char* argv[])
 {
-	//loadScene_exemplo2();
 
 	scene = new SceneLoader("cena.xml");
 
