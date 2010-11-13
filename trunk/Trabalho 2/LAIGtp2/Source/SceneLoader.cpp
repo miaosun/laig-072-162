@@ -264,7 +264,7 @@ bool SceneLoader::loadIllumination()
 	return true;
 }
 
-void SceneLoader::loadTexture()
+bool SceneLoader::loadTexture()
 {
 	string id = texturesElement->Attribute("id");
 	const string file = texturesElement->Attribute("file");
@@ -278,32 +278,43 @@ void SceneLoader::loadTexture()
 		cout<<"Texture ID: "<<id<<", File: "<<file<<", Length_s: "<<length_s<<", Length_t: "<<length_t<<endl;
 	}
 	else
+	{
 		cout<<"Erro parsing texture: "<<id<<endl;
+		system("pause");
+		return false;
+	}
+	return true;
 }
 
 bool SceneLoader::loadTextures()
 {
-	TiXmlElement *child=texturesElement->FirstChildElement();
+	texturesElement=texturesElement->FirstChildElement();
 
 	int nTextures = 0;
-	while(child)
+	while(texturesElement)
 	{
 		if(nTextures == global.maxtextures)
 		{
 			cout<<"Ja chegou limite de maxTextures\n";
+			system("pause");
 			return false;
 		}
-		else if(strcmp(child->Value(), "texture") == 0)
-			loadTexture();
+		else if(strcmp(texturesElement->Value(), "texture") == 0)
+		{
+			if(!loadTexture())
+				return false;
+		}
 		else
 		{
 			cout<<"Erro parsing texture de textures\n";
+			system("pause");
 			return false;
 		}
 
-		child = child->NextSiblingElement();
+		texturesElement = texturesElement->NextSiblingElement();
 		nTextures++;
 	}
+	return true;
 }
 
 void SceneLoader::loadMaterial()
@@ -417,7 +428,6 @@ bool SceneLoader::loadLight()
 		cout<<"Sim"<<endl;
 	else
 		cout<<"Nao"<<endl;
-
 	TiXmlElement* child = lightsElement->FirstChildElement("position");
 
 	while(child)
@@ -435,6 +445,12 @@ bool SceneLoader::loadLight()
 				lights.back()->ambient[3] = a;
 				cout<<"Light Ambient R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"erro na definicao ambient de "<<id<<endl;
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "diffuse")==0)
 		{
@@ -449,6 +465,12 @@ bool SceneLoader::loadLight()
 				lights.back()->diffuse[3] = a;
 				cout<<"Light Diffuse R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"erro na definicao diffuse de "<<id<<endl;
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "specular")==0)
 		{
@@ -463,6 +485,12 @@ bool SceneLoader::loadLight()
 				lights.back()->specular[3] = a;
 				cout<<"Light Specular R, G, B, A: "<<r<<", "<<g<<", "<<b<<", "<<a<<endl;
 			} 
+			else
+			{
+				cout<<"erro na definicao specular de "<<id<<endl;
+				system("pause");
+				return false;
+			}
 		}
 		else if(strcmp(child->Value(), "position")==0)
 		{
@@ -477,14 +505,22 @@ bool SceneLoader::loadLight()
 				lights.back()->position[3] = w;
 				cout<<"Light Position X, Y, Z, W: "<<x<<", "<<y<<", "<<z<<", "<<w<<endl;
 			} 
+			else
+			{
+				cout<<"erro na definicao position de "<<id<<endl;
+				system("pause");
+				return false;
+			}
 		}
 		else
 		{
-			cout<<"Erro parsing light"<<endl;
+			cout<<"Erro parsing light id: "<<id<<endl;
+			system("pause");
+			return false;
 		}
-
 		child=child->NextSiblingElement();
 	}
+	return true;
 }
 
 
@@ -631,11 +667,6 @@ void loadScene_exemplo2(void)
 }
 
 
-
-
-/////////////exempo 3 do prof
-
-
 SceneLoader::SceneLoader(const char * fileName):
   doc(fileName)
 {
@@ -650,8 +681,6 @@ SceneLoader::SceneLoader(const char * fileName):
 	
 	this->root = doc.RootElement();
 }
-
-//-------------------------------------------------------
 
 bool SceneLoader::loadScene()
 { 
