@@ -19,7 +19,6 @@ public:
 	Object(string id, string type, string mat_id, string tex_id, vector<Transformation *> transf);
 
 
-
 	//funcoes
 	virtual vector<Object *> * getObjs()=0;
 	virtual vector<string> * getSObjs()=0;
@@ -41,7 +40,7 @@ public:
 	virtual float getInner()=0;
 	virtual float getOuter()=0;
 
-	//virtual void draw()=0;
+	virtual void draw()=0;
 };
 
 class Compound:public Object
@@ -71,7 +70,8 @@ public:
 	float getHeight(){return NULL;};
 	float getInner(){return NULL;};
 	float getOuter(){return NULL;};
-	//void draw();
+
+	void draw();
 };
 
 class Rectangle:public Object
@@ -86,7 +86,7 @@ public:
 	float getY1(){return this->y1;};
 	float getY2(){return this->y2;};
 
-	//void draw();
+	void draw();
 
 	float getX3(){return NULL;};
 	float getY3(){return NULL;};
@@ -132,7 +132,8 @@ public:
 	float getOuter(){return NULL;};
 	vector<Object *> * getObjs(){return NULL;};
 	vector<string> * getSObjs(){return NULL;};
-	//void draw();
+
+	void draw();
 };
 
 class Sphere:public Object
@@ -148,7 +149,7 @@ public:
 	float getRadius(){return this->radius;};
 
 
-	//void draw();
+	void draw();
 
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
@@ -184,7 +185,7 @@ public:
 	float getHeight(){return this->height;};
 
 
-	//void draw();
+	void draw();
 
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
@@ -217,7 +218,7 @@ public:
 	float getOuter(){return this->outer;};
 
 
-	//void draw();
+	void draw();
 
 	float getX1(){return NULL;};
 	float getX2(){return NULL;};
