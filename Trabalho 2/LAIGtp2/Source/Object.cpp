@@ -88,7 +88,7 @@ Object(id, "triangle", mat_id, tex_id, transf)
 void Triangle::draw()
 {
 
-	//nao tem textura, para já
+	//nao tem textura, para j?
 	if(this->mat!=NULL)
 		mat->apply();
 	calcNorm();
@@ -105,7 +105,21 @@ void Triangle::draw()
 
 void Triangle::calcNorm()
 {
+	float n[3];
+	n[0] = this->y1*this->z2 - this->z1*this->y2;
+	n[1] = this->z1*this->x2 - this->x1*this->z2;
+	n[2] = this->x1*this->y2 - this->y1*this->x2;
 
+	float mod = sqrt(n[0]*n[0] + n[1]*n[1] + n[2]*n[2]);
+
+	if(mod != 0.0)
+	{
+		this->n1 = n[0] / mod;
+		this->n2 = n[1] / mod;
+		this->n3 = n[2] / mod;
+	}
+	else
+		cout<<"erro ao calcular normal\n";
 }
 
 Sphere::Sphere(string id, string mat_id, string tex_id, vector<Transformation *> transf, float r, int slices, int stacks):
