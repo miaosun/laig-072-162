@@ -207,30 +207,6 @@ void display(void)
 	// falta declarar a cor
 	// desenhar o objecto
 
-	// cilindro representativo do eixo X
-	glColor3f(1.0,0.0,0.0);		// vermelho
-	glPushMatrix();
-	glRotated(90.0, 0.0,1.0,0.0 );
-	gluCylinder(glQ, axis_radius_begin, axis_radius_end,
-		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
-	glPopMatrix();
-
-	// cilindro representativo do eixo Y
-	glColor3f(0.0,1.0,0.0);		// verde
-	glPushMatrix();
-	glRotated(-90.0, 1.0,0.0,0.0 );
-	gluCylinder(glQ, axis_radius_begin, axis_radius_end,
-		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
-	glPopMatrix();
-	
-	// cilindro representativo do eixo Z
-	glColor3f(0.0,0.0,1.0);		// azul
-	glPushMatrix();
-	// nao necessita rotacao... glRotated(...);
-	gluCylinder(glQ, axis_radius_begin, axis_radius_end,
-		             axis_lenght, axis_nslices, axis_nstacks);   // nao tem bases
-	glPopMatrix();
-
 	// inibicao de atribuicao directa de cores
 	glDisable(GL_COLOR_MATERIAL);
 
