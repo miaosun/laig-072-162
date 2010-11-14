@@ -109,6 +109,7 @@ class Triangle:public Object
 {
 public:
 	float x1, x2, x3, y1, y2, y3, z1, z2, z3;
+	float n1, n2, n3;
 	Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3);
 
 	//funcoes
@@ -133,6 +134,8 @@ public:
 	vector<string> * getSObjs(){return NULL;};
 
 	void draw();
+
+	void calcNorm();
 };
 
 class Sphere:public Object
