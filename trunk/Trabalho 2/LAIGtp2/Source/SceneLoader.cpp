@@ -1188,6 +1188,7 @@ bool SceneLoader::loadCompound()
 		if(objs.at(i)->type=="compound")
 		{
 			cout<<"Compound object "<<objs.at(i)->id<<endl;
+			objs.at(i)->visited=true;
 			for(unsigned int ii=0; ii<objs.at(i)->getSObjs()->size();ii++)
 			{
 				for(unsigned int j=0; j<objs.size(); j++)
@@ -1195,6 +1196,7 @@ bool SceneLoader::loadCompound()
 					if(objs.at(i)->getSObjs()->at(ii)==objs.at(j)->id)
 					{
 						cout<<"encontrou o objecto "<<objs.at(i)->getSObjs()->at(ii)<<endl;
+						objs.at(j)->visited=true;
 						objs.at(i)->getObjs()->push_back(objs.at(j));
 					}
 				}
@@ -1205,6 +1207,15 @@ bool SceneLoader::loadCompound()
 				system("pause");
 				return false;
 			}
+		}
+	}
+	for(unsigned int i=0; i<objs.size(); i++)
+	{
+		if(!objs.at(i)->visited)
+		{
+			cout<<"folha solta, objecto: "<<objs.at(i)->id<<endl;
+			system("pause");
+			return false;
 		}
 	}
 	return true;
