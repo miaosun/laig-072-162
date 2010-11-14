@@ -16,6 +16,7 @@ using namespace std;
 #define INITIALPOS_X 200
 #define INITIALPOS_Y 200
 
+#define LIGHT_ID 100
 
 float xy_aspect;
 
@@ -142,8 +143,9 @@ void display(void)
 	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
-	glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
+	//glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
+	
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
@@ -166,7 +168,7 @@ void display(void)
 
 	// permissao de atribuicao directa de cores
 	// para objectos ue nao tem material atribuido
-	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
 
 	// Actualizacao da posicao da fonte de luz
@@ -184,18 +186,7 @@ void display(void)
 		glPopMatrix();
 
 		gluQuadricOrientation(glQ, GLU_OUTSIDE);
-
-		
 	}
-
-//	//desenhar a esfera no centro
-	//glColor3f(1.0,1.0,1.0);		
-	//gluSphere(glQ, orig_radius, orig_slices, orig_stacks);
-
-
-	// esfera representativa da origem das coordenadas
-	// falta declarar a cor
-	// desenhar o objecto
 
 	// inibicao de atribuicao directa de cores
 	glDisable(GL_COLOR_MATERIAL);
@@ -364,7 +355,7 @@ void inicializacao()
 	glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, scene->illumination.local);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene->illumination.ambient);  // define luz ambiente
 	
-
+	glEnable(GL_LIGHTING);
 	for(unsigned int i=0; i<scene->lights.size(); i++)
 	{
 		// parametros de iluminacao
@@ -385,8 +376,6 @@ void inicializacao()
 
 	open_textures();
 
-	glEnable(GL_LIGHTING);
-
 	glShadeModel(GL_SMOOTH);				// GL_FLAT / GL_SMOOTH
 
 	glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
@@ -394,13 +383,31 @@ void inicializacao()
 	
 }
 
-
+void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos checkboxes
+{
+	for(int i = 0; i < scene->lights.size(); i++)
+	{
+		if ( control == 200+i)
+		{
+			if ( !scene->lights[i]->enabled )
+			{
+				glEnable( GL_LIGHT0+i );
+				scene->lights[i]->enabled = true;
+			}
+			else 
+			{
+				glDisable( GL_LIGHT0 +i); 
+				scene->lights[i]->enabled = false;
+			}
+		}
+	}
+}
 
 int main(int argc, char* argv[])
 {
 	string filename;
 	cout<<"filename: ";
-	cin>>filename;
+	getline(cin, filename);
 	scene = new SceneLoader(filename.c_str());
 
 	if(!scene->loadScene())
@@ -437,6 +444,18 @@ int main(int argc, char* argv[])
 	glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
 	trans_z->set_speed( .02 );
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//As fontes de luz devem poder ser alteradas por meio de controlos na r¨¦gua inferior de comandos.//
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	glui2->add_column(true);
+	int light_enabled=0;
+	for(int i = 0; i < scene->lights.size(); i++)
+	{
+		light_enabled = scene->lights[i]->enabled;
+		glui2->add_checkbox(const_cast<char*> (scene->lights[i]->id.c_str()), &light_enabled,
+				LIGHT_ID+i, ctr_light );
+	}
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );

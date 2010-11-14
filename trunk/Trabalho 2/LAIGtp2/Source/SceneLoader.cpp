@@ -496,7 +496,7 @@ bool SceneLoader::loadMaterials()
 bool SceneLoader::loadLight()
 {
 	int i_enabled;
-	bool enabled;
+	bool enabled=true;
 	string id = lightsElement->Attribute("id");
 	lightsElement->QueryIntAttribute("enabled", &i_enabled);
 	float r, g, b, a, x, y, z, w;
@@ -520,6 +520,8 @@ bool SceneLoader::loadLight()
 		cout<<"Sim"<<endl;
 	else
 		cout<<"Nao"<<endl;
+
+
 	TiXmlElement* child = lightsElement->FirstChildElement("position");
 
 	while(child)
