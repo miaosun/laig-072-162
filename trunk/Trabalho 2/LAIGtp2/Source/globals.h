@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <glui.h>
 
 using namespace std;
 
@@ -95,13 +96,22 @@ public:
 	float diffuse[4];
 	float specular[4];
 	float emission[4];
-	float shininess;
+	GLfloat shininess;
 
 	Material(){};
 	Material(string id)
 	{
 		this->id = id;
 		this->shininess = 0;
+	}
+
+	void apply()
+	{
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &this->shininess);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, this->specular);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, this->diffuse);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, this->ambient);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, this->emission);
 	}
 };
 

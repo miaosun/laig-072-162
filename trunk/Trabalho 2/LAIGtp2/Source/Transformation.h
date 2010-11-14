@@ -1,6 +1,9 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "globals.h"
+//#include <glui.h>
+
 
 using namespace std;
 
@@ -14,6 +17,7 @@ public:
 	virtual float getZ()=0;
 	virtual float getAngle()=0;
 	virtual string getAxis()=0;
+	virtual void apply()=0;
 };
 
 class Translation:public Transformation
@@ -28,6 +32,7 @@ public:
 	float getZ() {return this->z;};
 	float getAngle() {return 0.0;};
 	string getAxis() {return "";};
+	void apply();
 };
 
 class Rotation:public Transformation
@@ -41,6 +46,7 @@ public:
 	float getZ() {return 0.0;};
 	float getAngle() {return this->angle;};
 	string getAxis() {return this->axis;};
+	void apply();
 };
 
 class Scale:public Transformation
@@ -55,4 +61,5 @@ public:
 	float getZ() {return this->z;};
 	float getAngle() {return 0.0;};
 	string getAxis() {return "";};
+	void apply();
 };
