@@ -24,11 +24,16 @@ Object(id, "compound", mat_id, tex_id, transf)
 
 void Compound::draw()
 {
+	cout<<"vai desenhar compoud "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 	for(unsigned int i=0; i<this->objs.size(); i++)
-		objs.at(i)->draw();
+	{
+		if(!objs.at(i)->visited)
+			objs.at(i)->draw();
+	}
 	glPopMatrix;
+	this->visited=true;
 }
 
 Rectangle::Rectangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float x2, float y2):
@@ -51,7 +56,7 @@ void Rectangle::draw()
 	if(this->mat!=NULL)
 		mat->apply();
 	
-	if(this->y2 > this->y1 && this->x2 > this->x1)
+	if((this->y2 < this->y1) && (this->x2 > this->x1))
 	{
 		glPushMatrix();
 		aplicaTransformacoes();
@@ -63,12 +68,14 @@ void Rectangle::draw()
 		glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2,  0.0);
 		glEnd();
 		glPopMatrix();
+		cout<<"\tdesenhou rectangulo\n";
 	}
 	else
 	{
 		cout<<"erro RECTANGLE y2 tem que ser maior que y1, e x2 maior x1\n";
 		system("pause");
 	}
+	this->visited=true;
 }
 
 Triangle::Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3):
@@ -101,6 +108,8 @@ void Triangle::draw()
 		glVertex3d(this->x3, this->y3, this->z3);
 	glEnd();
 	glPopMatrix();
+	cout<<"\tdesenhou triangulo\n";
+	this->visited=true;
 }
 
 void Triangle::calcNorm()
@@ -150,6 +159,8 @@ void Sphere::draw()
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
+	cout<<"\tdesenhou esfera\n";
+	this->visited=true;
 }
 
 
@@ -185,6 +196,8 @@ void Cylinder::draw()
 
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
+	cout<<"\tdesenhou cilindro\n";
+	this->visited=true;
 }
 
 Disk::Disk(string id, string mat_id, string tex_id, vector<Transformation *> transf, float inner, float outer, int slices, int loops):
@@ -217,4 +230,6 @@ void Disk::draw()
 
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
+	cout<<"\tdesenhou disco\n";
+	this->visited=true;
 }

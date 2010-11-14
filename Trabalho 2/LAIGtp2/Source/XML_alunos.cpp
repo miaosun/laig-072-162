@@ -239,12 +239,17 @@ void display(void)
 	////////////////////////////////////
 
 	// define caracteristicas de cor do material do plano e da caixa
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
+	/*glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
 	glMaterialfv(GL_FRONT, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
-	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);
+	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
 
 	//desenhaPolygonos();
+
+	for(unsigned int i=0; i<scene->objs.size(); i++)
+		scene->objs.at(i)->visited=false;
+
+	scene->root_object->draw();
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -390,16 +395,25 @@ void inicializacao()
 	glCullFace(GL_BACK);		/* Cull only back faces. */
 
 	// por defeito a cor e de fundo e o preto
-	//glClearColor(1.0,1.0,1.0,1.0);    // cor de fundo a branco
+	glClearColor(scene->illumination.backgroud[0],scene->illumination.backgroud[1],scene->illumination.backgroud[2],scene->illumination.backgroud[3]);
 
 
-	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, light_ambient);  // define luz ambiente
+	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, scene->illumination.doublesided);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene->illumination.ambient);  // define luz ambiente
 	
-	// parametros de iluminacao
-	glLightfv(GL_LIGHT0, GL_AMBIENT, light0_ambient);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, light0_diffuse);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, light0_specular);
+
+	for(unsigned int i=0; i<scene->lights.size(); i++)
+	{
+		// parametros de iluminacao
+		glLightfv(GL_LIGHT0+i, GL_AMBIENT, scene->lights[i]->ambient);
+		glLightfv(GL_LIGHT0+i, GL_DIFFUSE, scene->lights[i]->diffuse);
+		glLightfv(GL_LIGHT0+i, GL_SPECULAR, scene->lights[i]->specular);
+
+		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
+
+		if(scene->lights[i]->enabled)
+			glEnable(GL_LIGHT0+i);
+	}
 
 	// a direccao e a posicao estao na rotina display()
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
@@ -407,7 +421,6 @@ void inicializacao()
 	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
 
 	glShadeModel(GL_SMOOTH);				// GL_FLAT / GL_SMOOTH
 

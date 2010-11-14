@@ -43,7 +43,8 @@ SceneLoader::SceneLoader(const char * fileName):
 	if ( !loadOkay )
 	{
 	  // fazer subclassing ?classe exception para dar mais informações...
-	  throw exception();
+		cout<<"erro no load do xml\n";
+		system("pause");
 	}
 
 	this->mat_base=new Material();
@@ -218,11 +219,11 @@ bool SceneLoader::loadIllumination()
 
 	if(ambientElement!=NULL)
 	{
-		if(ambientElement->QueryFloatAttribute("r", &illumination.ambient.r) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("g", &illumination.ambient.g) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("b", &illumination.ambient.b) == TIXML_SUCCESS &&
-			ambientElement->QueryFloatAttribute("a", &illumination.ambient.a) == TIXML_SUCCESS)
-			cout<<"\tAmbient R, G, B, A: "<<illumination.ambient.r<<", "<<illumination.ambient.g<<", "<<illumination.ambient.b<<", "<<illumination.ambient.a<<endl;
+		if(ambientElement->QueryFloatAttribute("r", &illumination.ambient[0]) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("g", &illumination.ambient[1]) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("b", &illumination.ambient[2]) == TIXML_SUCCESS &&
+			ambientElement->QueryFloatAttribute("a", &illumination.ambient[3]) == TIXML_SUCCESS)
+			cout<<"\tAmbient R, G, B, A: "<<illumination.ambient[0]<<", "<<illumination.ambient[1]<<", "<<illumination.ambient[2]<<", "<<illumination.ambient[3]<<endl;
 		else
 		{
 			cout<<"Erro parsing ambiente de illumination\n";
@@ -240,12 +241,12 @@ bool SceneLoader::loadIllumination()
 	backgroundElement = illuminationElement->FirstChildElement("background");
 	if(backgroundElement!=NULL)
 	{
-		if(backgroundElement->QueryFloatAttribute("r", &illumination.backgroud.r) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("g", &illumination.backgroud.g) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("b", &illumination.backgroud.b) == TIXML_SUCCESS &&
-			backgroundElement->QueryFloatAttribute("a", &illumination.backgroud.a) == TIXML_SUCCESS)
-			cout<<"\tBackground R, G, B, A: "<<illumination.backgroud.r<<", "<<illumination.backgroud.g
-			<<", "<<illumination.backgroud.b<<", "<<illumination.backgroud.a<<endl;
+		if(backgroundElement->QueryFloatAttribute("r", &illumination.backgroud[0]) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("g", &illumination.backgroud[1]) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("b", &illumination.backgroud[2]) == TIXML_SUCCESS &&
+			backgroundElement->QueryFloatAttribute("a", &illumination.backgroud[3]) == TIXML_SUCCESS)
+			cout<<"\tBackground R, G, B, A: "<<illumination.backgroud[0]<<", "<<illumination.backgroud[1]
+			<<", "<<illumination.backgroud[2]<<", "<<illumination.backgroud[3]<<endl;
 		else
 		{
 			cout<<"Erro parsing background de illumination\n";
@@ -1217,6 +1218,7 @@ bool SceneLoader::loadCompound()
 			system("pause");
 			return false;
 		}
+		objs.at(i)->visited=false;
 	}
 	return true;
 }
