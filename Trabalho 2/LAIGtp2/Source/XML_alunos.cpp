@@ -144,8 +144,8 @@ void display(void)
 	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
-
+	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
+	glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
 
 
 	//inicializacoes da matriz de transformacoes geometricas
@@ -157,7 +157,8 @@ void display(void)
 	// afasta a cena de 25 unidades mais a distância...
 	//glTranslated(0.0,0.0,-25.0);
 	// ...decorrente da utilizacao do botao de afastamento
-    glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
+	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
+	//glTranslatef( scene->view.trans.at(0)->getX(), scene->view.trans.at(0)->getY(), -+scene->view.trans.at(0)->getZ() );    
 
 	// roda a cena para ficar em perspectiva
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -179,8 +180,6 @@ void display(void)
 	// Actualizacao da posicao da fonte de luz
 	for(unsigned int i=0; i<scene->lights.size(); i++)
 	{
-		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
-
 		// esferas que simboliza as fontes d luzes
 
 		glColor3f(1.0,1.0,0.0);		// cor amarela
@@ -193,14 +192,14 @@ void display(void)
 		gluQuadricOrientation(glQ, GLU_OUTSIDE);
 
 		//  aumentar e diminuir a atenuação
-		glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION,  light0_kc);
-		glLightf(GL_LIGHT0+i, GL_LINEAR_ATTENUATION,    light0_kl);
-		glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, light0_kq);
+		//glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION,  light0_kc);
+		//glLightf(GL_LIGHT0+i, GL_LINEAR_ATTENUATION,    light0_kl);
+		//glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, light0_kq);
 	}
 
 //	//desenhar a esfera no centro
-	glColor3f(1.0,1.0,1.0);		
-	gluSphere(glQ, orig_radius, orig_slices, orig_stacks);
+	//glColor3f(1.0,1.0,1.0);		
+	//gluSphere(glQ, orig_radius, orig_slices, orig_stacks);
 
 
 	// esfera representativa da origem das coordenadas
