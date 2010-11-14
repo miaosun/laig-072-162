@@ -79,7 +79,7 @@ void Rectangle::draw()
 	if(this->tex != NULL && this->tex_id != "clear")
 	{
 		glEnable(GL_TEXTURE_2D);
-	//	glBindTexture(GL_TEXTURE_2D, //Gluint);
+		glBindTexture(GL_TEXTURE_2D, this->tex->n_texture);
 	}
 
 	if(this->mat != NULL && this->mat_id != "null")
@@ -108,7 +108,7 @@ void Rectangle::draw()
 
 void Triangle::draw()
 {
-
+	//falta implementar uma funcao para calcular normal
 }
 
 void Sphere::draw()
@@ -120,7 +120,7 @@ void Sphere::draw()
 	{
 		gluQuadricTexture(glQ, GL_TRUE);
 		glEnable(GL_TEXTURE_2D);
-		//glBindTexture(GL_TEXTURE_2D, //Gluint);
+		glBindTexture(GL_TEXTURE_2D, this->tex->n_texture);
 	}
 	if(this->mat != NULL && this->mat->id != "null")
 	{
@@ -144,7 +144,7 @@ void Cylinder::draw()
 	{
 		gluQuadricTexture(glQ, GL_TRUE);
 		glEnable(GL_TEXTURE_2D);
-		//glBindTexture(GL_TEXTURE_2D, //Gluint);
+		glBindTexture(GL_TEXTURE_2D, this->tex->n_texture);
 	}
 	if(this->mat != NULL && this->mat->id != "null")
 	{
@@ -162,5 +162,25 @@ void Cylinder::draw()
 
 void Disk::draw()
 {
+	GLUquadric* glQ;
+	glQ = gluNewQuadric();
 
+	if(this->tex != NULL && this->tex->id != "clear")
+	{
+		gluQuadricTexture(glQ, GL_TRUE);
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, this->tex->n_texture);
+	}
+	if(this->mat != NULL && this->mat->id != "null")
+	{
+
+	}
+
+	glPushMatrix();
+	////////////matrix d transformacao
+	gluDisk(glQ, this->inner, this->outer, this->slices, this->loops);
+	glPopMatrix();
+
+	glDisable(GL_TEXTURE_2D);
+	gluQuadricTexture(glQ, GL_FALSE);
 }

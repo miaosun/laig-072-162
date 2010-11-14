@@ -113,6 +113,7 @@ public:
 	string file;
 	float length_s;
 	float length_t;
+	int n_texture;
 
 	Texture(){};
 	Texture(string id, string file, float length_s, float length_t)
