@@ -221,9 +221,6 @@ void display(void)
 
 	//desenhaPolygonos();
 
-	for(unsigned int i=0; i<scene->objs.size(); i++)
-		scene->objs.at(i)->visited=false;
-
 	scene->root_object->draw();
 
 	// swapping the buffers causes the rendering above to be shown
@@ -366,7 +363,7 @@ void inicializacao()
 	glFrontFace(GL_CCW);		/* Front faces defined using a counterclockwise rotation. */
 	glDepthFunc(GL_LEQUAL);		/* Por defeito e GL_LESS */
 	glEnable(GL_DEPTH_TEST);	/* Use a depth (z) buffer to draw only visible objects. */
-	glEnable(GL_CULL_FACE);		/* Use face culling to improve speed. */
+	//glEnable(GL_CULL_FACE);		/* Use face culling to improve speed. */
 	//glCullFace(GL_BACK);		/* Cull only back faces. */
 
 	// por defeito a cor e de fundo e o preto
