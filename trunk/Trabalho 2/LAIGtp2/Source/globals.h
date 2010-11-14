@@ -80,18 +80,18 @@ public:
 	float diffuse[4];
 	float specular[4];
 	float emission[4];
-	GLfloat shininess;
+	float shininess[1];
 
 	Material(){};
 	Material(string id)
 	{
 		this->id = id;
-		this->shininess = 0;
+		this->shininess[0] = 0;
 	}
 
 	void apply()
 	{
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, &this->shininess);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, this->shininess);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, this->specular);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, this->diffuse);
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, this->ambient);
