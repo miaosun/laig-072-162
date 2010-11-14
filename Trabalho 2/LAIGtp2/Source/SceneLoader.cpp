@@ -629,6 +629,7 @@ bool SceneLoader::loadObject()
 
 	id=objectElement->Attribute("id");
 	type=objectElement->Attribute("type");
+	cout<<"objecto "<<id<<endl;
 
 	transformationElement=objectElement->FirstChildElement("transformations");
 	transformationElement=transformationElement->FirstChildElement();

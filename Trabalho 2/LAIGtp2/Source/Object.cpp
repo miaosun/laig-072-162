@@ -12,8 +12,11 @@ Object::Object(string id, string type, string mat_id, string tex_id, vector<Tran
 
 void Object::aplicaTransformacoes()
 {
-	for(unsigned int i=0; i<this->transf.size(); i++)
-		this->transf.at(i)->apply();
+	if(!transf.empty())
+	{
+		for(unsigned int i=0; i<this->transf.size(); i++)
+			this->transf.at(i)->apply();
+	}
 }
 
 Compound::Compound(string id, string mat_id, string tex_id, vector<Transformation *> transf, vector<string> s_objs):
@@ -28,8 +31,12 @@ void Compound::draw()
 	glPushMatrix();
 	aplicaTransformacoes();
 	for(unsigned int i=0; i<this->objs.size(); i++)
+	{
+		//cout<<"vai ser "<<objs.at(i)->type<<" "<<objs.at(i)->id<<endl;
 		objs.at(i)->draw();
-	glPopMatrix;
+		//system("pause");
+	}
+	glPopMatrix();
 }
 
 Rectangle::Rectangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float x2, float y2):
@@ -51,11 +58,12 @@ void Rectangle::draw()
 
 	if(this->mat!=NULL)
 		mat->apply();
-	
+
+	cout<<"  draw rectangle "<<this->id<<endl;
+	glPushMatrix();
+	aplicaTransformacoes();
 	if((this->y2 > this->y1) && (this->x2 > this->x1))
 	{
-		glPushMatrix();
-		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
 			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y1, 0.0);
@@ -63,13 +71,9 @@ void Rectangle::draw()
 			glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
 			glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
 		glEnd();
-		glPopMatrix();
-		cout<<"\tdesenhou rectangulo\n";
 	}
 	else if((this->y1 > this->y2) && (this->x1 > this-> x2))
 	{
-		glPushMatrix();
-		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
 			glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y2, 0.0);
@@ -77,27 +81,19 @@ void Rectangle::draw()
 			glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1, 0.0);
 			glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1, 0.0);
 		glEnd();
-		glPopMatrix();
-		cout<<"\tdesenhou rectangulo\n";
 	}
 	else if((this->y2 > this->y1) && (this->x1 > this-> x2))
 	{
-		glPushMatrix();
-		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
-		glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y1, 0.0);
-		glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x1, this->y1, 0.0);
-		glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
-		glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
+			glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y1, 0.0);
+			glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x1, this->y1, 0.0);
+			glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
+			glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
 		glEnd();
-		glPopMatrix();
-		cout<<"\tdesenhou rectangulo\n";
 	}
 	else if(this->y1 > this->y2 && this->x2 > this->x1)
 	{
-		glPushMatrix();
-		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
 			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y2,  0.0);
@@ -105,14 +101,13 @@ void Rectangle::draw()
 			glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1,  0.0);
 			glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1,  0.0);
 		glEnd();
-		glPopMatrix();
-		cout<<"\tdesenhou rectangulo\n";
 	}
 	else
 	{
 		cout<<"erro RECTANGLE os pontos tem que ser opostos\n";
 		system("pause");
 	}
+	glPopMatrix();
 }
 
 Triangle::Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3):
@@ -136,16 +131,16 @@ void Triangle::draw()
 	if(this->mat!=NULL)
 		mat->apply();
 	calcNorm();
+	cout<<"  draw triangle "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
-	glBegin(GL_POLYGON);
-	glNormal3d(this->n1,this->n2,this->n3);
-		glVertex3d(this->x1, this->y1, this->z1);
-		glVertex3d(this->x2, this->y2, this->z2);
-		glVertex3d(this->x3, this->y3, this->z3);
-	glEnd();
+		glBegin(GL_POLYGON);
+		glNormal3d(this->n1,this->n2,this->n3);
+			glVertex3d(this->x1, this->y1, this->z1);
+			glVertex3d(this->x2, this->y2, this->z2);
+			glVertex3d(this->x3, this->y3, this->z3);
+		glEnd();
 	glPopMatrix();
-	cout<<"\tdesenhou triangulo\n";
 }
 
 void Triangle::calcNorm()
@@ -197,14 +192,13 @@ void Sphere::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-
+	cout<<"  draw sphere "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
-	gluSphere(glQ, this->radius, this->slices, this->stacks);
+		gluSphere(glQ, this->radius, this->slices, this->stacks);
 	glPopMatrix();
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
-	cout<<"\tdesenhou esfera\n";
 }
 
 
@@ -232,15 +226,14 @@ void Cylinder::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-
+	cout<<"  draw cylinder "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
-	gluCylinder(glQ, this->base, this->top, this->height, this->slices, this->stacks);
+		gluCylinder(glQ, this->base, this->top, this->height, this->slices, this->stacks);
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
-	cout<<"\tdesenhou cilindro\n";
 }
 
 Disk::Disk(string id, string mat_id, string tex_id, vector<Transformation *> transf, float inner, float outer, int slices, int loops):
@@ -265,13 +258,12 @@ void Disk::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-
+	cout<<"  draw disk "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
-	gluDisk(glQ, this->inner, this->outer, this->slices, this->loops);
+		gluDisk(glQ, this->inner, this->outer, this->slices, this->loops);
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
-	cout<<"\tdesenhou disco\n";
 }
