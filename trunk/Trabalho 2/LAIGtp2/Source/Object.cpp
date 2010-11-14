@@ -72,10 +72,10 @@ void Rectangle::draw()
 		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
-			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y1, 0.0);
-			glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x2, this->y1, 0.0);
-			glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
-			glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
+			glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y2, 0.0);
+			glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x1, this->y2, 0.0);
+			glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1, 0.0);
+			glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1, 0.0);
 		glEnd();
 		glPopMatrix();
 		cout<<"\tdesenhou rectangulo\n";
@@ -94,16 +94,16 @@ void Rectangle::draw()
 		glPopMatrix();
 		cout<<"\tdesenhou rectangulo\n";
 	}
-	else if(y2<y1&&x2>x1)
+	else if(this->y1 > this->y2 && this->x2 > this->x1)
 	{
 		glPushMatrix();
 		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
-			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y1,  0.0);
-			glTexCoord2f((this->x2-this->x1)/tex->length_s,0.0); glVertex3d(this->x1, this->y2,  0.0);
-			glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2,  0.0);
-			glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y1,  0.0);
+			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y2,  0.0);
+			glTexCoord2f((this->x2-this->x1)/tex->length_s,0.0); glVertex3d(this->x2, this->y2,  0.0);
+			glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1,  0.0);
+			glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1,  0.0);
 		glEnd();
 		glPopMatrix();
 		cout<<"\tdesenhou rectangulo\n";
