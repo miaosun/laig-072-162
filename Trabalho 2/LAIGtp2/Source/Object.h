@@ -1,6 +1,4 @@
 #include "Transformation.h"
-#include "globals.h"
-#include <glui.h>
 
 using namespace std;
 
@@ -18,8 +16,10 @@ public:
 	vector<Transformation *> transf;
 	Object(string id, string type, string mat_id, string tex_id, vector<Transformation *> transf);
 
-
 	//funcoes
+	void aplicaTransformacoes();
+
+	//funcoes abstractas
 	virtual vector<Object *> * getObjs()=0;
 	virtual vector<string> * getSObjs()=0;
 	virtual float getX1()=0;
@@ -39,7 +39,6 @@ public:
 	virtual float getHeight()=0;
 	virtual float getInner()=0;
 	virtual float getOuter()=0;
-
 	virtual void draw()=0;
 };
 

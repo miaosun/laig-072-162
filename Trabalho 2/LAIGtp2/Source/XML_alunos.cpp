@@ -82,12 +82,11 @@ float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient ligh
 // variaveis para a janela
 int main_window;
 GLUI  *glui2;
-
+RGBpixmap pixmap;
 SceneLoader *scene;
 
-void pix_textures(Texture* tex)
+void open_textures()
 {
-	RGBpixmap pixmap;
 	char* fname;
 
 	for(unsigned int i=0; i<scene->textures.size(); i++)
@@ -419,7 +418,12 @@ int main(int argc, char* argv[])
 
 	scene = new SceneLoader("cena.xml");
 
-	scene->loadScene();
+	if(!scene->loadScene())
+	{
+		cout<<"nao fez load correctamente!\n";
+		system("pause");
+		return 0;
+	}
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
