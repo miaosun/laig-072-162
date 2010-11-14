@@ -145,7 +145,7 @@ void Triangle::draw()
 	glPushMatrix();
 	aplicaTransformacoes();
 	glBegin(GL_POLYGON);
-	glNormal3d(n1,n2,n3);
+	glNormal3d(this->n1,this->n2,this->n3);
 		glVertex3d(this->x1, this->y1, this->z1);
 		glVertex3d(this->x2, this->y2, this->z2);
 		glVertex3d(this->x3, this->y3, this->z3);
@@ -157,18 +157,27 @@ void Triangle::draw()
 
 void Triangle::calcNorm()
 {
-	float n[3];
-	n[0] = this->y1*this->z2 - this->z1*this->y2;
-	n[1] = this->z1*this->x2 - this->x1*this->z2;
-	n[2] = this->x1*this->y2 - this->y1*this->x2;
+	float a[3], b[3], nx, ny, nz, mod;
+	
+	a[0] = x3 - x1;
+	a[1] = y3 - y1;
+	a[2] = z3 - z1;
 
-	float mod = sqrt(n[0]*n[0] + n[1]*n[1] + n[2]*n[2]);
+	b[0] = x2 - x1;
+	b[1] = y2 - y1;
+	b[2] = z2 - z1;
+
+	nx = a[1]*b[2] - a[2]*b[1];
+	ny = a[2]*b[0] - a[0]*b[2];
+	nz = a[0]*b[1] - a[1]*b[0];
+
+	mod = sqrt(nx*nx + ny*ny + nz*nz);
 
 	if(mod != 0.0)
 	{
-		this->n1 = n[0] / mod;
-		this->n2 = n[1] / mod;
-		this->n3 = n[2] / mod;
+		this->n1 = nx / mod;
+		this->n2 = ny / mod;
+		this->n3 = nz / mod;
 	}
 	else
 		cout<<"erro ao calcular normal\n";
