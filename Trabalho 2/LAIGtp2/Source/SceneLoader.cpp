@@ -62,7 +62,7 @@ SceneLoader::SceneLoader(const char * fileName):
 	this->mat_base->specular[1]=0.4;
 	this->mat_base->specular[2]=0.4;
 	this->mat_base->specular[3]=1.0;
-	this->mat_base->shininess=128.0; 
+	this->mat_base->shininess[0]=128.0; 
 
 	this->no_tex=new Texture();
 
@@ -439,7 +439,7 @@ bool SceneLoader::loadMaterial()
 		{
 			if(child->QueryFloatAttribute("value", &shininess) == TIXML_SUCCESS)
 			{
-				materiais.back()->shininess = shininess;
+				materiais.back()->shininess[0] = shininess;
 				cout<<"\t\tShininess: "<<shininess<<endl;
 			}
 			else

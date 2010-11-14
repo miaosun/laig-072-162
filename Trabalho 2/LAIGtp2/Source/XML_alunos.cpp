@@ -174,6 +174,8 @@ void display(void)
 	{
 		// esferas que simboliza as fontes d luzes
 
+		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
+
 		glColor3f(1.0,1.0,0.0);		// cor amarela
 		gluQuadricOrientation( glQ, GLU_INSIDE);
 		glPushMatrix();
@@ -183,10 +185,7 @@ void display(void)
 
 		gluQuadricOrientation(glQ, GLU_OUTSIDE);
 
-		//  aumentar e diminuir a atenuação
-		//glLightf(GL_LIGHT0+i, GL_CONSTANT_ATTENUATION,  light0_kc);
-		//glLightf(GL_LIGHT0+i, GL_LINEAR_ATTENUATION,    light0_kl);
-		//glLightf(GL_LIGHT0+i, GL_QUADRATIC_ATTENUATION, light0_kq);
+		
 	}
 
 //	//desenhar a esfera no centro
@@ -361,8 +360,8 @@ void inicializacao()
 	// por defeito a cor e de fundo e o preto
 	glClearColor(scene->illumination.backgroud[0],scene->illumination.backgroud[1],scene->illumination.backgroud[2],scene->illumination.backgroud[3]);
 
-	//glLightModelf (GL_LIGHT_MODEL_LOCAL, scene->illumination.local);
 	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, scene->illumination.doublesided);
+	glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, scene->illumination.local);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene->illumination.ambient);  // define luz ambiente
 	
 
@@ -373,7 +372,7 @@ void inicializacao()
 		glLightfv(GL_LIGHT0+i, GL_DIFFUSE, scene->lights[i]->diffuse);
 		glLightfv(GL_LIGHT0+i, GL_SPECULAR, scene->lights[i]->specular);
 
-		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
+		//glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
 
 		if(scene->lights[i]->enabled)
 			glEnable(GL_LIGHT0+i);
