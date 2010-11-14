@@ -134,8 +134,6 @@ void display(void)
 
 	// ****** fim de todas as declaracoes da funcao display() ******
 
-
-
 	glQ = gluNewQuadric();
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -146,19 +144,15 @@ void display(void)
 	glLoadIdentity();
 	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
 	glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
-
-
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-
-	
 	
 	// afasta a cena de 25 unidades mais a distância...
 	//glTranslated(0.0,0.0,-25.0);
 	// ...decorrente da utilizacao do botao de afastamento
 	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
-	//glTranslatef( scene->view.trans.at(0)->getX(), scene->view.trans.at(0)->getY(), -+scene->view.trans.at(0)->getZ() );    
+	//glTranslatef( scene->view.trans.at(0)->getX(), scene->view.trans.at(0)->getY(), obj_pos[2]+scene->view.trans.at(0)->getZ() );    
 
 	// roda a cena para ficar em perspectiva
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -174,8 +168,6 @@ void display(void)
 	// para objectos ue nao tem material atribuido
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	glEnable(GL_COLOR_MATERIAL);
-	
-	glScalef(scene->view.axisscale, scene->view.axisscale, scene->view.axisscale);
 
 	// Actualizacao da posicao da fonte de luz
 	for(unsigned int i=0; i<scene->lights.size(); i++)
@@ -391,6 +383,8 @@ void inicializacao()
 	//glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 90.0);
 	//glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
 	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+
+	open_textures();
 
 	glEnable(GL_LIGHTING);
 
