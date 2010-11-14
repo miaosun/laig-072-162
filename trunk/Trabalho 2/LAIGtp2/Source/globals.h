@@ -37,22 +37,6 @@ public:
 	}
 };
 
-struct Ambient
-{
-	float r;
-	float g;
-	float b;
-	float a;
-};
-
-struct Background
-{
-	float r;
-	float g;
-	float b;
-	float a;
-};
-
 class Light
 {
 public:
@@ -76,8 +60,8 @@ public:
 	bool doublesided;
 	bool local;
 
-	Ambient ambient;
-	Background backgroud;
+	float ambient[4];
+	float backgroud[4];
 
 
 	Illumination(){};
