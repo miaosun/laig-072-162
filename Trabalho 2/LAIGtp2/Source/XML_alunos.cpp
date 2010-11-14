@@ -143,8 +143,8 @@ void display(void)
 	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
-	//glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
+	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
+	glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
 	
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
@@ -387,7 +387,7 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 {
 	for(int i = 0; i < scene->lights.size(); i++)
 	{
-		if ( control == 200+i)
+		if ( control == LIGHT_ID+i)
 		{
 			if ( !scene->lights[i]->enabled )
 			{
