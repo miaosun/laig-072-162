@@ -91,13 +91,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Object.cpp" />
     <ClCompile Include="Source\RGBpixmap.cpp" />
     <ClCompile Include="Source\SceneLoader.cpp" />
+    <ClCompile Include="Source\Transformation.cpp" />
     <ClCompile Include="Source\XML_alunos.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\globals.h" />
+    <ClInclude Include="Source\Object.h" />
     <ClInclude Include="Source\RGBpixmap.h" />
     <ClInclude Include="Source\SceneLoader.h" />
+    <ClInclude Include="Source\Transformation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cena.xml">

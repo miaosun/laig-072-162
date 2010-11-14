@@ -467,7 +467,7 @@ bool SceneLoader::loadMaterials()
 	int nMaterials = 0;
 	while(materialElement)
 	{
-		if(nMaterials == global.maxtextures)
+		if(nMaterials == global.maxmaterials)
 		{
 			cout<<"Ja chegou limite de maxMaterials\n";
 			system("pause");
