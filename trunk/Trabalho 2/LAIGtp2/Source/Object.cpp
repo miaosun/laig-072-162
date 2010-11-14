@@ -128,6 +128,12 @@ void Triangle::draw()
 {
 
 	//nao tem textura, para j?
+	if(this->tex->id!="NO_TEXTURE")
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, this->tex->n_texture);
+	}
+
 	if(this->mat!=NULL)
 		mat->apply();
 	calcNorm();
@@ -136,11 +142,12 @@ void Triangle::draw()
 	aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(this->n1,this->n2,this->n3);
-			glVertex3d(this->x1, this->y1, this->z1);
-			glVertex3d(this->x2, this->y2, this->z2);
-			glVertex3d(this->x3, this->y3, this->z3);
+			glTexCoord2f(0.0, 0.0); glVertex3d(this->x1, this->y1, this->z1);
+			glTexCoord2f((abs((x2-x1)*(n3+n2)+(z2-z1)*n1)/tex->length_s), 0.0); glVertex3d(this->x2, this->y2, this->z2);
+			glTexCoord2f(abs(((x3-x1)*(n3+n2)+(z3-z1)*n1)/tex->length_s), abs(((y3-y1)*(n3+n1)+(x3-x1)*n2)/tex->length_t)); glVertex3d(this->x3, this->y3, this->z3);
 		glEnd();
 	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }
 
 void Triangle::calcNorm()
