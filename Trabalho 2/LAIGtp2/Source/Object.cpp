@@ -103,6 +103,11 @@ void Triangle::draw()
 	glPopMatrix();
 }
 
+void Triangle::calcNorm()
+{
+
+}
+
 Sphere::Sphere(string id, string mat_id, string tex_id, vector<Transformation *> transf, float r, int slices, int stacks):
 Object(id, "sphere", mat_id, tex_id, transf)
 {
