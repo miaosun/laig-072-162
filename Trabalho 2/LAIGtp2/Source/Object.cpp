@@ -28,12 +28,8 @@ void Compound::draw()
 	glPushMatrix();
 	aplicaTransformacoes();
 	for(unsigned int i=0; i<this->objs.size(); i++)
-	{
-		if(!objs.at(i)->visited)
-			objs.at(i)->draw();
-	}
+		objs.at(i)->draw();
 	glPopMatrix;
-	this->visited=true;
 }
 
 Rectangle::Rectangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float x2, float y2):
@@ -117,8 +113,6 @@ void Rectangle::draw()
 		cout<<"erro RECTANGLE os pontos tem que ser opostos\n";
 		system("pause");
 	}
-
-	this->visited=true;
 }
 
 Triangle::Triangle(string id, string mat_id, string tex_id, vector<Transformation *> transf, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3):
@@ -152,7 +146,6 @@ void Triangle::draw()
 	glEnd();
 	glPopMatrix();
 	cout<<"\tdesenhou triangulo\n";
-	this->visited=true;
 }
 
 void Triangle::calcNorm()
@@ -212,7 +205,6 @@ void Sphere::draw()
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
 	cout<<"\tdesenhou esfera\n";
-	this->visited=true;
 }
 
 
@@ -249,7 +241,6 @@ void Cylinder::draw()
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
 	cout<<"\tdesenhou cilindro\n";
-	this->visited=true;
 }
 
 Disk::Disk(string id, string mat_id, string tex_id, vector<Transformation *> transf, float inner, float outer, int slices, int loops):
@@ -283,5 +274,4 @@ void Disk::draw()
 	glDisable(GL_TEXTURE_2D);
 	gluQuadricTexture(glQ, GL_FALSE);
 	cout<<"\tdesenhou disco\n";
-	this->visited=true;
 }
