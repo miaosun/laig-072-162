@@ -85,6 +85,21 @@ GLUI  *glui2;
 
 SceneLoader *scene;
 
+void pix_textures(Texture* tex)
+{
+	RGBpixmap pixmap;
+	char* fname;
+
+	for(unsigned int i=0; i<scene->textures.size(); i++)
+	{
+		fname = const_cast<char*> (scene->textures[i]->file.c_str());
+		pixmap.readBMPFile(fname);
+		pixmap.setTexture(i+1);
+		scene->textures[i]->n_texture = i+1;
+	}
+}
+
+
 //Utiliza as estruturas de dados com a informação do xml para construir o plano
 void desenhaPolygonos() {
 

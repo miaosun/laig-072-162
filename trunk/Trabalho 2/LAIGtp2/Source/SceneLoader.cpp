@@ -1385,19 +1385,3 @@ bool SceneLoader::aplicaTextures(Object * o, Texture * tex)
 	return true;
 }
 
-//////////////////////////////////////////
-/*
-int SceneLoader::pix_textures(Texture* tex)
-{
-	RGBpixmap pixmap;
-	char* fname;
-
-	for(unsigned int i=0; i<textures.size(); i++)
-	{
-		if(textures[i]->file == tex->file)
-			return i+1;
-	}
-	fname = const_cast<char*> (textures[i]->file.c_str());
-	pixmap.readBMPFile(fname);
-	pixmap.setTexture(i);
-}*/
