@@ -62,10 +62,38 @@ void Rectangle::draw()
 		aplicaTransformacoes();
 		glBegin(GL_POLYGON);
 		glNormal3d(0.0,0.0,1.0);
-			glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y1,  0.0);
-			glTexCoord2f((this->x2-this->x1)/tex->length_s,0.0); glVertex3d(this->x2, this->y1,  0.0);
-			glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2,  0.0);
-			glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2,  0.0);
+		glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y1, 0.0);
+		glTexCoord2f((this->x2-this->x1)/tex->length_s,0.0); glVertex3d(this->x2, this->y1, 0.0);
+		glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
+		glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
+		glEnd();
+		glPopMatrix();
+		cout<<"\tdesenhou rectangulo\n";
+	}
+	else if((this->y1 > this->y2) && (this->x1 > this-> x2))
+	{
+		glPushMatrix();
+		aplicaTransformacoes();
+		glBegin(GL_POLYGON);
+		glNormal3d(0.0,0.0,1.0);
+		glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y2, 0.0);
+		glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x1, this->y2, 0.0);
+		glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1, 0.0);
+		glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1, 0.0);
+		glEnd();
+		glPopMatrix();
+		cout<<"\tdesenhou rectangulo\n";
+	}
+/*	else if((this->y2 > this->y1) && (this->x1 > this-> x2))
+	{
+		glPushMatrix();
+		aplicaTransformacoes();
+		glBegin(GL_POLYGON);
+		glNormal3d(0.0,0.0,1.0);
+		glTexCoord2f(0.0,0.0); glVertex3d(this->x2, this->y1, 0.0);
+		glTexCoord2f((this->x1-this->x2)/tex->length_s,0.0); glVertex3d(this->x1, this->y1, 0.0);
+		glTexCoord2f((this->x1-this->x2)/tex->length_s,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x1, this->y2, 0.0);
+		glTexCoord2f(0.0,(this->y2-this->y1)/tex->length_t); glVertex3d(this->x2, this->y2, 0.0);
 		glEnd();
 		glPopMatrix();
 		cout<<"\tdesenhou rectangulo\n";
@@ -86,9 +114,26 @@ void Rectangle::draw()
 	}
 	else
 	{
+		glPushMatrix();
+		aplicaTransformacoes();
+		glBegin(GL_POLYGON);
+		glNormal3d(0.0,0.0,1.0);
+		glTexCoord2f(0.0,0.0); glVertex3d(this->x1, this->y2, 0.0);
+		glTexCoord2f((this->x2-this->x1)/tex->length_s,0.0); glVertex3d(this->x1, this->y2, 0.0);
+		glTexCoord2f((this->x2-this->x1)/tex->length_s,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x1, this->y1, 0.0);
+		glTexCoord2f(0.0,(this->y1-this->y2)/tex->length_t); glVertex3d(this->x2, this->y1, 0.0);
+		glEnd();
+		glPopMatrix();
+		cout<<"\tdesenhou rectangulo\n";
+		//cout<<"erro RECTANGLE y2 tem que ser maior que y1, e x2 maior x1\n";
+		//system("pause");
+	}*/
+	else
+	{
 		cout<<"erro RECTANGLE os pontos tem que ser opostos\n";
 		system("pause");
 	}
+
 	this->visited=true;
 }
 
