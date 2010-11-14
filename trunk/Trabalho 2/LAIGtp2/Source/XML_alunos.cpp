@@ -392,12 +392,12 @@ void inicializacao()
 	glDepthFunc(GL_LEQUAL);		/* Por defeito e GL_LESS */
 	glEnable(GL_DEPTH_TEST);	/* Use a depth (z) buffer to draw only visible objects. */
 	glEnable(GL_CULL_FACE);		/* Use face culling to improve speed. */
-	glCullFace(GL_BACK);		/* Cull only back faces. */
+	//glCullFace(GL_BACK);		/* Cull only back faces. */
 
 	// por defeito a cor e de fundo e o preto
 	glClearColor(scene->illumination.backgroud[0],scene->illumination.backgroud[1],scene->illumination.backgroud[2],scene->illumination.backgroud[3]);
 
-
+	//glLightModelf (GL_LIGHT_MODEL_LOCAL, scene->illumination.local);
 	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, scene->illumination.doublesided);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene->illumination.ambient);  // define luz ambiente
 	
@@ -433,8 +433,10 @@ void inicializacao()
 
 int main(int argc, char* argv[])
 {
-
-	scene = new SceneLoader("cena.xml");
+	string filename;
+	cout<<"filename: ";
+	cin>>filename;
+	scene = new SceneLoader(filename.c_str());
 
 	if(!scene->loadScene())
 	{
