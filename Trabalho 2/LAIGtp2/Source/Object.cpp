@@ -91,11 +91,11 @@ void Triangle::draw()
 	//nao tem textura, para já
 	if(this->mat!=NULL)
 		mat->apply();
-
+	calcNorm();
 	glPushMatrix();
 	aplicaTransformacoes();
 	glBegin(GL_POLYGON);
-	//calcular normal
+	glNormal3d(n1,n2,n3);
 		glVertex3d(this->x1, this->y1, this->z1);
 		glVertex3d(this->x2, this->y2, this->z2);
 		glVertex3d(this->x3, this->y3, this->z3);

@@ -151,15 +151,20 @@ void display(void)
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+
+	
 	
 	// afasta a cena de 25 unidades mais a distância...
-	glTranslated(0.0,0.0,-25.0);
+	//glTranslated(0.0,0.0,-25.0);
 	// ...decorrente da utilizacao do botao de afastamento
     glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
 
 	// roda a cena para ficar em perspectiva
-	glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
-	glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
+	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
+	//glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
+
+	for(unsigned int i=0; i<scene->view.trans.size(); i++)
+		scene->view.trans.at(i)->apply();
 
 	// aplica efeito do botao de rotacao
 	glMultMatrixf( view_rotate );
@@ -239,7 +244,7 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);
 
-	desenhaPolygonos();
+	//desenhaPolygonos();
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
