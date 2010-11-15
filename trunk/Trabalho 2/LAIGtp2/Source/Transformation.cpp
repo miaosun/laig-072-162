@@ -1,8 +1,5 @@
 #include "Transformation.h"
 
-using namespace std;
-
-
 Transformation::Transformation(string type)
 {
 	this->type=type;

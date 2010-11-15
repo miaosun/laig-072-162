@@ -1,38 +1,4 @@
 #include "SceneLoader.h"
-#include <iostream>
-
-using namespace std;
-
-///////////exemplo 2 do prof
-
-// Apontadores para os principais grupos
-// declarados aqui como globais por conveniencia
-// idealmente tudo seria includo numa classe
-
-TiXmlElement* initElement=NULL; 
-TiXmlElement* matsElement=NULL;
-TiXmlElement* textsElement=NULL;
-TiXmlElement* leavesElement=NULL;
-TiXmlElement* nodesElement=NULL;
-TiXmlElement* graphElement=NULL;
-
-//-------------------------------------------------------
-
-/*TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val)
-// Funcao de pesquisa de um n?filho por comparacao de um atributo (normalmente um id) com um valor de referencia
-// numa versao mais alto nivel seria utilizada uma expressao XPath
-{
-	TiXmlElement *child=parent->FirstChildElement();
-	int found=0;
-
-	while (child && !found)
-		if (child->Attribute(attr) && strcmp(child->Attribute(attr),val)==0)
-			found=1;
-		else
-			child=child->NextSiblingElement();
-
-	return child;
-}*/
 
 SceneLoader::SceneLoader(const char * fileName):
   doc(fileName)
@@ -71,11 +37,6 @@ SceneLoader::SceneLoader(const char * fileName):
 	this->root = doc.RootElement();
 }
 
-void SceneLoader::loadSgx()
-{
-
-}
-
 bool SceneLoader::loadGlobals()
 {
 	global.root = globalsElement->Attribute("root");
@@ -95,8 +56,6 @@ bool SceneLoader::loadGlobals()
 
 bool SceneLoader::loadView()
 {
-	
-
 	if((viewElement->QueryFloatAttribute("near", &view.near)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("far", &view.far)) == TIXML_SUCCESS &&
 		(viewElement->QueryFloatAttribute("axisscale", &view.axisscale)) == TIXML_SUCCESS)
@@ -627,8 +586,6 @@ bool SceneLoader::loadObject()
 	float x, y, z, angle, x1, x2, x3, y1, y2, y3, z1, z2, z3, base, top, height, radius, inner, outer;
 	int slices, stacks;
 
-	//objectElement=objectsElement;
-
 	id=objectElement->Attribute("id");
 	type=objectElement->Attribute("type");
 	cout<<"objecto "<<id<<endl;
@@ -907,152 +864,6 @@ bool SceneLoader::loadObjects()
 	return true;
 }
 
-/*
-void processGraphNode(TiXmlElement *parent, int nivel)
-// funcao recursiva de processamento do grafo
-// ao encontrar um n? aplica as definicoes declaradas e itera sobre os seus descendentes
-// nota: se um n?A, declarado em 'Nodes' aparecer instanciado uma vez no grafo com descendentes B e C
-// e posteriormente o n?A for novamente instanciado, a relacao de descendencia com B e C nao ?impleita.
-// Neste modelo o n??s?uma transformacao geometrica ou de atributos, nao uma definicao de um sub-grafo 
-// com varios na que pode ser reinstanciado
-{
-	TiXmlElement *child=parent->FirstChildElement();
-
-	// cria um prefixo de espacos para indentacao, apenas para visualizacao
-	int prefixLen=nivel*2;
-	char prefix[100];
-	memset(prefix,' ',prefixLen);
-	prefix[prefixLen]=0;
-
-	while (child)
-	{
-		if (strcmp(child->Value(),"Node")==0)
-		{
-			// ?um n?
-			printf("%s Nodo do tipo '%s' com id '%s'\n",prefix, child->Value(), child->Attribute("id"));
-			// acede aos dados do n?e aplica materiais, texturas, transformacoes
-			// para aceder ao n? existiriam varias alternativas
-			// aqui implementa-se uma pesquisa beica
-			TiXmlElement *node=findChildByAttribute(nodesElement,"id",child->Attribute("id"));
-
-			if (node)
-			{
-				printf("%s     - Material id: '%s' \n", prefix, node->FirstChildElement("material")->Attribute("id"));
-				printf("%s     - Texture id: '%s' \n", prefix, node->FirstChildElement("texture")->Attribute("id"));
-
-				// repetir para outros detalhes do n?
-			}
-
-
-			// processa recursivamente os seus descendentes
-			processGraphNode(child,nivel+1);
-		}
-		if (strcmp(child->Value(),"Leaf")==0)
-		{
-			// ?folha
-			printf("%s Folha do tipo '%s' com id '%s'\n",prefix, child->Value(), child->Attribute("id"));
-
-			// acede aos dados declarados na seccao Leaves
-			TiXmlElement *leaf=findChildByAttribute(leavesElement,"id",child->Attribute("id"));
-
-			if (leaf)
-			{
-				printf("%s     - tipo de folha: '%s' \n", prefix, leaf->Attribute("type"));
-				// repetir para outros detalhes do n?
-			}
-			
-			
-			// e faz o render propriamente dito de acordo com o tipo de primitiva
-			
-		}
-
-		child=child->NextSiblingElement();
-	}
-
-}
-
-void loadScene_exemplo2(void)
-{
-
-	// Read string from file
-
-	TiXmlDocument doc( "cena.xml" );
-	bool loadOkay = doc.LoadFile();
-
-	if ( !loadOkay )
-	{
-		printf( "Could not load test file 'demotest.xml'. Error='%s'. Exiting.\n", doc.ErrorDesc() );
-		exit( 1 );
-	}
-
-	initElement = doc.FirstChildElement( "Init" );
-	matsElement = doc.FirstChildElement( "Materials" );
-	textsElement =  doc.FirstChildElement( "Textures" );
-	leavesElement =  doc.FirstChildElement( "Leaves" );
-	nodesElement =  doc.FirstChildElement( "Nodes" );
-
-	graphElement =  doc.FirstChildElement( "Graph" );
-
-
-	// Inicializacao
-	// Um exemplo de um conjunto de na bem conhecidos e obrigatorios
-
-	if (initElement == NULL)
-		printf("Bloco Init não encontrado\n");
-	else
-	{
-		printf("Processing init:\n");
-		// frustum: exemplo para n?com parametros individuais
-		TiXmlElement* frustumElement=initElement->FirstChildElement("frustum");
-		if (frustumElement)
-		{
-			float near,far;
-
-			if (frustumElement->QueryFloatAttribute("near",&near)==TIXML_SUCCESS && 
-				frustumElement->QueryFloatAttribute("far",&far)==TIXML_SUCCESS
-				)
-				printf("  frustum attributes: %f %f\n", near, far);
-			else
-				printf("Error parsing frustum\n");
-		}
-		else
-			printf("frustum not found\n");
-
-
-		// translate: exemplo para um n?com um parifetro que aglutina varios floats
-		TiXmlElement* translateElement=initElement->FirstChildElement("translate");
-		if (translateElement)
-		{
-			char *valString=NULL;
-			float x,y,z;
-
-			valString=(char *) translateElement->Attribute("xyz");
-
-			if(valString && sscanf(valString,"%f %f %f",&x, &y, &z)==3)
-			{
-				printf("  translate values (XYZ): %f %f %f\n", x, y, z);
-			}
-			else
-				printf("Error parsing translate");
-		}
-		else
-			printf("translate not found\n");		
-
-		// repetir para cada uma das variaveis
-	}
-
-	// Validacao dos outros grupos seria feita aqui
-
-
-	// render graph
-	// iteracao recursiva
-	processGraphNode(graphElement,0);
-
-}*/
-
-
-
-
 bool SceneLoader::loadScene()
 { 
 	sgxElement = doc.FirstChildElement( "sgx" );
@@ -1062,9 +873,6 @@ bool SceneLoader::loadScene()
 	texturesElement = sgxElement->FirstChildElement("textures");
 	objectsElement = sgxElement->FirstChildElement("objects");
 	materialsElement = sgxElement->FirstChildElement("materials");
-
-	pointsElement = doc.FirstChildElement( "Points" );
-	polygonsElement = doc.FirstChildElement( "Polygons" );
 
 	Material * mat;
 	Texture * tex;
@@ -1175,13 +983,6 @@ bool SceneLoader::loadScene()
 		return false;
 	}
 
-	/*else if (pointsElement == NULL) {
-		cout << "Bloco Points nao encontrado\n";
-	}
-	else if(polygonsElement == NULL) {
-		cout << "Bloco Polygons nao encontrado\n";
-
-	}*/
 	return true;
 }
 
@@ -1224,93 +1025,6 @@ bool SceneLoader::loadCompound()
 		objs.at(i)->visited=false;
 	}
 	return true;
-}
-
-bool SceneLoader::loadGeometry()
-{
-	vector<string> geos;
-	for(TiXmlElement *child(objectElement->FirstChildElement()); child!=NULL; child=child->NextSiblingElement())
-	{
-		const string tag_geo(child->Value());
-		if(tag_geo=="geometry")
-		{
-			const string geo(child->Attribute("id"));
-			geos.push_back(geo);
-		}
-	}
-	return true;
-}
-
-//Carregar os pontos
-void SceneLoader::loadPoints() {
-
-	//Percorrer todos os elementos Point dentro do grupo Points do XML
-	for(TiXmlElement *child(pointsElement->FirstChildElement()); child != NULL; child = child->NextSiblingElement())
-	{
-		const string name(child->Value());
-
-		//Este bloco so pode conter tag's "Point"
-		if(name == "Point") {
-
-			point point_coord;
-			
-			//Ler o id do point
-			const string point_name(child->Attribute("id"));
-
-			//Ler os valor x,y,z do point
-			if(child->QueryFloatAttribute("x", &point_coord.x) == TIXML_SUCCESS &&
-				child->QueryFloatAttribute("y", &point_coord.y) == TIXML_SUCCESS &&
-				child->QueryFloatAttribute("z", &point_coord.z) == TIXML_SUCCESS)
-			{
-				//Guarda-los no map de points
-				pointsMap[point_name]=point_coord;
-			}
-		}
-		else {
-			//Erro
-			return;
-		}
-	}
-}
-
-//Carregar os poligonos
-void SceneLoader::loadPolygons(){
-	
-	//Percorrer todos os elementos Polygon dentro do grupo Polygons do XML
-	for(TiXmlElement *polygon(polygonsElement->FirstChildElement()); polygon != NULL; polygon = polygon->NextSiblingElement())
-	{
-		const string tag_polygon(polygon->Value());
-
-		vector<string> vec_temp;
-
-		//Este bloco so pode conter tag's "Polygon"
-		if(tag_polygon == "Polygon") {
-
-			//Ler o id do poligono
-			const string polygon_name(polygon->Attribute("id"));
-
-			//Ler todos os pontos que fazem parte desse poligono.
-			for(TiXmlElement *points(polygon->FirstChildElement()); points != NULL; points = points->NextSiblingElement()) {
-				const string tag_point(points->Value());
-
-				if(tag_point == "Point") {
-
-					//Ler o nome do ponto actual e guarda-lo no vector de pontos do poligono.
-					const string point_name(points->Attribute("id"));
-
-					vec_temp.push_back(point_name);
-				}
-				else return;
-			}
-
-			//Guardar o novo poligono no map de poligonos.
-			polygonsMap[polygon_name] = vec_temp;
-		}
-		else {
-			//Erro
-			return;
-		}
-	}
 }
 
 Texture * SceneLoader::findTexture(string id)

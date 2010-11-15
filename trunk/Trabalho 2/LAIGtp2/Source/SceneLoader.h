@@ -4,9 +4,6 @@
 #include "../tinyxml.h"
 #include "Object.h"
 #include "RGBpixmap.h"
-#include <map>
-#include <string>
-#include <vector>
 
 using namespace std;
 
@@ -30,16 +27,11 @@ public:
 		this->axisscale = axisscale;
 	}
 };
-///////////////////////////////////
-
 
 class SceneLoader {
 
 public:
-	map<string, point> pointsMap;
-	map<string, vector<string>> polygonsMap;
 
-	////////////adiconado
 	vector<Material *> materiais;
 	vector<Texture *> textures;
 	vector<Light *> lights;
@@ -68,21 +60,13 @@ public:
 		materialElement = NULL;
 		materialsElement = NULL;
 		texturesElement = NULL;
-		pointsElement = NULL;
-		polygonsElement = NULL;
-
-
 	}
-
-
-	////////////////
 
 	SceneLoader(const char * fileName);
 	bool loadScene();
 
 private:
   
-	//////////////////
 	TiXmlElement* sgxElement;
 	TiXmlElement* globalsElement;
 	TiXmlElement* viewElement;
@@ -97,25 +81,12 @@ private:
 	TiXmlElement* materialElement;
 	TiXmlElement* materialsElement;
 	TiXmlElement* texturesElement;
-	TiXmlElement* pointsElement;
 	//transformacoes
 	TiXmlElement* transformationElement;
 
-
-
-	//////////////////
-
-
-	TiXmlElement* polygonsElement;
 	TiXmlElement *root;
 	TiXmlDocument doc;
 
-	void loadPoints();
-	void loadPolygons();
-
-
-	////////adicionado
-	void loadSgx();
 	bool loadGlobals();
 	bool loadView();
 	bool loadIllumination();
@@ -133,11 +104,7 @@ private:
 	Object * findObject(string id);
 	bool aplicaMaterials(Object * o, Material * mat);
 	bool aplicaTextures(Object * o, Texture * tex);
-	
-	bool loadGeometry();
+
 };
-
-void loadScene_exemplo2(void);
-
 
 #endif

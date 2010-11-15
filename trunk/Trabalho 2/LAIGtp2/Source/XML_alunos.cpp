@@ -1,12 +1,7 @@
-// G1_Ilum.cpp : Defines the entry point for the console application.
-//
-
 #include "SceneLoader.h"
-
 
 #include <GL\glui.h>
 #include <math.h>
-#include <iostream>
 
 using namespace std;
 
@@ -28,18 +23,6 @@ float view_rotate[16] =	{ 1,0,0,0,
 
 // vector de posicao utilizado pelo botao de afastamento
 float obj_pos[] = { 0.0, 0.0, 0.0 };
-
-// declarações para os tres eixos (cilindros)
-double axis_radius_begin =  0.2;
-double axis_radius_end   =  0.0;
-double axis_lenght       = 16.0;
-int axis_nslices = 8;
-int axis_nstacks = 1;
-
-// declaracoes para a esfera de origem de coordenadas
-double orig_radius = 0.5;
-int orig_slices = 8;
-int orig_stacks =16;
 	
 // declaracoes para o plano e caixa
 float mat1_shininess[] = {128.0}; 
@@ -99,34 +82,6 @@ void open_textures()
 	}
 }
 
-
-//Utiliza as estruturas de dados com a informação do xml para construir o plano
-void desenhaPolygonos() {
-
-	map<string,vector<string>>::iterator it;
-	//Percorre todos os poligonos existentes no map de poligonos, na SceneLoader.
-	for ( it = scene->polygonsMap.begin() ; it != scene->polygonsMap.end(); it++ ) {
-		glBegin(GL_POLYGON);
-			glNormal3d(1.0,0.0,0.0); //Normal não calculada.
-			
-			//Percorrer todos os pontos do vector, pontos esses que compoe o poligono.
-			for(int i=0; i < (*it).second.size(); i++) {
-				
-				//Encontrar o ponto no map de pontos da cena.
-				map<string,point>::iterator it2 = scene->pointsMap.find( (*it).second[i] );
-
-				//Construir o poligono.
-				glVertex3d(
-					(*it2).second.x,
-					(*it2).second.y,
-					(*it2).second.z
-				);
-			}
-		glEnd();
-	}
-}
-
-
 void display(void)
 {
 	// ****** declaracoes internas 'a funcao display() ******
@@ -150,9 +105,6 @@ void display(void)
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 	
-	// afasta a cena de 25 unidades mais a distância...
-	//glTranslated(0.0,0.0,-25.0);
-	// ...decorrente da utilizacao do botao de afastamento
 	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
 	//glTranslatef( scene->view.trans.at(0)->getX(), scene->view.trans.at(0)->getY(), obj_pos[2]+scene->view.trans.at(0)->getZ() );    
 
@@ -191,17 +143,11 @@ void display(void)
 	// inibicao de atribuicao directa de cores
 	glDisable(GL_COLOR_MATERIAL);
 
-	////////////////////////////////////
-	////////desenhar a cena/////////////
-	////////////////////////////////////
-
 	// define caracteristicas de cor do material do plano e da caixa
 	/*glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
 	glMaterialfv(GL_FRONT, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
-
-	//desenhaPolygonos();
 
 	scene->root_object->draw();
 

@@ -1,9 +1,5 @@
-#include <string>
-#include <vector>
 #include <iostream>
 #include "globals.h"
-//#include <glui.h>
-
 
 using namespace std;
 
