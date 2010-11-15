@@ -8,16 +8,6 @@ using namespace std;
 // declarados aqui como globais por conveniência
 // idealmente tudo seria incluido numa classe
 
-struct point {
-	float x;
-	float y;
-	float z;
-};
-
-
-///////////////////
-/////adcionado/////
-///////////////////
 class Global
 {
 public:

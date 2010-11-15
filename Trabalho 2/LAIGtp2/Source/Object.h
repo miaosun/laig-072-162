@@ -1,7 +1,5 @@
 #include "Transformation.h"
 
-using namespace std;
-
 class Object
 {
 public:
@@ -16,10 +14,8 @@ public:
 	vector<Transformation *> transf;
 	Object(string id, string type, string mat_id, string tex_id, vector<Transformation *> transf);
 
-	//funcoes
 	void aplicaTransformacoes();
 
-	//funcoes abstractas
 	virtual vector<Object *> * getObjs()=0;
 	virtual vector<string> * getSObjs()=0;
 	virtual float getX1()=0;
