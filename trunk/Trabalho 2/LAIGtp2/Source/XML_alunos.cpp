@@ -449,11 +449,12 @@ int main(int argc, char* argv[])
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	glui2->add_column(true);
-	int light_enabled=0;
+
+	vector<int> light_enabled;
 	for(int i = 0; i < scene->lights.size(); i++)
 	{
-		light_enabled = scene->lights[i]->enabled;
-		glui2->add_checkbox(const_cast<char*> (scene->lights[i]->id.c_str()), &light_enabled,
+		light_enabled.push_back(scene->lights[i]->enabled);
+		glui2->add_checkbox(const_cast<char*> (scene->lights[i]->id.c_str()), &light_enabled[i],
 				LIGHT_ID+i, ctr_light );
 	}
 

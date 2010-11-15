@@ -496,7 +496,7 @@ bool SceneLoader::loadMaterials()
 bool SceneLoader::loadLight()
 {
 	int i_enabled;
-	bool enabled=true;
+	bool enabled;
 	string id = lightsElement->Attribute("id");
 	lightsElement->QueryIntAttribute("enabled", &i_enabled);
 	float r, g, b, a, x, y, z, w;
@@ -627,7 +627,7 @@ bool SceneLoader::loadObject()
 	float x, y, z, angle, x1, x2, x3, y1, y2, y3, z1, z2, z3, base, top, height, radius, inner, outer;
 	int slices, stacks;
 
-	objectElement=objectsElement;
+	//objectElement=objectsElement;
 
 	id=objectElement->Attribute("id");
 	type=objectElement->Attribute("type");
@@ -696,9 +696,9 @@ bool SceneLoader::loadObject()
 		transformationElement=transformationElement->NextSiblingElement();
 	}
 
-	objectElement=objectElement->FirstChildElement("material");
-	if(objectElement)
-		mat=objectElement->Attribute("id");
+	TiXmlElement* material=objectElement->FirstChildElement("material");
+	if(material)
+		mat=material->Attribute("id");
 	else
 	{
 		cout<<"o objecto "<<id<<" nao tem material definido\n";
@@ -706,9 +706,9 @@ bool SceneLoader::loadObject()
 		return false;
 	}
 
-	objectElement=objectElement->NextSiblingElement("texture");
-	if(objectElement)
-		tex=objectElement->Attribute("id");
+	TiXmlElement* texture=objectElement->FirstChildElement("texture");
+	if(texture)
+		tex=texture->Attribute("id");
 	else
 	{
 		cout<<"o objecto "<<id<<" nao tem textura definida\n";
@@ -718,15 +718,15 @@ bool SceneLoader::loadObject()
 
 	if(type=="simple")
 	{
-		objectElement=objectElement->NextSiblingElement("geometry");
-		if(objectElement)
+		TiXmlElement* geometry=objectElement->FirstChildElement("geometry");
+		if(geometry)
 		{
-			if(strcmp(objectElement->Attribute("type"),"rectangle")==0)
+			if(strcmp(geometry->Attribute("type"),"rectangle")==0)
 			{
-				if(objectElement->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS)
+				if(geometry->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS)
 				{
 					o=new Rectangle(id, mat, tex, transf_v, x1, y1, x2, y2);
 					objs.push_back(o);
@@ -739,17 +739,17 @@ bool SceneLoader::loadObject()
 					return false;
 				}
 			}
-			else if(strcmp(objectElement->Attribute("type"),"triangle")==0)
+			else if(strcmp(geometry->Attribute("type"),"triangle")==0)
 			{
-				if(objectElement->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("x3", &x3) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("y3", &y3) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("z1", &z1) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("z2", &z2) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("z3", &z3) == TIXML_SUCCESS)
+				if(geometry->QueryFloatAttribute("x1", &x1) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("x2", &x2) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("x3", &x3) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("y1", &y1) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("y2", &y2) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("y3", &y3) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("z1", &z1) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("z2", &z2) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("z3", &z3) == TIXML_SUCCESS)
 				{
 					o=new Triangle(id, mat, tex, transf_v, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 					objs.push_back(o);
@@ -764,13 +764,13 @@ bool SceneLoader::loadObject()
 					return false;
 				}
 			}
-			else if(strcmp(objectElement->Attribute("type"),"cylinder")==0)
+			else if(strcmp(geometry->Attribute("type"),"cylinder")==0)
 			{
-				if(objectElement->QueryFloatAttribute("base", &base) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("top", &top) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("height", &height) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
+				if(geometry->QueryFloatAttribute("base", &base) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("top", &top) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("height", &height) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
 				{
 					o=new Cylinder(id, mat, tex, transf_v, base, top, height, slices, stacks);
 					objs.push_back(o);
@@ -785,11 +785,11 @@ bool SceneLoader::loadObject()
 				}
 
 			}
-			else if(strcmp(objectElement->Attribute("type"),"sphere")==0)
+			else if(strcmp(geometry->Attribute("type"),"sphere")==0)
 			{
-				if(objectElement->QueryFloatAttribute("radius", &radius) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
+				if(geometry->QueryFloatAttribute("radius", &radius) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("stacks", &stacks) == TIXML_SUCCESS)
 				{
 					o=new Sphere(id, mat, tex, transf_v, radius, slices, stacks);
 					objs.push_back(o);
@@ -802,12 +802,12 @@ bool SceneLoader::loadObject()
 					return false;
 				}
 			}
-			else if(strcmp(objectElement->Attribute("type"),"disk")==0)
+			else if(strcmp(geometry->Attribute("type"),"disk")==0)
 			{
-				if(objectElement->QueryFloatAttribute("inner", &inner) == TIXML_SUCCESS &&
-					objectElement->QueryFloatAttribute("outer", &outer) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
-					objectElement->QueryIntAttribute("loops", &stacks) == TIXML_SUCCESS)
+				if(geometry->QueryFloatAttribute("inner", &inner) == TIXML_SUCCESS &&
+					geometry->QueryFloatAttribute("outer", &outer) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("slices", &slices) == TIXML_SUCCESS &&
+					geometry->QueryIntAttribute("loops", &stacks) == TIXML_SUCCESS)
 				{
 					o=new Disk(id, mat, tex, transf_v, inner, outer, slices, stacks);
 					objs.push_back(o);
@@ -836,16 +836,16 @@ bool SceneLoader::loadObject()
 	}
 	else if(type=="compound")
 	{
-		objectElement=objectElement->NextSiblingElement("children");
-		if(objectElement)
+		TiXmlElement* child=objectElement->FirstChildElement("children");
+		if(child)
 		{
 			cout<<"\n\tCompound:"<<id<<endl;
-			objectElement=objectElement->FirstChildElement();
-			while(objectElement)
+			child=child->FirstChildElement();
+			while(child)
 			{
-				if(strcmp(objectElement->Value(), "objectref")==0)
+				if(strcmp(child->Value(), "objectref")==0)
 				{
-					s_id.push_back(objectElement->Attribute("id"));
+					s_id.push_back(child->Attribute("id"));
 					cout<<"\tobjref: "<<s_id.back()<<endl;
 				}
 				else
@@ -854,7 +854,7 @@ bool SceneLoader::loadObject()
 					system("pause");
 					return false;
 				}
-				objectElement=objectElement->NextSiblingElement();
+				child=child->NextSiblingElement();
 			}
 			o=new Compound(id, mat, tex, transf_v, s_id);
 			objs.push_back(o);
@@ -878,10 +878,10 @@ bool SceneLoader::loadObject()
 bool SceneLoader::loadObjects()
 {
 	int nObjects=0;
-	objectsElement=objectsElement->FirstChildElement("object");
+	objectElement=objectsElement->FirstChildElement("object");
 	cout<<"Objects:";
 
-	while(objectsElement)
+	while(objectElement)
 	{
 		if(nObjects==global.maxobjects)
 		{
@@ -889,7 +889,7 @@ bool SceneLoader::loadObjects()
 			system("pause");
 			return false;
 		}
-		else if(strcmp(objectsElement->Value(), "object") == 0)
+		else if(strcmp(objectElement->Value(), "object") == 0)
 		{
 			if(!loadObject())
 				return false;
@@ -900,7 +900,7 @@ bool SceneLoader::loadObjects()
 			system("pause");
 			return false;
 		}
-		objectsElement=objectsElement->NextSiblingElement();
+		objectElement=objectElement->NextSiblingElement();
 		nObjects++;
 	}
 	cout<<endl;
