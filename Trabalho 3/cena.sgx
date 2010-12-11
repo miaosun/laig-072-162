@@ -1,0 +1,341 @@
+<!-- Os comentarios devem ter espacos no inicio e no fim, para -->
+<!-- separar dos hifens -->
+<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
+<!-- Todas as tags e atributos sao obrigatorios, excepto onde for -->
+<!-- referido o contrario -->
+
+<sgx>
+
+
+    <!-- tem de existir, pelo menos, uma luz, uma textura, um material -->
+    <!-- e um objecto -->
+    <globals maxlights="5" maxtextures="5" maxmaterials="5"
+             maxobjects="30" root="kinect"/>
+
+
+    <view near="0.05" far="1000" axisscale="0.04">
+        <translation x="0.0" y="0.0" z="-25.0" />
+        <rotation axis="x" angle="20.0" />
+        <rotation axis="y" angle="0.0" />
+        <rotation axis="z" angle="0.0" />
+        <scale x="1.0" y="1.0" z="1.0" />
+    </view>
+
+
+    <illumination doublesided="0" local="1" >
+
+        <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+        <background r="1.0" g="1.0" b="1.0" a="1.0" />
+
+        <lights>
+            <light id="light_1" enabled="1" >
+                <position x="-7.5" y="1.5" z="3.0" w="1.0" />
+                <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+                <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
+                <specular r="0.6" g="0.6" b="0.6" a="1.0" />
+            </light>
+        </lights>
+
+    </illumination>
+
+    <textures>
+        <!-- Deve existir um ou mais blocos "texture" -->
+        <!-- (até ao máximo declarado em "globals") -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <!-- s e t: factores de escala (ver notas finais) -->
+        <texture id="frente" file="frente.bmp" length_s="6.5" length_t="1.0" /> 
+    </textures>
+
+    <materials>
+        <!-- Deve existir um ou mais blocos "material" -->
+        <!-- (até ao máximo declarado em "globals") -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+
+        <material id="preta">
+            <emission r="0.0" g="0.0" b="0.0" a="0.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+            <shininess value="128.0" />
+        </material>
+
+		<material id="mat_2">
+            <emission r="0.0" g="0.0" b="0.0" a="0.0" />
+            <ambient r="0.0" g="0.1" b="1.0" a="0.5" />
+            <diffuse r="0.0" g="0.1" b="0.8" a="0.5" />
+            <specular r="0.0" g="0.1" b="1.0" a="0.5" />
+            <shininess value="64.0" />
+        </material>
+    </materials>
+
+  
+    <objects>
+
+        <!-- caixa preta -->
+        <object id="caixa" type="compound">
+            <transformations>
+				<translation x="0.0" y="1.5" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+
+            <children>
+                <objectref id="topo" />
+				<objectref id="baixo" />
+				<objectref id="l_esq" />
+				<objectref id="l_dir" />
+				<objectref id="tras" />
+				<objectref id="frente" />
+				<objectref id="camaras" />
+            </children>
+        </object>
+
+		<!-- camaras na frente -->
+		<object id="camaras" type="compound">
+            <transformations>
+				<translation x="0.0" y="0.0" z="3.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="projector" />
+				<objectref id="cam_1" />
+				<objectref id="cam_2" />
+            </children>
+        </object>
+
+		<!-- base piramidal com cabo -->
+		<object id="base" type="compound">
+            <transformations>
+				<translation x="0.0" y="-1.5" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="b_frente" />
+				<objectref id="b_tras" />
+				<objectref id="b_l_esq" />
+				<objectref id="b_l_dir" />
+				<objectref id="b_baixo" />
+				<objectref id="b_cabo" />
+            </children>
+        </object>
+
+		<!-- raiz com os tres conjuntos: camaras, caixa e base -->
+		<object id="kinect" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="null" />
+
+            <children>
+                <objectref id="caixa" />
+				<objectref id="base" />
+            </children>
+        </object>
+
+
+
+		<!-- começam os objectos simples -->
+
+		<!-- topo da caixa -->
+		<object id="topo" type="simple">
+            <transformations>
+				<translation x="0.0" y="2.0" z="0.0" />
+                <rotation axis="x" angle="-90.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-13.0" y1="-3.0" x2="13.0" y2="3.0" />
+        </object>
+
+		<!-- parte de baixo da caixa -->
+		<object id="baixo" type="simple">
+            <transformations>
+				<translation x="0.0" y="-2.0" z="0.0" />
+                <rotation axis="x" angle="90.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-13.0" y1="-3.0" x2="13.0" y2="3.0" />
+        </object>
+
+		<!-- lado esquerdo da caixa -->
+		<object id="l_esq" type="simple">
+            <transformations>
+				<translation x="-13.0" y="0.0" z="0.0" />
+                <rotation axis="y" angle="-90.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-3.0" y1="-2.0" x2="3.0" y2="2.0" />
+        </object>
+
+		<!-- lado direito da caixa -->
+		<object id="l_dir" type="simple">
+            <transformations>
+				<translation x="13.0" y="0.0" z="0.0" />
+                <rotation axis="y" angle="90.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-3.0" y1="-2.0" x2="3.0" y2="2.0" />
+        </object>
+
+		<!-- parte da frente da caixa, com textura -->
+		<object id="frente" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="3.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-13.0" y1="-2.0" x2="13.0" y2="2.0" />
+        </object>
+
+		<!-- parte de tras da caixa -->
+		<object id="tras" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="-3.0" />
+                <rotation axis="y" angle="180.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-13.0" y1="-2.0" x2="13.0" y2="2.0" />
+        </object>
+
+		<!-- triangulo frontal da base -->
+		<object id="b_frente" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.0" y1="1.5" z1="0.0"
+                                      x2="-4.0" y2="-1.5" z2="2.5"
+                                      x3="4.0" y3="-1.5" z3="2.5" />
+        </object>
+
+		<!-- triangulo de tras da base -->
+		<object id="b_tras" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.0" y1="1.5" z1="0.0"
+                                      x2="4.0" y2="-1.5" z2="-2.5"
+                                      x3="-4.0" y3="-1.5" z3="-2.5" />
+        </object>
+
+		<!-- triangulo do lado esquerdo da base -->
+		<object id="b_l_esq" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.0" y1="1.5" z1="0.0"
+                                      x2="-4.0" y2="-1.5" z2="-2.5"
+                                      x3="-4.0" y3="-1.5" z3="2.5" />
+        </object>
+
+		<!-- triangulo do lado direito da base -->
+		<object id="b_l_dir" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="triangle" x1="0.0" y1="1.5" z1="0.0"
+                                      x2="4.0" y2="-1.5" z2="2.5"
+                                      x3="4.0" y3="-1.5" z3="-2.5" />
+        </object>
+
+		<!-- parte de baixo da base -->
+		<object id="b_baixo" type="simple">
+            <transformations>
+				<translation x="0.0" y="-1.5" z="0.0" />
+				<rotation axis="x" angle="90.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="rectangle" x1="-4.0" y1="-2.5" x2="4.0" y2="2.5" />
+        </object>
+
+		<!-- cilindro que representa o cabo na base -->
+		<object id="b_cabo" type="simple">
+            <transformations>
+				<translation x="0.0" y="-1.0" z="-7.5" />
+				<rotation axis="x" angle="-10.0" />
+            </transformations>
+
+            <material id="preta" />
+            <texture id="null" />
+          
+            <geometry type="cylinder" base="0.5" top="0.5" height="8.0"
+                            slices="10" stacks="10" />
+        </object>
+	
+		<!-- disco representativo do projector IV -->
+		<object id="projector" type="simple">
+            <transformations>
+				<translation x="-7.0" y="0.0" z="0.1" />
+            </transformations>
+
+            <material id="mat_2" />
+            <texture id="null" />
+          
+            <geometry type="disk" inner="0.0" outer="1.3" slices="10" loops="10" />
+        </object>
+
+		<!-- esfera representativa do camara IV -->
+		<object id="cam_1" type="simple">
+            <transformations>
+				<translation x="-1.5" y="0.0" z="-0.4" />
+            </transformations>
+
+            <material id="mat_2" />
+            <texture id="null" />
+          
+            <geometry type="sphere" radius="1.3" slices="10" stacks="10" />
+        </object>
+
+		<!-- esfera representativa do camara cores -->
+		<object id="cam_2" type="simple">
+            <transformations>
+				<translation x="1.5" y="0.0" z="-0.4" />
+            </transformations>
+
+            <material id="mat_2" />
+            <texture id="null" />
+          
+            <geometry type="sphere" radius="1.3" slices="10" stacks="10" />
+        </object>
+
+    </objects>
+</sgx>
+
