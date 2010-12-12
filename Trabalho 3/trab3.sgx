@@ -13,8 +13,8 @@
              maxobjects="30" root="cena"/>
 
 
-    <view near="0.05" far="1000" axisscale="0.04">
-        <translation x="0.0" y="0.0" z="-25.0" />
+    <view near="0.05" far="1000" axisscale="0.03">
+        <translation x="0.0" y="0.0" z="-250.0" />
         <rotation axis="x" angle="20.0" />
         <rotation axis="y" angle="0.0" />
         <rotation axis="z" angle="0.0" />
@@ -29,7 +29,7 @@
 
         <lights>
             <light id="light_1" enabled="1" >
-                <position x="-7.5" y="1.5" z="3.0" w="1.0" />
+                <position x="-7.5" y="40.0" z="3.0" w="1.0" />
                 <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
                 <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
                 <specular r="0.6" g="0.6" b="0.6" a="1.0" />
@@ -44,7 +44,8 @@
         <!-- Os identificadores "id" nao podem ser repetidos -->
         <!-- s e t: factores de escala (ver notas finais) -->
         <texture id="wall" file="textures/wall_texture.bmp" length_s="20.0" length_t="20.0" /> 
-        <texture id="floor" file="textures/floor_texture.bmp" length_s="20.0" length_t="20.0" /> 		
+        <texture id="floor" file="textures/floor_texture.bmp" length_s="50.0" length_t="50.0" /> 		
+	    <texture id="monalisa" file="textures/monalisa.bmp" length_s="26.0" length_t="30.0" /> 		
 	</textures>
 
     <materials>
@@ -60,13 +61,30 @@
             <shininess value="128.0" />
         </material>
 
-		<material id="mat_2">
+		<material id="mat2">
             <emission r="0.0" g="0.0" b="0.0" a="0.0" />
             <ambient r="0.0" g="0.1" b="1.0" a="0.5" />
             <diffuse r="0.0" g="0.1" b="0.8" a="0.5" />
             <specular r="0.0" g="0.1" b="1.0" a="0.5" />
             <shininess value="64.0" />
         </material>
+		
+		<material id="branco">
+			<emission r="0.0" g="0.0" b="0.0" a="1.0"/>
+			<ambient  r="1.0" g="1.0" b="1.0" a="1.0"/>
+			<diffuse r="1.0" g="1.0" b="1.0" a="1.0"/>
+			<specular r="1.0" g="1.0" b="1.0" a="1.0"/>
+			<shininess value="128" />
+		</material> 
+		
+		<material id="table">
+			<emission r="0.0" g="0.0" b="0.0" a="1.0"/>
+			<ambient  r="0.80" g="0.52" b="0.25" a="1.0"/>
+			<diffuse r="0.8" g="0.52" b="0.25" a="1.0"/>
+			<specular r="0.8" g="0.52" b="0.25" a="1.0"/>
+			<shininess value="128" />
+		</material> 
+		
     </materials>
 
   
@@ -84,6 +102,7 @@
                 <objectref id="chao" />
 				<objectref id="paredes" />
 				<objectref id="mesa" />
+				<objectref id="retrato" />
             </children>
         </object>
 
@@ -95,7 +114,7 @@
             </transformations>
 
             <material id="null" />
-            <texture id="null" />
+            <texture id="clear" />
 
             <children>
                 <objectref id="parede_esq" />
@@ -107,47 +126,49 @@
 		
 		<object id="parede_esq" type="simple">
             <transformations>
-				<translation x="-100.0" y="0.0" z="-100.0"/>
-				<rotation axis="x" angle="90" />
+				<translation x="-100.0" y="50.0" z="0.0"/>
+				<rotation axis="y" angle="90" />
             </transformations>
 
-            <material id="null" />
+            <material id="branco" />
             <texture id="wall" />
           
-            <geometry type="rectangle" x1="-100.0" y1="-25.0" x2="100.0" y2="25.0" />
+            <geometry type="rectangle" x1="-100.0" y1="-50.0" x2="100.0" y2="50.0" />
         </object>
 
 		<object id="parede_dir" type="simple">
             <transformations>
-				<translation x="100.0" y="0.0" z="-100.0"/>
-				<rotation axis="x" angle="-90" />
+				<translation x="100.0" y="50.0" z="0.0"/>
+				<rotation axis="y" angle="-90" />
             </transformations>
 
-            <material id="preta" />
-            <texture id="null" />
+            <material id="branco" />
+            <texture id="wall" />
           
-            <geometry type="rectangle" x1="-100.0" y1="-25.0" x2="100.0" y2="25.0" />
+            <geometry type="rectangle" x1="-100.0" y1="-50.0" x2="100.0" y2="50.0" />
         </object>
 
 		<object id="parede_atras" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="-200.0"/>
+				<translation x="0.0" y="50.0" z="-100.0"/>
             </transformations>
 
-            <material id="preta" />
-            <texture id="null" />
+            <material id="branco" />
+            <texture id="wall" />
           
-            <geometry type="rectangle" x1="-100.0" y1="-25.0" x2="100.0" y2="25.0" />
+            <geometry type="rectangle" x1="-100.0" y1="-50.0" x2="100.0" y2="50.0" />
         </object>
 
 		<object id="parede_frente" type="simple">
             <transformations>
+				<translation x="0.0" y="50.0" z="100.0"/>
+				<rotation axis="y" angle="180" />
             </transformations>
 
-            <material id="preta" />
-            <texture id="null" />
+            <material id="branco" />
+            <texture id="wall" />
           
-            <geometry type="rectangle" x1="-100.0" y1="-25.0" x2="100.0" y2="25.0" />
+            <geometry type="rectangle" x1="-100.0" y1="-50.0" x2="100.0" y2="50.0" />
         </object>
 		
 <!-- paredes -->
@@ -172,10 +193,12 @@
 	
 		<object id="mesa_top" type="compound">
             <transformations>
+				<translation x="0.0" y="16.0" z="0.0"/>
+				<rotation axis="x" angle="-90" />
             </transformations>
 
             <material id="null" />
-            <texture id="null" />
+            <texture id="clear" />
 
             <children>
                 <objectref id="top_cima" />
@@ -189,30 +212,31 @@
 				<translation x="0.0" y="1.0" z="0.0"/>
             </transformations>
 
-            <material id="null" />
+            <material id="table" />
             <texture id="clear" />
           
-            <geometry type="disk" inner="0.0" outer="20.0" slices="10" loops="10" />
+            <geometry type="disk" inner="0.0" outer="20.0" slices="30" loops="20" />
         </object>
 
-		<object id="baixo" type="simple">
+		<object id="top_baixo" type="simple">
             <transformations>
+				<rotation axis="y" angle="180" />
             </transformations>
 
-            <material id="null" />
+            <material id="table" />
             <texture id="clear" />
           
-            <geometry type="disk" inner="0.0" outer="20.0" slices="10" loops="10" />
+            <geometry type="disk" inner="0.0" outer="20.0" slices="30" loops="20" />
         </object>
 
 		<object id="top_meio" type="simple">
             <transformations>
             </transformations>
 
-            <material id="null" />
+            <material id="table" />
             <texture id="clear" />
           
-            <geometry type=cylinder" base="20.0" top="20.0" height="10" slices="10" stacks="10" />
+            <geometry type="cylinder" base="20.0" top="20.0" height="1.0" slices="30" stacks="30" />
         </object>
 		
 	<!-- top da mesa -->
@@ -220,8 +244,10 @@
 		
 	<!-- leg da mesa -->
 	
-		<object id="mesa_leg" type="compound">
+		<object id="mesa_legs" type="compound">
             <transformations>
+				<translation x="0.0" y="8.0" z="0.0"/>
+				<rotation axis="z" angle="90" />
             </transformations>
 
             <material id="null" />
@@ -230,6 +256,8 @@
             <children>
                 <objectref id="leg1" />
 				<objectref id="leg2" />
+				<objectref id="leg3" />
+				<objectref id="leg4" />
 			</children>
         </object>
 		
@@ -237,10 +265,10 @@
 			<transformations>
 			</transformations>
 			
-			<material id="null" />
+			<material id="table" />
 			<texture id="clear" />
 			
-			 <geometry type="rectangle" x1="-5.0" y1="-5.0" x2="5.0" y2="5.0" />
+			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
 		</object>
 		
 		<object id="leg2" type="simple">
@@ -248,10 +276,32 @@
 				<rotation axis="x" angle="90" />
 			</transformations>
 			
-			<material id="null" />
+			<material id="table" />
 			<texture id="clear" />
 			
-			 <geometry type="rectangle" x1="-5.0" y1="-5.0" x2="5.0" y2="5.0" />
+			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
+		</object>
+		
+		<object id="leg3" type="simple">
+			<transformations>
+				<rotation axis="x" angle="180" />
+			</transformations>
+			
+			<material id="table" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
+		</object>
+		
+		<object id="leg4" type="simple">
+			<transformations>
+				<rotation axis="x" angle="-90" />
+			</transformations>
+			
+			<material id="table" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
 		</object>
 
 	<!-- leg da mesa -->
@@ -264,9 +314,10 @@
 
 		<object id="chao" type="simple">
             <transformations>
+				<rotation axis="x" angle="-90" />
             </transformations>
 
-            <material id="null" />
+            <material id="branco" />
             <texture id="floor" />
           
             <geometry type="rectangle" x1="-100.0" y1="-100.0" x2="100.0" y2="100.0" />
@@ -274,6 +325,20 @@
 
 <!-- chao -->
 
+<!-- retrato -->
+
+		<object id="chao" type="simple">
+            <transformations>
+				<translation x="0.0" y="50.0" z="-99.5"/>
+            </transformations>
+
+            <material id="branco" />
+            <texture id="monalisa" />
+          
+            <geometry type="rectangle" x1="-13.0" y1="-15.0" x2="13.0" y2="15.0" />
+        </object>
+
+<!-- retrato -->
 
     </objects>
 </sgx>
