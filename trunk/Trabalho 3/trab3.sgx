@@ -9,7 +9,7 @@
 
     <!-- tem de existir, pelo menos, uma luz, uma textura, um material -->
     <!-- e um objecto -->
-    <globals maxlights="5" maxtextures="5" maxmaterials="5"
+    <globals maxlights="5" maxtextures="10" maxmaterials="10"
              maxobjects="30" root="cena"/>
 
 
@@ -46,6 +46,9 @@
         <texture id="wall" file="textures/wall_texture.bmp" length_s="20.0" length_t="20.0" /> 
         <texture id="floor" file="textures/floor_texture.bmp" length_s="50.0" length_t="50.0" /> 		
 	    <texture id="monalisa" file="textures/monalisa.bmp" length_s="26.0" length_t="30.0" /> 		
+		<texture id="tex1" file="textures/tex1.bmp" length_s="30.0" length_t="65.0" /> 
+        <texture id="tex2" file="textures/tex2.bmp" length_s="30.0" length_t="60.0" /> 		
+	    <texture id="tex3" file="textures/tex3.bmp" length_s="40.0" length_t="40.0" />
 	</textures>
 
     <materials>
@@ -102,7 +105,11 @@
                 <objectref id="chao" />
 				<objectref id="paredes" />
 				<objectref id="mesa" />
-				<objectref id="retrato" />
+				<objectref id="retrato1" />
+				<objectref id="retrato2" />
+				<objectref id="retrato3" />
+				<objectref id="retrato4" />
+
             </children>
         </object>
 
@@ -254,14 +261,14 @@
             <texture id="clear" />
           
             <children>
-                <objectref id="leg1" />
-				<objectref id="leg2" />
-				<objectref id="leg3" />
-				<objectref id="leg4" />
+                <objectref id="mesa_leg1" />
+				<objectref id="mesa_leg2" />
+				<objectref id="mesa_leg3" />
+				<objectref id="mesa_leg4" />
 			</children>
         </object>
 		
-		<object id="leg1" type="simple">
+		<object id="mesa_leg1" type="simple">
 			<transformations>
 			</transformations>
 			
@@ -271,7 +278,7 @@
 			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
 		</object>
 		
-		<object id="leg2" type="simple">
+		<object id="mesa_leg2" type="simple">
 			<transformations>
 				<rotation axis="x" angle="90" />
 			</transformations>
@@ -282,7 +289,7 @@
 			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
 		</object>
 		
-		<object id="leg3" type="simple">
+		<object id="mesa_leg3" type="simple">
 			<transformations>
 				<rotation axis="x" angle="180" />
 			</transformations>
@@ -293,7 +300,7 @@
 			<geometry type="rectangle" x1="-8.0" y1="-13.0" x2="8.0" y2="13.0" />
 		</object>
 		
-		<object id="leg4" type="simple">
+		<object id="mesa_leg4" type="simple">
 			<transformations>
 				<rotation axis="x" angle="-90" />
 			</transformations>
@@ -327,9 +334,49 @@
 
 <!-- retrato -->
 
-		<object id="chao" type="simple">
+		<!-- esquerda -->
+		<object id="retrato1" type="simple">
+            <transformations>
+				<translation x="-99.5" y="50.0" z="0.0"/>
+				<rotation axis="y" angle="90" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="tex1" />
+          
+            <geometry type="rectangle" x1="-15.0" y1="-32.5" x2="15.0" y2="32.5" />
+        </object>
+		
+		<!-- atras -->
+		<object id="retrato2" type="simple">
             <transformations>
 				<translation x="0.0" y="50.0" z="-99.5"/>
+            </transformations>
+
+            <material id="branco" />
+            <texture id="tex2" />
+          
+			<geometry type="rectangle" x1="-30.0" y1="-15.0" x2="30.0" y2="15.0" />
+        </object>
+		
+		<!-- direita -->
+		<object id="retrato3" type="simple">
+            <transformations>
+				<translation x="99.5" y="50.0" z="0.0"/>
+				<rotation axis="y" angle="-90" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="tex3" />
+			
+			<geometry type="rectangle" x1="-20.0" y1="-20.0" x2="20.0" y2="20.0" />
+        </object>
+
+		<!-- frente -->
+		<object id="retrato4" type="simple">
+            <transformations>
+				<translation x="0.0" y="50.0" z="99.5"/>
+				<rotation axis="y" angle="180" />
             </transformations>
 
             <material id="branco" />

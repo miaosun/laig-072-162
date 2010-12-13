@@ -1,0 +1,70 @@
+<!-- cadeira1 -->
+
+		<object id="cadeira1" type="compound">
+            <transformations>
+
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <children>
+                <objectref id="cad_leg1" />
+				<objectref id="cad_leg2" />
+				<objectref id="cad_leg3" />
+				<objectref id="cad_leg4" />
+				<objectref id="quad_h1" />
+				<objectref id="quad_h2" />
+				<objectref id="quad_v1" />
+				<objectref id="quad_v2" />
+			</children>
+        </object>
+		
+		<object id="cad_leg1" type="simple">
+			<transformations>
+			</transformations>
+			
+			<material id="mesa" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-13.0" y1="-15.0" x2="13.0" y2="15.0" />
+        </object>
+		
+		<object id="cad_leg2" type="simple">
+			<transformations>
+			</transformations>
+			
+			<material id="mesa" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-13.0" y1="-15.0" x2="13.0" y2="15.0" />
+        </object>
+
+		<object id="cad_leg3" type="simple">
+			<transformations>
+			</transformations>
+			
+			<material id="mesa" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-13.0" y1="-15.0" x2="13.0" y2="15.0" />
+        </object>
+
+		<object id="cad_leg4" type="simple">
+			<transformations>
+			</transformations>
+			
+			<material id="mesa" />
+			<texture id="clear" />
+			
+			<geometry type="rectangle" x1="-13.0" y1="-15.0" x2="13.0" y2="15.0" />
+        </object>
+
+
+<!-- cadeira1 -->
+
+<!-- cadeira2 -->
+
+
+
+<!-- cadeira2 -->
