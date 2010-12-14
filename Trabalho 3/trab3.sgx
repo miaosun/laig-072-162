@@ -46,9 +46,9 @@
         <texture id="wall" file="textures/wall_texture.bmp" length_s="20.0" length_t="20.0" /> 
         <texture id="floor" file="textures/floor_texture.bmp" length_s="50.0" length_t="50.0" /> 		
 	    <texture id="monalisa" file="textures/monalisa.bmp" length_s="26.0" length_t="30.0" /> 		
-		<texture id="tex1" file="textures/tex1.bmp" length_s="30.0" length_t="65.0" /> 
-        <texture id="tex2" file="textures/tex2.bmp" length_s="30.0" length_t="60.0" /> 		
-	    <texture id="tex3" file="textures/tex3.bmp" length_s="40.0" length_t="40.0" />
+		<texture id="tex1" file="textures/zihua.bmp" length_s="30.0" length_t="65.0" /> 
+        <texture id="tex2" file="textures/fendou.bmp" length_s="60.0" length_t="30.0" /> 		
+	    <texture id="tex3" file="textures/qmsht.bmp" length_s="40.0" length_t="40.0" />
 	</textures>
 
     <materials>
