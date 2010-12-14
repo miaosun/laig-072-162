@@ -10,7 +10,7 @@
     <!-- tem de existir, pelo menos, uma luz, uma textura, um material -->
     <!-- e um objecto -->
     <globals maxlights="5" maxtextures="10" maxmaterials="10"
-             maxobjects="50" root="cena"/>
+             maxobjects="100" root="cena"/>
 
 
     <view near="0.05" far="1000" axisscale="0.03">
@@ -110,6 +110,8 @@
 				<objectref id="retrato3" />
 				<objectref id="retrato4" />
 				<objectref id="cadeira1" />
+				<objectref id="cadeira2" />
+				<objectref id="tabuleiro" />
             </children>
         </object>
 
@@ -391,7 +393,6 @@
 
 		<object id="cadeira1" type="compound">
             <transformations>
-
             </transformations>
 
             <material id="null" />
@@ -594,6 +595,282 @@
         </object>
 
 <!-- cadeira1 -->
+
+<!-- cadeira2 -->
+		<object id="cadeira2" type="compound">
+			<transformations>
+				<rotation axis="y" angle="180" />
+			</transformations>
+			
+			<material id="null" />
+			<texture id="clear" />
+			
+			<children>
+                <objectref id="cadeira1" />
+			</children>
+        </object>
+<!-- cadeira2 -->
+
+<!-- tabuleiro -->
+		<object id="tabuleiro" type="compound">
+            <transformations>
+				<translation x="0.0" y="16.5" z="0.0" />
+				<rotation axis="x" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="lin1" />
+				<objectref id="lin2" />
+				<objectref id="lin3" />
+				<objectref id="lin4" />
+				<objectref id="lin5" />
+				<objectref id="lin6" />
+				<objectref id="lin7" />
+            </children>
+        </object>
+		
+		<object id="quad" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+        </object>
+
+	<!-- lin1 -->
+		<object id="lin1" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="lin1c" />
+				<objectref id="lin1d" />
+				<objectref id="lin1e" />
+            </children>
+        </object>
+		
+		<object id="lin1c" type="compound">
+            <transformations>
+				<translation x="-4.0" y="12.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+		
+		<object id="lin1d" type="compound">
+            <transformations>
+				<translation x="0.0" y="12.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+		
+		<object id="lin1e" type="compound">
+            <transformations>
+				<translation x="4.0" y="12.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+	<!-- lin1 -->
+		
+		
+	<!-- lin2 -->
+		<object id="lin2" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin2b" />
+				<objectref id="lin2cde" />
+				<objectref id="lin2f" />
+            </children>
+        </object>
+		
+		<object id="lin2b" type="compound">
+            <transformations>
+				<translation x="-8.0" y="8.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+		
+		<object id="lin2cde" type="compound">
+            <transformations>
+				<translation x="0.0" y="-4.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="lin1" />
+			</children>    
+        </object>
+		
+		<object id="lin2f" type="compound">
+            <transformations>
+				<translation x="8.0" y="8.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+	<!-- lin2 -->	
+
+
+	<!-- lin3 -->
+		<object id="lin3" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin3a" />
+				<objectref id="lin3bcdef" />
+				<objectref id="lin3g" />
+            </children>
+        </object>
+		
+		<object id="lin3a" type="compound">
+            <transformations>
+				<translation x="-12.0" y="4.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+		
+		<object id="lin3bcdef" type="compound">
+            <transformations>
+				<translation x="0.0" y="-4.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="lin2" />
+			</children>    
+        </object>
+		
+		<object id="lin3g" type="compound">
+            <transformations>
+				<translation x="12.0" y="4.0" z="0.0" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="clear" />
+          
+			<children>
+                <objectref id="quad" />
+			</children>    
+        </object>
+	<!-- lin3 -->	
+
+	<!-- lin4 -->
+		<object id="lin4" type="compound">
+            <transformations>
+				<translation x="0.0" y="-4.0" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin3" />
+            </children>
+        </object>
+	<!-- lin4 -->	
+
+	<!-- lin5 -->
+		<object id="lin5" type="compound">
+            <transformations>
+				<translation x="0.0" y="-4.0" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin4" />
+            </children>
+        </object>
+	<!-- lin5 -->	
+
+	<!-- lin6 -->
+		<object id="lin6" type="compound">
+            <transformations>
+				<translation x="0.0" y="-16.0" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin2" />
+            </children>
+        </object>
+	<!-- lin6 -->	
+
+	<!-- lin7 -->
+		<object id="lin7" type="compound">
+            <transformations>
+				<translation x="0.0" y="-24.0" z="0.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="lin1" />
+            </children>
+        </object>
+	<!-- lin7 -->	
+<!-- tabuleiro -->
+
+
 
     </objects>
 </sgx>
