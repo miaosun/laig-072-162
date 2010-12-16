@@ -1,12 +1,21 @@
 #include <string>
+#include <sstream>
+#include <fstream>
 #include <vector>
+#include <stdlib.h>
+#include <iostream>
 #include <glui.h>
+#include <stdio.h>
+#include <ctype.h>
 
 using namespace std;
 
 // Apontadores para os principais grupos
 // declarados aqui como globais por conveniência
 // idealmente tudo seria incluido numa classe
+
+class Excepcao{};
+
 
 class Global
 {

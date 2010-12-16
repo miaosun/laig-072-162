@@ -67,18 +67,58 @@ float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient ligh
 int main_window;
 GLUI  *glui2;
 RGBpixmap pixmap;
-SceneLoader *scene;
+vector<SceneLoader *> cenas;
+int cena_actual;
+
+bool loadCenas(string filename)
+{
+	SceneLoader * cena;
+	stringstream ss;
+	unsigned int size;
+	string linha;
+	vector<string> v;
+	ifstream myfile (filename.c_str());
+	if(myfile.is_open())
+	{
+		getline(myfile, linha);
+		ss<<linha;
+		ss>>size;//primeira linha com numero de .sgx
+		
+		if(size>0)
+		{
+			for(unsigned int i=0; i<size; i++)
+			{
+				getline(myfile, linha);
+				cena=new SceneLoader(linha.c_str());
+				cenas.push_back(cena);
+			}
+			cout<<endl<<endl<<"Cenas importadas com sucesso!"<<endl<<endl;
+		}
+		else
+		{
+			cout<<"\nFicheiro de configuracao num formato desconhecido!\n";
+			return false;
+		}
+		myfile.close();
+		return true;
+	}
+	else
+	{
+		cout<<"Nao foi possivel abrir o ficheiro de configuracao "<<filename<<"!"<<endl<<endl;
+	}
+	return false;
+}
 
 void open_textures()
 {
 	char* fname;
 
-	for(unsigned int i=0; i<scene->textures.size(); i++)
+	for(unsigned int i=0; i<cenas.at(cena_actual)->textures.size(); i++)
 	{
-		fname = const_cast<char*> (scene->textures[i]->file.c_str());
+		fname = const_cast<char*> (cenas.at(cena_actual)->textures[i]->file.c_str());
 		pixmap.readBMPFile(fname);
 		pixmap.setTexture(i+1);
-		scene->textures[i]->n_texture = i+1;
+		cenas.at(cena_actual)->textures[i]->n_texture = i+1;
 	}
 }
 
@@ -98,22 +138,22 @@ void display(void)
 	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, scene->view.near, scene->view.far);
-	glFrustum( -xy_aspect*scene->view.axisscale, xy_aspect*scene->view.axisscale, -scene->view.axisscale, scene->view.axisscale, scene->view.near, scene->view.far);
+	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
+	glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
 	
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 	
 	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
-	//glTranslatef( scene->view.trans.at(0)->getX(), scene->view.trans.at(0)->getY(), obj_pos[2]+scene->view.trans.at(0)->getZ() );    
+	//glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
 
 	// roda a cena para ficar em perspectiva
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
 	//glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
 
-	for(unsigned int i=0; i<scene->view.trans.size(); i++)
-		scene->view.trans.at(i)->apply();
+	for(unsigned int i=0; i<cenas.at(cena_actual)->view.trans.size(); i++)
+		cenas.at(cena_actual)->view.trans.at(i)->apply();
 
 	// aplica efeito do botao de rotacao
 	glMultMatrixf( view_rotate );
@@ -124,16 +164,16 @@ void display(void)
 	glEnable(GL_COLOR_MATERIAL);
 
 	// Actualizacao da posicao da fonte de luz
-	for(unsigned int i=0; i<scene->lights.size(); i++)
+	for(unsigned int i=0; i<cenas.at(cena_actual)->lights.size(); i++)
 	{
 		// esferas que simboliza as fontes d luzes
 
-		glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
+		glLightfv(GL_LIGHT0+i, GL_POSITION, cenas.at(cena_actual)->lights[i]->position);
 
 		glColor3f(1.0,1.0,0.0);		// cor amarela
 		gluQuadricOrientation( glQ, GLU_INSIDE);
 		glPushMatrix();
-		glTranslated(scene->lights[i]->position[0],scene->lights[i]->position[1],scene->lights[i]->position[2]);
+		glTranslated(cenas.at(cena_actual)->lights[i]->position[0],cenas.at(cena_actual)->lights[i]->position[1],cenas.at(cena_actual)->lights[i]->position[2]);
 		gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
 		glPopMatrix();
 
@@ -149,7 +189,7 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
 
-	scene->root_object->draw();
+	cenas.at(cena_actual)->root_object->draw();
 
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
@@ -295,23 +335,23 @@ void inicializacao()
 	glCullFace(GL_BACK);		/* Cull only back faces. */
 
 	// por defeito a cor e de fundo e o preto
-	glClearColor(scene->illumination.backgroud[0],scene->illumination.backgroud[1],scene->illumination.backgroud[2],scene->illumination.backgroud[3]);
+	glClearColor(cenas.at(cena_actual)->illumination.backgroud[0],cenas.at(cena_actual)->illumination.backgroud[1],cenas.at(cena_actual)->illumination.backgroud[2],cenas.at(cena_actual)->illumination.backgroud[3]);
 
-	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, scene->illumination.doublesided);
-	glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, scene->illumination.local);
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, scene->illumination.ambient);  // define luz ambiente
+	glLightModelf (GL_LIGHT_MODEL_TWO_SIDE, cenas.at(cena_actual)->illumination.doublesided);
+	glLightModeli (GL_LIGHT_MODEL_LOCAL_VIEWER, cenas.at(cena_actual)->illumination.local);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, cenas.at(cena_actual)->illumination.ambient);  // define luz ambiente
 	
 	glEnable(GL_LIGHTING);
-	for(unsigned int i=0; i<scene->lights.size(); i++)
+	for(unsigned int i=0; i<cenas.at(cena_actual)->lights.size(); i++)
 	{
 		// parametros de iluminacao
-		glLightfv(GL_LIGHT0+i, GL_AMBIENT, scene->lights[i]->ambient);
-		glLightfv(GL_LIGHT0+i, GL_DIFFUSE, scene->lights[i]->diffuse);
-		glLightfv(GL_LIGHT0+i, GL_SPECULAR, scene->lights[i]->specular);
+		glLightfv(GL_LIGHT0+i, GL_AMBIENT, cenas.at(cena_actual)->lights[i]->ambient);
+		glLightfv(GL_LIGHT0+i, GL_DIFFUSE, cenas.at(cena_actual)->lights[i]->diffuse);
+		glLightfv(GL_LIGHT0+i, GL_SPECULAR, cenas.at(cena_actual)->lights[i]->specular);
 
-		//glLightfv(GL_LIGHT0+i, GL_POSITION, scene->lights[i]->position);
+		//glLightfv(GL_LIGHT0+i, GL_POSITION, cenas.at(cena_actual)->lights[i]->position);
 
-		if(scene->lights[i]->enabled)
+		if(cenas.at(cena_actual)->lights[i]->enabled)
 			glEnable(GL_LIGHT0+i);
 	}
 
@@ -331,19 +371,19 @@ void inicializacao()
 
 void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos checkboxes
 {
-	for(int i = 0; i < scene->lights.size(); i++)
+	for(int i = 0; i < cenas.at(cena_actual)->lights.size(); i++)
 	{
 		if ( control == LIGHT_ID+i)
 		{
-			if ( !scene->lights[i]->enabled )
+			if ( !cenas.at(cena_actual)->lights[i]->enabled )
 			{
 				glEnable( GL_LIGHT0+i );
-				scene->lights[i]->enabled = true;
+				cenas.at(cena_actual)->lights[i]->enabled = true;
 			}
 			else 
 			{
 				glDisable( GL_LIGHT0 +i); 
-				scene->lights[i]->enabled = false;
+				cenas.at(cena_actual)->lights[i]->enabled = false;
 			}
 		}
 	}
@@ -351,12 +391,25 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 
 int main(int argc, char* argv[])
 {
-	string filename;
-	cout<<"filename: ";
-	getline(cin, filename);
-	scene = new SceneLoader(filename.c_str());
+	cena_actual=0;
+	try
+	{
+		if(!loadCenas("config.dll"))
+		{
+			cout<<"problema a fazer load das cenas\n";
+			system("pause");
+			return 0;
+		}
+	}
+	catch (Excepcao e)
+	{
+		cout<<"ficheiro de cena inexistente!\n";
+		system("pause");
+		return 0;
+	}
 
-	if(!scene->loadScene())
+
+	if(!cenas.at(cena_actual)->loadScene())
 	{
 		cout<<"nao fez load correctamente!\n";
 		system("pause");
@@ -397,10 +450,10 @@ int main(int argc, char* argv[])
 	glui2->add_column(true);
 
 	vector<int> light_enabled;
-	for(int i = 0; i < scene->lights.size(); i++)
+	for(int i = 0; i < cenas.at(cena_actual)->lights.size(); i++)
 	{
-		light_enabled.push_back(scene->lights[i]->enabled);
-		glui2->add_checkbox(const_cast<char*> (scene->lights[i]->id.c_str()), &light_enabled[i],
+		light_enabled.push_back(cenas.at(cena_actual)->lights[i]->enabled);
+		glui2->add_checkbox(const_cast<char*> (cenas.at(cena_actual)->lights[i]->id.c_str()), &light_enabled[i],
 				LIGHT_ID+i, ctr_light );
 	}
 

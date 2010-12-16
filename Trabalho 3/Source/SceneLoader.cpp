@@ -9,8 +9,7 @@ SceneLoader::SceneLoader(const char * fileName):
 	if ( !loadOkay )
 	{
 	  // fazer subclassing ?classe exception para dar mais informações...
-		cout<<"erro no load do xml\n";
-		system("pause");
+		throw Excepcao();
 	}
 
 	this->mat_base=new Material();
