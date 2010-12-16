@@ -1,74 +1,11 @@
 #include "SceneLoader.h"
+#include "Picking.h"
 
 #include <GL\glui.h>
 #include <math.h>
 
 using namespace std;
 
-// dimensoes e localizacao da janela
-#define DIMX 500
-#define DIMY 500
-#define INITIALPOS_X 200
-#define INITIALPOS_Y 200
-
-#define LIGHT_ID 100
-
-float xy_aspect;
-
-// matriz de transf. geometrica utilizada pelo botao esferico
-float view_rotate[16] =	{ 1,0,0,0,
-						  0,1,0,0,
-						  0,0,1,0,
-						  0,0,0,1 };
-
-// vector de posicao utilizado pelo botao de afastamento
-float obj_pos[] = { 0.0, 0.0, 0.0 };
-	
-// declaracoes para o plano e caixa
-float mat1_shininess[] = {128.0}; 
-
-//float mat1_specular[] = {1.0,1.0,1.0};	/* specular reflection. */
-float mat1_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
-//float mat1_diffuse[] =  {0.0, 0.0, 0.0, 1.0};	/* diffuse reflection. */
-float mat1_diffuse[] =  {0.6, 0.6, 0.6, 1.0};	/* diffuse reflection. */
-float mat1_ambient[] =  {0.6, 0.6, 0.6, 1.0};	/* ambient reflection. */
-double dimx= 6.0;
-double dimy= 2.0;
-double dimz=10.0;
-
-float light0_kc=0.0;
-float light0_kl=0.0;
-float light0_kq=0.1;
-
-// declarações para as stripes que formam o plano
-double i,j;
-double di, limi=dimx, divisoes_i = 60;	//60
-double dj, limj=dimz, divisoes_j = 100;	//100
-
-// declarações para a fonte de luz LIGHT0;
-float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
-float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
-//float light0_diffuse[] =   {1.0, 1.0, 0.0, 0.0};
-float light0_diffuse[] =   {0.8, 0.8, 0.8, 1.0};
-//float light0_specular[] =  {0.0, 0.0, 0.0, 0.0};
-float light0_specular[] =  {0.8, 0.8, 0.8, 1.0};
-double light0x = dimx/2.0;
-double light0y = 1;
-double light0z = dimz/4.0;
-double symb_light0_radius = 0.2;	// esfera que
-int symb_light0_slices = 8;			// simboliza a
-int symb_light0_stacks =16;			// fonte de luz light0
-
-// fonte (global) de luz ambiente 
-//float light_ambient[] = {0.0, 0.0, 0.0, 1.0}; /* Set the background ambient lighting. */
-float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient lighting. */
-
-// variaveis para a janela
-int main_window;
-GLUI  *glui2;
-RGBpixmap pixmap;
-vector<SceneLoader *> cenas;
-int cena_actual;
 
 bool loadCenas(string filename)
 {
@@ -122,11 +59,12 @@ void open_textures()
 	}
 }
 
+
 void display(void)
 {
 	// ****** declaracoes internas 'a funcao display() ******
 
-	GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
+	//GLUquadric* glQ;	// nec. p/ criar sup. quadraticas (cilindros, esferas...)
 
 	// ****** fim de todas as declaracoes da funcao display() ******
 
@@ -138,15 +76,17 @@ void display(void)
 	
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
-	glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
+
+	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
+	//glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
 	
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
+
 	
-	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
-	//glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
+	//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
+	glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
 
 	// roda a cena para ficar em perspectiva
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -201,14 +141,66 @@ void display(void)
 /* Mouse handling */
 void processMouse(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{	 
+	GLint hits;
+	GLint viewport[4];
+
+	//update our button state
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		if(state == GLUT_DOWN)
+			MouseState.leftButton = true;
+		else
+			MouseState.leftButton = false;
 	}
-	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+
+	if (button == GLUT_RIGHT_BUTTON)
 	{	
+		if(state == GLUT_DOWN)
+			MouseState.rightButton = true;
+		else
+			MouseState.rightButton = false;
+	}
+
+	if(button == GLUT_MIDDLE_BUTTON)
+	{
+		if(state == GLUT_MIDDLE_BUTTON)
+			MouseState.middleButton = true;
+		else
+			MouseState.middleButton = false;
 	}
 	
-	glutPostRedisplay();
+	// update our position so we know a delta when the mouse is moved
+	MouseState.x = x;
+	MouseState.y = y;
+	
+	if (MouseState.leftButton && !MouseState.rightButton && !MouseState.middleButton) {
+		/* obrigatorio para o picking */
+		// obter o viewport actual
+		glGetIntegerv(GL_VIEWPORT, viewport);
+
+		glSelectBuffer (BUFSIZE, selectBuf);
+		glRenderMode (GL_SELECT);
+
+		// inicia processo de picking
+		glInitNames();
+		glMatrixMode (GL_PROJECTION);
+		glPushMatrix ();
+
+		//  cria uma região de 5x5 pixels em torno do click do rato para o processo de picking
+		glLoadIdentity ();
+		gluPickMatrix ((GLdouble) x, (GLdouble) (window_h - y), 1.0, 1.0, viewport);
+
+		drawScene(GL_SELECT);
+
+		glMatrixMode (GL_PROJECTION);
+		glPopMatrix ();
+		glFlush ();
+
+		hits = glRenderMode(GL_RENDER);
+		processHits(hits, selectBuf);
+	}
+
+	//glutPostRedisplay();
 	
 }
 
@@ -216,7 +208,7 @@ void processMouseMoved(int x, int y)
 {
 	
 	// pedido de refrescamento da janela
-	glutPostRedisplay();				
+	//glutPostRedisplay();				
 
 }
 
@@ -230,6 +222,9 @@ void processPassiveMouseMoved(int x, int y)
 void reshape(int w, int h)
 {
 	int tx, ty, tw, th;
+
+	window_w = w;	//variaveis globais; window_h e' usado em processMouse()
+	window_h = h;
 
 	GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );
 	glViewport( tx, ty, tw, th );
