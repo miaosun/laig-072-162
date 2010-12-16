@@ -27,7 +27,7 @@ Object(id, "compound", mat_id, tex_id, transf)
 
 void Compound::draw()
 {
-	cout<<"vai desenhar compoud "<<this->id<<endl;
+	//cout<<"vai desenhar compoud "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 	for(unsigned int i=0; i<this->objs.size(); i++)
@@ -59,7 +59,7 @@ void Rectangle::draw()
 	if(this->mat!=NULL)
 		mat->apply();
 
-	cout<<"  draw rectangle "<<this->id<<endl;
+	//cout<<"  draw rectangle "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 	if((this->y2 > this->y1) && (this->x2 > this->x1))
@@ -137,7 +137,7 @@ void Triangle::draw()
 	if(this->mat!=NULL)
 		mat->apply();
 	calcNorm();
-	cout<<"  draw triangle "<<this->id<<endl;
+	//cout<<"  draw triangle "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 		glBegin(GL_POLYGON);
@@ -199,7 +199,7 @@ void Sphere::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-	cout<<"  draw sphere "<<this->id<<endl;
+	//cout<<"  draw sphere "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 		gluSphere(glQ, this->radius, this->slices, this->stacks);
@@ -233,7 +233,7 @@ void Cylinder::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-	cout<<"  draw cylinder "<<this->id<<endl;
+	//cout<<"  draw cylinder "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 		gluCylinder(glQ, this->base, this->top, this->height, this->slices, this->stacks);
@@ -265,7 +265,7 @@ void Disk::draw()
 	}
 	if(this->mat!=NULL)
 		mat->apply();
-	cout<<"  draw disk "<<this->id<<endl;
+	//cout<<"  draw disk "<<this->id<<endl;
 	glPushMatrix();
 	aplicaTransformacoes();
 		gluDisk(glQ, this->inner, this->outer, this->slices, this->loops);

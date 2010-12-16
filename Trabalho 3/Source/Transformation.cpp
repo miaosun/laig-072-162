@@ -16,17 +16,17 @@ void Rotation::apply()
 	if(this->axis=="x")
 	{
 		glRotated(this->angle, 1.0, 0.0, 0.0);
-		cout<<"    glRotated("<<this->angle<<", 1.0, 0.0, 0.0);"<<endl;
+		//cout<<"    glRotated("<<this->angle<<", 1.0, 0.0, 0.0);"<<endl;
 	}
 	else if(this->axis=="y")
 	{
 		glRotated(this->angle, 0.0, 1.0, 0.0);
-		cout<<"    glRotated("<<this->angle<<", 0.0, 1.0, 0.0);"<<endl;
+		//cout<<"    glRotated("<<this->angle<<", 0.0, 1.0, 0.0);"<<endl;
 	}
 	else if(this->axis=="z")
 	{
 		glRotated(this->angle, 0.0, 0.0, 1.0);
-		cout<<"    glRotated("<<this->angle<<", 1.0, 0.0, 0.0);"<<endl;
+		//cout<<"    glRotated("<<this->angle<<", 1.0, 0.0, 0.0);"<<endl;
 	}
 	else
 	{
@@ -45,7 +45,7 @@ Translation::Translation(float x, float y, float z):Transformation("trans")
 void Translation::apply()
 {
 	glTranslated(this->x, this->y, this->z);
-	cout<<"    glTranslated("<<this->x<<", "<<this->y<<", "<<this->z<<");"<<endl;
+	//cout<<"    glTranslated("<<this->x<<", "<<this->y<<", "<<this->z<<");"<<endl;
 }
 
 Scale::Scale(float x, float y, float z):Transformation("scl")
@@ -58,5 +58,5 @@ Scale::Scale(float x, float y, float z):Transformation("scl")
 void Scale::apply()
 {
 	glScaled(this->x, this->y, this->z);
-	cout<<"    glScaled("<<this->x<<", "<<this->y<<", "<<this->z<<");"<<endl;
+	//cout<<"    glScaled("<<this->x<<", "<<this->y<<", "<<this->z<<");"<<endl;
 }
