@@ -6,6 +6,9 @@
 
 using namespace std;
 
+RGBpixmap pixmap;
+vector<SceneLoader *> cenas;
+int cena_actual;
 
 bool loadCenas(string filename)
 {
