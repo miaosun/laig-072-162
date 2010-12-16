@@ -72,6 +72,3 @@ float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient ligh
 int main_window;
 GLUI  *glui2;
 
-RGBpixmap pixmap;
-vector<SceneLoader *> cenas;
-int cena_actual;
