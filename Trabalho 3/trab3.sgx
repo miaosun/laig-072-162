@@ -14,8 +14,8 @@
 
 
     <view near="0.05" far="1000" axisscale="0.03">
-        <translation x="0.0" y="0.0" z="-250.0" />
-        <rotation axis="x" angle="20.0" />
+        <translation x="0.0" y="-1.0" z="-50.0" />
+        <rotation axis="x" angle="90.0" />
         <rotation axis="y" angle="0.0" />
         <rotation axis="z" angle="0.0" />
         <scale x="1.0" y="1.0" z="1.0" />
