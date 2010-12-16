@@ -100,9 +100,11 @@
   <ItemGroup>
     <ClInclude Include="Source\globals.h" />
     <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\Picking.h" />
     <ClInclude Include="Source\RGBpixmap.h" />
     <ClInclude Include="Source\SceneLoader.h" />
     <ClInclude Include="Source\Transformation.h" />
+    <ClInclude Include="Source\Variaveis.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cena.xml">
