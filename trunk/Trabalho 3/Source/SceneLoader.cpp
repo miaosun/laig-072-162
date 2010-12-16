@@ -876,6 +876,8 @@ bool SceneLoader::loadScene()
 	Material * mat;
 	Texture * tex;
 
+	int pos;
+
 
 	// Inicialização
 	// Um exemplo de um conjunto de nós bem conhecidos e obrigatórios
@@ -974,6 +976,34 @@ bool SceneLoader::loadScene()
 		}
 		if(!aplicaTextures(root_object, tex))
 			return false;
+
+		pos=findObjectPos("_vampiro");
+		if(pos<0)
+		{
+			cout<<"Nao foi possivel localizar a peca do vampiro\n";
+			return false;
+		}
+		else
+			this->vampiro=pos;
+
+		pos=findObjectPos("_aldeao");
+		if(pos<0)
+		{
+			cout<<"Nao foi possivel localizar a peca do aldeao\n";
+			return false;
+		}
+		else
+			this->aldeao=pos;
+
+		pos=findObjectPos("_nosferatu");
+		if(pos<0)
+		{
+			cout<<"Nao foi possivel localizar a peca do nosferatu\n";
+			return false;
+		}
+		else
+			this->nosferatu=pos;
+
 	}
 	else
 	{
@@ -1060,6 +1090,16 @@ Object * SceneLoader::findObject(string id)
 	cout<<"nao foi possivel encontrar o objecto "<<id<<endl;
 	system("pause");
 	return NULL;
+}
+
+int SceneLoader::findObjectPos(string id)
+{
+	for(unsigned int i=0; i<objs.size(); i++)
+	{
+		if(objs.at(i)->id==id)
+			return i;
+	}
+	return -1;
 }
 
 bool SceneLoader::aplicaMaterials(Object * o, Material * mat)
