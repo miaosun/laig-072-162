@@ -392,6 +392,11 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 int main(int argc, char* argv[])
 {
 	cena_actual=0;
+
+	Object * vampiro;
+	Object * aldeao;
+	Object * nosferatu;
+
 	try
 	{
 		if(!loadCenas("config.dll"))
@@ -414,6 +419,16 @@ int main(int argc, char* argv[])
 		cout<<"nao fez load correctamente!\n";
 		system("pause");
 		return 0;
+	}
+
+	vampiro=cenas.at(cena_actual)->findObject("_vampiro");
+	aldeao=cenas.at(cena_actual)->findObject("_aldeao");
+	nosferatu=cenas.at(cena_actual)->findObject("_nosferatu");
+	if(aldeao==NULL || vampiro==NULL || nosferatu==NULL)
+	{
+		cout<<"o conjunto de 3 pecas de jogo tem que ser definido!\n";
+		system("pause");
+		return false;
 	}
 
 	glutInit(&argc, argv);

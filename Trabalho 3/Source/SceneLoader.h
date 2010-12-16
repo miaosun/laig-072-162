@@ -41,7 +41,7 @@ public:
 	Material * mat_base;
 	Texture * no_tex;
 
-	int vampiro, aldeao, nosferatu;
+
 
 	Global global;
 	View view;
@@ -66,6 +66,7 @@ public:
 
 	SceneLoader(const char * fileName);
 	bool loadScene();
+	Object * findObject(string id);
 
 private:
   
@@ -103,8 +104,6 @@ private:
 	bool loadObjects();
 	Texture * findTexture(string id);
 	Material * findMaterial(string id);
-	Object * findObject(string id);
-	int findObjectPos(string id);
 	bool aplicaMaterials(Object * o, Material * mat);
 	bool aplicaTextures(Object * o, Texture * tex);
 
