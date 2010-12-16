@@ -1,7 +1,6 @@
 #include "SceneLoader.h"
 #include "Picking.h"
 
-#include <GL\glui.h>
 #include <math.h>
 
 using namespace std;
@@ -80,8 +79,8 @@ void display(void)
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 
-	glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
-	//glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
+	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
+	glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
 	
 	//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
@@ -89,7 +88,7 @@ void display(void)
 
 	
 	//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
-	glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
+	glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), -obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
 
 	// roda a cena para ficar em perspectiva
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
@@ -177,7 +176,7 @@ void processMouse(int button, int state, int x, int y)
 	MouseState.y = y;
 	
 	if (MouseState.leftButton && !MouseState.rightButton && !MouseState.middleButton) {
-		/* obrigatorio para o picking */
+		// obrigatorio para o picking 
 		// obter o viewport actual
 		glGetIntegerv(GL_VIEWPORT, viewport);
 
