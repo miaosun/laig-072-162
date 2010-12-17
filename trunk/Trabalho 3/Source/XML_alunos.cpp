@@ -61,6 +61,102 @@ void open_textures()
 	}
 }
 
+void tabuleiro(GLdouble dimx, GLdouble dimy)
+{
+	GLdouble dx=dimx/2, dy=dimy/2;
+
+	glPushMatrix();	
+		glTranslated(0.0, 17.5, 0.0);
+		glRotated(-90.0, 1.0,0.0,0.0 );
+
+		for(int i=0; i<3; i++)
+			glRectd(-3*dx+i*2*dx, 5*dy,-dx+i*2*dx,7*dy);
+
+		for(int i=0; i<5; i++)
+			glRectd(-5*dx+i*2*dx, 3*dy, -3*dx+i*2*dx,5*dy);
+
+		for(int i=0; i<7; i++)
+			glRectd(-7*dx+i*2*dx, dy, -5*dx+i*2*dx,3*dy);
+
+		for(int i=0; i<7; i++)
+			glRectd(-7*dx+i*2*dx, -dy, -5*dx+i*2*dx,dy);
+
+		for(int i=0; i<7; i++)
+			glRectd(-7*dx+i*2*dx, -3*dy, -5*dx+i*2*dx,-dy);
+
+		for(int i=0; i<5; i++)
+			glRectd(-5*dx+i*2*dx, -5*dy, -3*dx+i*2*dx,-3*dy);
+
+		for(int i=0; i<3; i++)
+			glRectd(-3*dx+i*2*dx, -7*dy,-dx+i*2*dx,-5*dy);
+	glPopMatrix();
+}
+
+void funcPicking(GLenum mode)
+{
+
+	/*// tabuleiro
+	if (mode == GL_SELECT)
+		glPushName(0);
+
+	glCallList(tableList);*/
+
+	
+	for(int i=0; i<37; i++)
+	{
+		if(mode == GL_SELECT)
+			glLoadName(i);
+	}
+	glCallList(tableList);
+
+	// esfera 1
+	if (mode == GL_SELECT) 
+		glLoadName (1);
+	
+	// define caracteristicas do material da esfera 1
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat1_specular);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat1_diffuse);
+
+	glPushMatrix();
+
+	glTranslated(0.0,1.0,0.0);
+	gluSphere(glQ, 0.5, 16, 8);
+	glPopMatrix();
+
+	// fim de esfera 1
+
+	// esfera 2
+	if (mode == GL_SELECT)
+		glLoadName (2);
+	
+	glColorMaterial(GL_FRONT_AND_BACK,GL_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);
+	glColor3f(0.0,1.0,0.0);
+	glPushMatrix();
+
+	glTranslated(2.5,1.0,-1.0);
+	gluSphere(glQ, 0.5, 16, 8);
+	glPopMatrix();
+
+	// fim da esfera
+
+	// teapot
+	
+	if (mode == GL_SELECT)
+		glLoadName (3);
+	
+	glColor3f(1.0,1.0,0.0);
+	glPushMatrix();
+
+	glTranslated(1.0,1.0,2.0);
+	glutSolidTeapot(0.80);
+	// fim teapot
+
+	glDisable(GL_COLOR_MATERIAL);
+
+	glPopName();
+}
 
 void display(void)
 {
@@ -86,7 +182,7 @@ void display(void)
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
-	
+
 	//glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );    
 	glTranslatef( cenas.at(cena_actual)->view.trans.at(0)->getX(), cenas.at(cena_actual)->view.trans.at(0)->getY(), -obj_pos[2]+cenas.at(cena_actual)->view.trans.at(0)->getZ() );    
 
@@ -192,7 +288,7 @@ void processMouse(int button, int state, int x, int y)
 		glLoadIdentity ();
 		gluPickMatrix ((GLdouble) x, (GLdouble) (window_h - y), 1.0, 1.0, viewport);
 
-		drawScene(GL_SELECT);
+		funcPicking(GL_SELECT);
 
 		glMatrixMode (GL_PROJECTION);
 		glPopMatrix ();
@@ -361,9 +457,15 @@ void inicializacao()
 
 	glShadeModel(GL_SMOOTH);				// GL_FLAT / GL_SMOOTH
 
-	glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
+	//glPolygonMode(GL_FRONT, GL_FILL);	// preence a face da frente dos poligonos
 	//glPolygonMode(GL_FRONT, GL_LINE);	// desenha arestas dos poligonos
 	
+	glNewList(tableList, GL_COMPILE);
+		glPushMatrix();
+		tabuleiro(3.96, 3.96);
+		glPopMatrix();
+	glEndList();
+
 }
 
 void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos checkboxes
