@@ -17,6 +17,8 @@ using namespace std;
 class Excepcao{};
 
 
+
+
 class Global
 {
 public:

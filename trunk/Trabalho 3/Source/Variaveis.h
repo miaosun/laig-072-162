@@ -8,7 +8,9 @@
 #define INITIALPOS_Y 200
 
 #define BUFSIZE 512
-#define tableList 1
+#define cube 1
+#define dimcube 3.75
+#define dimCasa 4
 
 int window_w = DIMX;
 int window_h = DIMY;
