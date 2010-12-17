@@ -94,7 +94,7 @@ void display(void)
 	//glRotated(20.0, 1.0,0.0,0.0 );		// 20 graus em torno de X
 	//glRotated(-45.0, 0.0,1.0,0.0 );		//-45 graus em torno de Y
 
-	for(unsigned int i=0; i<cenas.at(cena_actual)->view.trans.size(); i++)
+	for(unsigned int i=1; i<cenas.at(cena_actual)->view.trans.size(); i++)
 		cenas.at(cena_actual)->view.trans.at(i)->apply();
 
 	// aplica efeito do botao de rotacao
