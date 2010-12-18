@@ -131,7 +131,7 @@
 <!-- tabuleiro -->
 		<object id="tabuleiro" type="compound">
             <transformations>
-				<translation x="0.0" y="0.0" z="0.0" />
+				<translation x="0.0" y="2.0" z="0.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -586,7 +586,7 @@
 <!-- mesa -->
 		<object id="mesa" type="compound">
             <transformations>
-				<translation x="0.0" y="-3.0" z="0.0" />
+				<translation x="0.0" y="-1.0" z="0.0" />
             </transformations>
 
             <material id="null" />
@@ -599,8 +599,25 @@
 				<objectref id="mesa_fre" />
 				<objectref id="mesa_atr" />
 				<objectref id="mesa_canto" />
+				<objectref id="suporto" />
             </children>
         </object>
+		
+	<!-- suporto -->
+		<object id="suporto" type="compound">
+            <transformations>
+				<translation x="0.0" y="-11.0" z="0.0" />
+				<scale x="0.7" y="10.0" z="0.7" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="mesa_base" />
+            </children>
+        </object>
+	<!-- suporto -->	
 		
 	<!-- mesa_canto -->
 		<object id="mesa_canto" type="compound">
@@ -1019,7 +1036,7 @@
 <!-- _aldeao -->
 		<object id="_aldeao" type="compound">
             <transformations>
-				<translation x="0.0" y="-12.0" z="3.0" />
+				<translation x="0.0" y="-25.0" z="3.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -1057,7 +1074,7 @@
 <!-- _vampiro -->
 		<object id="_vampiro" type="compound">
             <transformations>
-				<translation x="5.0" y="-12.0" z="-3.0" />
+				<translation x="5.0" y="-25.0" z="-3.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -1107,7 +1124,7 @@
 <!-- _nosferatu -->
 		<object id="_nosferatu" type="simple">
             <transformations>
-				<translation x="-5.0" y="-12.0" z="0.0" />
+				<translation x="-5.0" y="-25.0" z="0.0" />
             </transformations>
 
             <material id="vermelho" />
