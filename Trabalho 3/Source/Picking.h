@@ -45,7 +45,7 @@ void myCube(GLfloat lado)
 void sensores()
 {
 	glPushMatrix();
-	glTranslated(0.0, 17.5, 0.0);
+	glTranslated(0.0, 0.0, 0.0);
 		
 	glPushName(0);
 		
