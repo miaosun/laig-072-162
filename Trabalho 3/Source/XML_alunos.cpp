@@ -86,7 +86,7 @@ void drawScene(GLenum mode)
 
 	cenas.at(cena_actual)->root_object->draw();
 	//myCube(10);
-	//sensores();
+	sensores();
 
 	if(mode==GL_SELECT)
 		sensores();
@@ -143,7 +143,6 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
 
-	
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
    
@@ -447,6 +446,9 @@ int main(int argc, char* argv[])
 		system("pause");
 		return false;
 	}
+
+
+	//TODO criar om objecto da classe jogo
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
