@@ -542,7 +542,9 @@ int main(int argc, char* argv[])
 	}
 
 	try
+	{
 		jogo=new Jogo(vampiro, aldeao, nosferatu, 0, 0);
+	}
 	catch (ExcepcaoSocket e)
 	{
 		cout<<"erro na abertura da socket \n";
@@ -661,7 +663,8 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 
 	this->pecas_v.push_back(3);
 	for(unsigned int i=0; i<5; i++)
-		this->pecas_v.push_back(2);	
+		this->pecas_v.push_back(2);
+	this->Jactual=0;
 
 	if(!socketConnect())
 		throw ExcepcaoSocket();
