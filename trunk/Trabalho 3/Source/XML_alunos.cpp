@@ -541,8 +541,14 @@ int main(int argc, char* argv[])
 		return false;
 	}
 
-	jogo=new Jogo(vampiro, aldeao, nosferatu, 0, 0);
-	//TODO criar om objecto da classe jogo
+	try
+		jogo=new Jogo(vampiro, aldeao, nosferatu, 0, 0);
+	catch (ExcepcaoSocket e)
+	{
+		cout<<"erro na abertura da socket \n";
+		system("pause");
+		return 0;
+	}
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
