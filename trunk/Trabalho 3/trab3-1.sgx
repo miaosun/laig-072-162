@@ -1449,7 +1449,6 @@
 <!-- _aldeao -->
 		<object id="_aldeao" type="compound">
             <transformations>
-				<translation x="0.0" y="-28.0" z="3.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -1487,7 +1486,6 @@
 <!-- _vampiro -->
 		<object id="_vampiro" type="compound">
             <transformations>
-				<translation x="5.0" y="-25.0" z="-3.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -1537,7 +1535,6 @@
 <!-- _nosferatu -->
 		<object id="_nosferatu" type="simple">
             <transformations>
-				<translation x="-5.0" y="-25.0" z="0.0" />
             </transformations>
 
             <material id="vermelho" />

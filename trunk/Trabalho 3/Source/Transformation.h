@@ -4,8 +4,8 @@ using namespace std;
 
 class Transformation
 {
-	string type;
 public:
+	string type;
 	Transformation(string type);
 	virtual float getX()=0;
 	virtual float getY()=0;

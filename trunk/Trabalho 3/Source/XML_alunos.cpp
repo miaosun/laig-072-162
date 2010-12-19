@@ -1,13 +1,102 @@
 #include "SceneLoader.h"
-#include "Picking.h"
+//#include "Variaveis.h"
+//#include "Picking.h"
+//#include <winsock2.h>
 
-#include <math.h>
+
 
 using namespace std;
 
+// dimensoes e localizacao da janela
+#define DIMX 500
+#define DIMY 500
+#define INITIALPOS_X 200
+#define INITIALPOS_Y 200
+
+#define BUFSIZE 512
+#define cube 1
+float dim_cube=3.75;
+float dim_Casa=4.0;
+float alturaTab=4.0;
+
+struct g_mouseState{
+	bool leftButton;
+	bool rightButton;
+	bool middleButton;
+	int x;
+	int y;
+} MouseState;
+
+int window_w = DIMX;
+int window_h = DIMY;
+GLuint selectBuf[BUFSIZE];
+
+#define LIGHT_ID 100
+
+float xy_aspect;
+
+// matriz de transf. geometrica utilizada pelo botao esferico
+float view_rotate[16] =	{ 1,0,0,0,
+						  0,1,0,0,
+						  0,0,1,0,
+						  0,0,0,1 };
+
+// vector de posicao utilizado pelo botao de afastamento
+float obj_pos[] = { 0.0, 0.0, 0.0 };
+	
+// declaracoes para o plano e caixa
+float mat1_shininess[] = {128.0}; 
+
+//float mat1_specular[] = {1.0,1.0,1.0};	/* specular reflection. */
+float mat1_specular[] = {0.4, 0.4, 0.4, 1.0};	/* specular reflection. */
+//float mat1_diffuse[] =  {0.0, 0.0, 0.0, 1.0};	/* diffuse reflection. */
+float mat1_diffuse[] =  {0.6, 0.6, 0.6, 1.0};	/* diffuse reflection. */
+float mat1_ambient[] =  {0.6, 0.6, 0.6, 1.0};	/* ambient reflection. */
+double dimx= 6.0;
+double dimy= 2.0;
+double dimz=10.0;
+
+float light0_kc=0.0;
+float light0_kl=0.0;
+float light0_kq=0.1;
+
+GLUquadric* glQ;
+
+// declarações para as stripes que formam o plano
+double i,j;
+double di, limi=dimx, divisoes_i = 60;	//60
+double dj, limj=dimz, divisoes_j = 100;	//100
+
+// declarações para a fonte de luz LIGHT0;
+float light0_position[]  = {0.0, 3.0, 4.0, 1.0}; // nao necessaria...
+float light0_ambient[] =   {0.0, 0.0, 0.0, 1.0}; // sem componente ambiente
+//float light0_diffuse[] =   {1.0, 1.0, 0.0, 0.0};
+float light0_diffuse[] =   {0.8, 0.8, 0.8, 1.0};
+//float light0_specular[] =  {0.0, 0.0, 0.0, 0.0};
+float light0_specular[] =  {0.8, 0.8, 0.8, 1.0};
+double light0x = dimx/2.0;
+double light0y = 1;
+double light0z = dimz/4.0;
+double symb_light0_radius = 0.2;	// esfera que
+int symb_light0_slices = 8;			// simboliza a
+int symb_light0_stacks =16;			// fonte de luz light0
+
+// fonte (global) de luz ambiente 
+//float light_ambient[] = {0.0, 0.0, 0.0, 1.0}; /* Set the background ambient lighting. */
+float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient lighting. */
+
+// variaveis para a janela
+int main_window;
+GLUI  *glui2;
+
 RGBpixmap pixmap;
+
+
 vector<SceneLoader *> cenas;
 int cena_actual;
+
+Jogo * jogo;
+
 
 bool loadCenas(string filename)
 {
@@ -85,8 +174,9 @@ void drawScene(GLenum mode)
 	glMultMatrixf( view_rotate );
 
 	cenas.at(cena_actual)->root_object->draw();
+	jogo->draw();
 	//myCube(10);
-	sensores();
+	//sensores();
 
 	if(mode==GL_SELECT)
 		sensores();
@@ -115,7 +205,7 @@ void display(void)
 	// permissao de atribuicao directa de cores
 	// para objectos ue nao tem material atribuido
 	//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	glEnable(GL_COLOR_MATERIAL);
+	/*glEnable(GL_COLOR_MATERIAL);
 
 	// Actualizacao da posicao da fonte de luz
 	for(unsigned int i=0; i<cenas.at(cena_actual)->lights.size(); i++)
@@ -379,7 +469,7 @@ void inicializacao()
 
 	glNewList(cube, GL_COMPILE);
 		glPushMatrix();
-		myCube(dimcube);
+		myCube(dim_cube);
 		glPopMatrix();
 	glEndList();
 
@@ -404,6 +494,10 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 		}
 	}
 }
+
+#include <winsock2.h>
+
+SOCKET sock;
 
 int main(int argc, char* argv[])
 {
@@ -447,7 +541,7 @@ int main(int argc, char* argv[])
 		return false;
 	}
 
-
+	jogo=new Jogo(vampiro, aldeao, nosferatu, 0, 0);
 	//TODO criar om objecto da classe jogo
 
 	glutInit(&argc, argv);
@@ -499,4 +593,352 @@ int main(int argc, char* argv[])
 	glutMainLoop();
 
 	return 0;
+}
+
+bool socketConnect() // Initialize Winsock.
+{
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+    if (iResult != NO_ERROR)
+		printf("Client: Error at WSAStartup().\n");
+    else
+        printf("Client: WSAStartup() is OK.\n");
+
+	// Create a socket.
+    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock == INVALID_SOCKET) {
+        printf("Client: socket() - Error at socket(): %ld\n", WSAGetLastError());
+        WSACleanup();
+        return false;
+    }
+	else
+       printf("Client: socket() is OK.\n");
+
+    // Connect to a server.
+    sockaddr_in clientService;
+    clientService.sin_family = AF_INET;
+    // Just test using the localhost, you can try other IP address
+    clientService.sin_addr.s_addr = inet_addr("127.0.0.1");
+    clientService.sin_port = htons(60070);
+
+    if (connect(sock, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR) {
+        printf("Client: connect() - Failed to connect.\n");
+        WSACleanup();
+        return false;
+    }
+    else {
+       printf("Client: connect() is OK.\n");
+       printf("Client: Can start sending and receiving data...\n");
+    }
+
+    // Send and receive data.
+	printf("Connected\n");
+	return true;
+}
+
+Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2)
+{
+	this->vampiro=vampiro;
+	this->aldeao=aldeao;
+	this->nosferatu=nosferatu;
+	this->jogadores.push_back(j1);
+	this->jogadores.push_back(j2);
+	for(unsigned int i=0; i<49; i++)
+	{
+		if(i<2||i==5||i==6||i==7||i==13||i==35||i==41||i==42||i==43||i>46)
+			this->tab.push_back(9);
+		else
+			this->tab.push_back(0);
+	}
+	for(unsigned int i=0; i<12; i++)
+		this->pecas_al.push_back(1);
+
+	this->pecas_v.push_back(3);
+	for(unsigned int i=0; i<5; i++)
+		this->pecas_v.push_back(2);	
+
+	if(!socketConnect())
+		throw ExcepcaoSocket();
+}
+
+void Jogo::posicao(bool tabuleiro, int pos)//a partir da origem
+{
+	int linha=pos/7;
+	int coluna= pos%7;
+
+	if(tabuleiro)
+		glTranslated(-3*dim_Casa+coluna*dim_Casa, alturaTab, -3*dim_Casa+linha*dim_Casa);
+	else
+	{
+		if(pos<3)
+			glTranslated(-4*dim_Casa+pos*dim_Casa, alturaTab, -3*dim_Casa);
+		else if(pos>12&&pos<16)
+			glTranslated(2*dim_Casa+(pos-13)*dim_Casa, alturaTab, -3*dim_Casa);
+		else if(pos==3||pos==4)
+			glTranslated(-4*dim_Casa+(pos-3)*dim_Casa, alturaTab, -2*dim_Casa);
+		else if(pos==16||pos==17)
+			glTranslated(3*dim_Casa+(pos-16)*dim_Casa, alturaTab, -2*dim_Casa);
+		else if(pos==5)
+			glTranslated(-4*dim_Casa, alturaTab, -dim_Casa);
+		else if(pos==18)
+			glTranslated(4*dim_Casa, alturaTab, -dim_Casa);
+		else if(pos==6)
+			glTranslated(-4*dim_Casa, alturaTab, 0.0);
+		else if(pos==19)
+			glTranslated(4*dim_Casa, alturaTab, 0.0);
+		else if(pos==7)
+			glTranslated(-4*dim_Casa, alturaTab, dim_Casa);
+		else if(pos==20)
+			glTranslated(4*dim_Casa, alturaTab, dim_Casa);
+		else if(pos==8||pos==9)
+			glTranslated(-4*dim_Casa+(pos-8)*dim_Casa, alturaTab, 2*dim_Casa);
+		else if(pos==21||pos==22)
+			glTranslated(3*dim_Casa+(pos-21)*dim_Casa, alturaTab, 2*dim_Casa);
+		else if(pos>9&&pos<13)
+			glTranslated(-4*dim_Casa+(pos-10)*dim_Casa, alturaTab, 3*dim_Casa);
+		else if(pos>22)
+			glTranslated(2*dim_Casa+(pos-23)*dim_Casa, alturaTab, 3*dim_Casa);
+	}
+}
+
+void reverte(Object * obj)
+{
+	float x, y, z;
+	for(unsigned int i=0; i<obj->transf.size(); i++)
+	{
+		if(obj->transf.at(i)->type=="trans")
+		{
+			x=obj->transf.at(i)->getX();
+			y=obj->transf.at(i)->getY();
+			z=obj->transf.at(i)->getZ();
+			glTranslated(-x, -y, z);
+		}
+	}
+}
+
+void Jogo::draw()
+{
+	//cout<<"a desenhar\n";
+	for(unsigned int i=0; i<this->tab.size(); i++)
+	{
+		switch(this->tab.at(i))
+		{
+		case 1:
+			glPushMatrix();
+			posicao(true, i);
+			//reverte(this->aldeao);
+			this->aldeao->draw();
+			glPopMatrix();
+			break;
+		case 2:
+			glPushMatrix();
+			posicao(true, i);
+			//reverte(this->vampiro);
+			this->vampiro->draw();
+			glPopMatrix();
+			break;
+		case 3:
+			glPushMatrix();
+			posicao(true, i);
+			//reverte(this->nosferatu);
+			this->nosferatu->draw();
+			glPopMatrix();
+			break;
+		}
+	}
+	for(unsigned int i=0; i<this->pecas_al.size();i++)
+	{
+		switch(this->pecas_al.at(i))
+		{
+		case 1:
+			glPushMatrix();
+			posicao(false, i);
+			//reverte(this->aldeao);
+			this->aldeao->draw();
+			glPopMatrix();
+			//cout<<"desenhou aldeao fora\n";
+			break;
+		default:
+			return;
+		}
+	}
+	for(unsigned int i=0; i<this->pecas_v.size(); i++)
+	{
+		switch(this->pecas_v.at(i))
+		{
+		case 2:
+			glPushMatrix();
+			posicao(false, i+13);
+			//reverte(this->vampiro);
+			this->vampiro->draw();
+			glPopMatrix();
+			//cout<<"desenhou vampiro fora\n";
+			break;
+		case 3:
+			glPushMatrix();
+			posicao(false, i+13);
+			//reverte(this->nosferatu);
+			this->nosferatu->draw();
+			glPopMatrix();
+			//cout<<"desenhou nosferatu fora\n";
+			break;
+		default:
+			return;
+		}
+	}
+}
+
+void myCube(GLfloat lado)
+{
+	//frente
+	glRectd(0.0, 0.0, lado, lado);
+
+	//base
+	glPushMatrix();	
+	glTranslated(0.0, 0.0, -lado);
+	glRotated(90.0, 1.0, 0.0, 0.0);
+		glRectd(0.0, 0.0, lado, lado);
+	glPopMatrix();
+
+	//lado esq
+	glPushMatrix();	
+	glTranslated(0.0, 0.0, -lado);
+	glRotated(-90.0, 0.0, 1.0, 0.0);
+		glRectd(0.0, 0.0, lado, lado);
+	glPopMatrix();
+
+	//lado dir
+	glPushMatrix();	
+	glTranslated(lado, 0.0, 0.0);
+	glRotated(90.0, 0.0, 1.0, 0.0);
+		glRectd(0.0, 0.0, lado, lado);
+	glPopMatrix();
+
+	//topo
+	glPushMatrix();	
+	glTranslated(0.0, lado, 0.0);
+	glRotated(-90.0, 1.0, 0.0, 0.0);
+		glRectd(0.0, 0.0, lado, lado);
+	glPopMatrix();
+
+	//tras
+	glPushMatrix();	
+	glTranslated(lado, 0.0, -lado);
+	glRotated(180.0, 0.0, 1.0, 0.0);
+		glRectd(0.0, 0.0, lado, lado);
+	glPopMatrix();
+}
+
+void sensores()
+{
+	glPushMatrix();
+	glTranslated(0.0, alturaTab, 0.0);
+		
+	glPushName(0);
+		
+		glPushMatrix();
+		glTranslated(-dim_Casa-dim_Casa/2+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
+		glCallList(cube);
+		glPopMatrix();
+		for(int i=1; i<3; i++)
+		{
+			glLoadName(i);
+			glPushMatrix();
+			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+
+		}
+		
+		for(int i=0; i<5; i++)
+		{
+			glLoadName(i+3);
+			glPushMatrix();
+			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa-dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+		
+		for(int i=0; i<7; i++)
+		{
+			glLoadName(i+8);
+			glPushMatrix();
+			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+
+		for(int i=0; i<7; i++)
+		{
+			glLoadName(i+15);
+			glPushMatrix();
+			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+
+		for(int i=0; i<7; i++)
+		{
+			glLoadName(i+22);
+			glPushMatrix();
+			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa+dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+
+		for(int i=0; i<5; i++)
+		{
+			glLoadName(i+29);
+			glPushMatrix();
+			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 2*dim_Casa+dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+		
+		for(int i=0; i<3; i++)
+		{
+			glLoadName(i+34);
+			glPushMatrix();
+			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 3*dim_Casa+dim_Casa/2);
+			glCallList(cube);
+			glPopMatrix();
+		}
+	glPopMatrix();
+}
+
+void pickingAction(GLuint answer) {
+	printf("%d\n", answer);
+}
+
+// processa os hits no picking
+void processHits (GLint hits, GLuint buffer[]) {
+	GLuint *ptr = buffer;
+	GLuint mindepth = 0xFFFFFFFF;
+	GLuint *answer=NULL;
+	GLuint nn;
+
+	for (int i=0;i<hits;i++) {
+		int num = *ptr; ptr++;
+		GLuint z1 = *ptr; ptr++;
+		ptr++;
+		if (z1 < mindepth && num>0 ) 
+		{
+			//cout<<"entrou num\n";
+			mindepth = z1;
+			answer = ptr;
+			nn=num;
+
+		}
+		for (int j=0; j < num; j++) 
+			ptr++;
+	}
+
+	//cout<<"precoessa\n";
+	
+	// existe uma resposta
+	if (answer!=NULL) 
+		pickingAction(*answer);
+	//else
+		//cout<<"nao tem resposta\n";
+	
 }
