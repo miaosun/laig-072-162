@@ -77,7 +77,7 @@ float light0_specular[] =  {0.8, 0.8, 0.8, 1.0};
 double light0x = dimx/2.0;
 double light0y = 1;
 double light0z = dimz/4.0;
-double symb_light0_radius = 0.2;	// esfera que
+double symb_light0_radius = 1.2;	// esfera que
 int symb_light0_slices = 8;			// simboliza a
 int symb_light0_stacks =16;			// fonte de luz light0
 
@@ -205,7 +205,7 @@ void display(void)
 	// permissao de atribuicao directa de cores
 	// para objectos ue nao tem material atribuido
 	//glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-	/*glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_COLOR_MATERIAL);
 
 	// Actualizacao da posicao da fonte de luz
 	for(unsigned int i=0; i<cenas.at(cena_actual)->lights.size(); i++)
@@ -495,6 +495,25 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 	}
 }
 
+void ctr_camara(int control)
+{
+	if(control == 1)
+	{
+		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -10.0);
+	}
+	
+	if(control == 2)
+	{
+		gluLookAt(225.0, 250.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -10.0);
+	}
+	
+	if(control == 3)
+	{
+		gluLookAt(225.0, 180.0, 120.0, 225.0, 100.0, 300.0, 0.0, 1.0, 0.0);
+	}
+}
+
+
 #include <winsock2.h>
 
 SOCKET sock;
@@ -565,7 +584,7 @@ int main(int argc, char* argv[])
    glutMotionFunc(processMouseMoved);
    glutPassiveMotionFunc(processPassiveMouseMoved);   
    GLUI_Master.set_glutSpecialFunc( NULL );
-   
+
 
 	/*** Create the bottom subwindow ***/
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
@@ -578,6 +597,23 @@ int main(int argc, char* argv[])
 	GLUI_Translation *trans_z = 
 	glui2->add_translation( "Zoom", GLUI_TRANSLATION_Z, &obj_pos[2] );
 	trans_z->set_speed( .02 );
+
+	/////////list box para diferentes cenas
+	glui2->add_column(true);
+	GLUI_Listbox *cena;
+	cena = glui2->add_listbox("escolhe cena: ");
+	cena->add_item(1, "cena 1");
+	cena->add_item(2, "cena 2");
+
+	////////camaras
+	glui2->add_column(false);
+	GLUI_Panel *panel;
+	panel = glui2->add_panel("Camaras");
+	GLUI_RadioGroup *rb;
+	rb = glui2->add_radiogroup_to_panel(panel, NULL, -1, ctr_camara);
+	glui2->add_radiobutton_to_group(rb, "Camara 1");
+	glui2->add_radiobutton_to_group(rb, "Camara 2");
+	glui2->add_radiobutton_to_group(rb, "Camara 3");
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//As fontes de luz devem poder ser alteradas por meio de controlos na r¨¦gua inferior de comandos.//
@@ -666,8 +702,60 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 		this->pecas_v.push_back(2);
 	this->Jactual=0;
 
-	if(!socketConnect())
-		throw ExcepcaoSocket();
+	//if(!socketConnect())
+		//throw ExcepcaoSocket();
+}
+
+void show_jogador(int jactual)
+{
+	//letras de identificacao do jogador
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glEnable(GL_COLOR_MATERIAL);	
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+	glColor3f(1.0,1.0,0.0);	//amarelo
+	glRasterPos2i(3, DIMY-25);
+
+	switch(jactual)
+	{
+	case 0:
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'V');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'z');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'd');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'l');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'd');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+
+	case 1:
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'V');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'z');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'd');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'V');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'm');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'p');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'i');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+	}
+
+	glDisable(GL_COLOR_MATERIAL);
 }
 
 void Jogo::posicao(bool tabuleiro, int pos)//a partir da origem

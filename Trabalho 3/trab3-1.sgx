@@ -1,14 +1,6 @@
-<!-- Os comentarios devem ter espacos no inicio e no fim, para -->
-<!-- separar dos hifens -->
-<!-- Nao devem ser usados caracteres especiais (p.ex. acentos) -->
-<!-- Todas as tags e atributos sao obrigatorios, excepto onde for -->
-<!-- referido o contrario -->
 
 <sgx>
 
-
-    <!-- tem de existir, pelo menos, uma luz, uma textura, um material -->
-    <!-- e um objecto -->
     <globals maxlights="5" maxtextures="10" maxmaterials="10"
              maxobjects="200" root="cena"/>
 
@@ -36,7 +28,7 @@
             </light>
 			
 			<light id="light_2" enabled="1" >
-                <position x="0.0" y="50.0" z="0.0" w="1.0" />
+                <position x="50.0" y="50.0" z="0.0" w="1.0" />
                 <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
                 <diffuse r="0.6" g="0.6" b="0.6" a="1.0" />
                 <specular r="0.6" g="0.6" b="0.6" a="1.0" />
@@ -46,10 +38,6 @@
     </illumination>
 
     <textures>
-        <!-- Deve existir um ou mais blocos "texture" -->
-        <!-- (at?ao máximo declarado em "globals") -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-        <!-- s e t: factores de escala (ver notas finais) -->
         <texture id="wall" file="textures/wall_texture.bmp" length_s="20.0" length_t="20.0" /> 
         <texture id="floor" file="textures/floor_texture.bmp" length_s="50.0" length_t="50.0" /> 	
 		<texture id="teto" file="textures/teto.bmp" length_s="50.0" length_t="50.0" /> 		
@@ -60,10 +48,6 @@
 	</textures>
 
     <materials>
-        <!-- Deve existir um ou mais blocos "material" -->
-        <!-- (at?ao máximo declarado em "globals") -->
-        <!-- Os identificadores "id" nao podem ser repetidos -->
-
         <material id="preto">
             <emission r="0.0" g="0.0" b="0.0" a="0.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -111,12 +95,10 @@
 			<specular r="0.8" g="0.52" b="0.25" a="1.0"/>
 			<shininess value="128" />
 		</material> 
-		
     </materials>
 
   
     <objects>
-
         <!-- root -->
         <object id="cena" type="compound">
             <transformations>
