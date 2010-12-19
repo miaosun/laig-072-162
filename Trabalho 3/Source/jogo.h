@@ -10,6 +10,8 @@ public:
 
 	vector<int> tab;
 
+	int Jactual;
+
 	Object * vampiro;
 	Object * aldeao;
 	Object * nosferatu;
