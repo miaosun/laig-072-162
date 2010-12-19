@@ -17,7 +17,7 @@ using namespace std;
 #define cube 1
 float dim_cube=3.75;
 float dim_Casa=4.0;
-float alturaTab=4.0;
+float alturaTab=4.5;
 
 struct g_mouseState{
 	bool leftButton;
@@ -88,6 +88,21 @@ float light_ambient[] = {0.2, 0.2, 0.2, 1.0}; /* Set the background ambient ligh
 // variaveis para a janela
 int main_window;
 GLUI  *glui2;
+
+// declarações para animacao
+unsigned int mili_secs = 10;
+#define RADIUS_SPEED  0.4  // unidades de comprimento por segundo
+#define ANGULAR_SPEED 0.5  // rotacoes por segundo
+
+typedef struct anim_data{
+	double yi,yf,dy,y,dt;
+	bool sobe;
+};
+
+anim_data peca_anim;
+bool peca_sel;
+#define MOVE_ID 150 
+#define SELECT_ID 151
 
 RGBpixmap pixmap;
 
@@ -517,6 +532,7 @@ void ctr_camara(int control)
 #include <winsock2.h>
 
 SOCKET sock;
+#define getCurrentTime GetTickCount
 
 bool socketConnect() // Initialize Winsock.
 {
@@ -664,6 +680,7 @@ int main(int argc, char* argv[])
    glutPassiveMotionFunc(processPassiveMouseMoved);   
    GLUI_Master.set_glutSpecialFunc( NULL );
 
+   glutTimerFunc(mili_secs, anim, 0);
 
 	/*** Create the bottom subwindow ***/
 	glui2 = GLUI_Master.create_glui_subwindow( main_window, GLUI_SUBWINDOW_BOTTOM );
@@ -748,6 +765,8 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 	this->Jactual=0;
 	this->fase=0;
 	this->casa_sel=-1;
+
+	//iniciar variaveis da animacao
 
 	if(!socketConnect())
 		throw ExcepcaoSocket();
@@ -847,19 +866,31 @@ void Jogo::posicao(bool tabuleiro, int pos)//a partir da origem
 	}
 }
 
-void reverte(Object * obj)
+void peca_anim_init()
 {
-	float x, y, z;
-	for(unsigned int i=0; i<obj->transf.size(); i++)
+	peca_anim.yi=0;
+	peca_anim.y=peca_anim.yi;
+	peca_anim.yf=5.0;
+	peca_anim.dt=1.0;
+	peca_anim.sobe=true;
+	peca_anim.dy=(peca_anim.yf-peca_anim.yi)/((1000.0*peca_anim.dt)/mili_secs);
+}
+
+void anim(int dummy)
+{
+	if(jogo->casa_sel>0)
 	{
-		if(obj->transf.at(i)->type=="trans")
-		{
-			x=obj->transf.at(i)->getX();
-			y=obj->transf.at(i)->getY();
-			z=obj->transf.at(i)->getZ();
-			glTranslated(-x, -y, z);
-		}
+		//cout<<"entrou\n";
+		if(peca_anim.sobe && (peca_anim.y<peca_anim.yf))
+			peca_anim.y+=peca_anim.dy;
+		else if(peca_anim.sobe && (peca_anim.y>=peca_anim.yf))
+			peca_anim.sobe=false;
+		else if(!peca_anim.sobe && (peca_anim.y>peca_anim.yi))
+			peca_anim.y-=peca_anim.dy;
+		else if(!peca_anim.sobe && (peca_anim.y<=peca_anim.yi))
+			peca_anim.sobe=true;
 	}
+	glutTimerFunc(mili_secs,anim, 0);
 }
 
 void Jogo::draw()
@@ -867,30 +898,23 @@ void Jogo::draw()
 	//cout<<"a desenhar\n";
 	for(unsigned int i=0; i<this->tab.size(); i++)
 	{
+		glPushMatrix();
+		posicao(true, i);
+		if(i==jogo->casa_sel)
+			glTranslated(0.0, peca_anim.y, 0.0);
 		switch(this->tab.at(i))
 		{
 		case 1:
-			glPushMatrix();
-			posicao(true, i);
-			//reverte(this->aldeao);
 			this->aldeao->draw();
-			glPopMatrix();
 			break;
 		case 2:
-			glPushMatrix();
-			posicao(true, i);
-			//reverte(this->vampiro);
 			this->vampiro->draw();
-			glPopMatrix();
 			break;
 		case 3:
-			glPushMatrix();
-			posicao(true, i);
-			//reverte(this->nosferatu);
 			this->nosferatu->draw();
-			glPopMatrix();
 			break;
 		}
+		glPopMatrix();
 	}
 	for(unsigned int i=0; i<this->pecas_al.size();i++)
 	{
@@ -984,14 +1008,26 @@ void sensores()
 		
 		glPushMatrix();
 		glTranslated(-dim_Casa-dim_Casa/2+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
-		glCallList(cube);
+		if(jogo->tab.at(2)==0)
+		{
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
+		}
+		else
+			glCallList(cube);
 		glPopMatrix();
 		for(int i=1; i<3; i++)
 		{
 			glLoadName(i+2);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+2)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 
 		}
@@ -1001,7 +1037,13 @@ void sensores()
 			glLoadName(i+8);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa-dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+8)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 		
@@ -1010,7 +1052,13 @@ void sensores()
 			glLoadName(i+14);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+14)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 
@@ -1019,7 +1067,13 @@ void sensores()
 			glLoadName(i+21);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+21)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 
@@ -1028,7 +1082,13 @@ void sensores()
 			glLoadName(i+28);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa+dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+28)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 
@@ -1037,7 +1097,13 @@ void sensores()
 			glLoadName(i+36);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 2*dim_Casa+dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+36)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 		
@@ -1046,7 +1112,13 @@ void sensores()
 			glLoadName(i+44);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 3*dim_Casa+dim_Casa/2);
-			glCallList(cube);
+			if(jogo->tab.at(i+44)==0)
+			{
+				glRotated(-90.0, 1.0, 0.0, 0.0);
+				glRectd(0.0, 0.0, dim_cube, dim_cube);
+			}
+			else
+				glCallList(cube);
 			glPopMatrix();
 		}
 	glPopMatrix();
@@ -1100,6 +1172,7 @@ void pickingAction(GLuint answer)
 			case 1:
 				if(jogo->pertence(answer))
 				{
+					peca_anim_init();
 					jogo->casa_sel=answer;
 					jogo->fase_ant=jogo->fase;
 					jogo->fase=3;
@@ -1111,6 +1184,7 @@ void pickingAction(GLuint answer)
 		case 2://quando todos jogam
 			if(jogo->pertence(answer))
 			{
+				peca_anim_init();
 				jogo->casa_sel=answer;
 				jogo->fase_ant=jogo->fase;
 				jogo->fase=3;
@@ -1138,6 +1212,11 @@ void pickingAction(GLuint answer)
 	}
 
 	//printf("%d\n", answer);
+}
+
+void Jogo::move_peca()
+{
+
 }
 
 void Jogo::anexa_tab(char * buf)
