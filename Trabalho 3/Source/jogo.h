@@ -31,13 +31,15 @@ public:
 	bool pertence(int casa);
 	bool mov_valido(int casa);
 	void exec_move(int casa);
+	void move_peca();
 	vector<int> parse_tab(char * buf);
 };
 
 void myCube(GLfloat lado);
 
 void sensores();
-void reverte(Object * obj);
+void anim(int dummy);
+void peca_anim_init();
 
 void pickingAction(GLuint answer);
 
