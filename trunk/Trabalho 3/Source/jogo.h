@@ -8,9 +8,13 @@ public:
 	vector<int> pecas_al;
 	vector<int> pecas_v;
 
-	vector<int> tab;
 
+	vector<vector<int>> hist;
+	vector<int> tab;
+	int fase;
+	int fase_ant;
 	int Jactual;
+	int casa_sel;
 
 	Object * vampiro;
 	Object * aldeao;
@@ -21,6 +25,13 @@ public:
 	Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2);
 	void draw();
 	void posicao(bool tabuleiro, int pos);
+	bool casa_valida(int casa);
+	vector<int> conv_casa(int casa);
+	void anexa_tab(char * buf);
+	bool pertence(int casa);
+	bool mov_valido(int casa);
+	void exec_move(int casa);
+	vector<int> parse_tab(char * buf);
 };
 
 void myCube(GLfloat lado);
