@@ -571,6 +571,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize (DIMX, DIMY);
@@ -680,6 +681,37 @@ bool socketConnect() // Initialize Winsock.
 	return true;
 }
 
+void envia(char *s, int len) {
+	int bytesSent = send(sock, s, len, 0);
+	if(bytesSent == SOCKET_ERROR)
+	{
+		printf("Client: send() error %ld.\n", WSAGetLastError());
+		throw ExcepcaoSocket();
+	}
+	cout<<s;
+}
+
+void recebe(char *ans) {
+	int bytesRecv = SOCKET_ERROR;
+	int pos = 0;
+	while (true) {
+		recv(sock, &ans[pos], 1, 0);
+		if (ans[pos] == '\n')
+			break;
+		pos++;
+	}
+	ans[pos] = 0;
+	cout << "prolog answered: " << ans << endl;
+}
+
+void quit() {
+	cout << "Asking prolog to quit" << endl;
+	char buff[] = "quit.\n";
+	envia(buff, 6);
+	char ans[128];
+	recebe(ans);
+}
+
 Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2)
 {
 	this->vampiro=vampiro;
@@ -701,9 +733,11 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 	for(unsigned int i=0; i<5; i++)
 		this->pecas_v.push_back(2);
 	this->Jactual=0;
+	this->fase=0;
+	this->casa_sel=-1;
 
-	//if(!socketConnect())
-		//throw ExcepcaoSocket();
+	if(!socketConnect())
+		throw ExcepcaoSocket();
 }
 
 void show_jogador(int jactual)
@@ -727,7 +761,8 @@ void show_jogador(int jactual)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'z');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'd');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'A');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'l');
@@ -743,7 +778,8 @@ void show_jogador(int jactual)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'z');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'd');
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, ' ');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'V');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'a');
@@ -931,7 +967,7 @@ void sensores()
 	glPushMatrix();
 	glTranslated(0.0, alturaTab, 0.0);
 		
-	glPushName(0);
+	glPushName(2);
 		
 		glPushMatrix();
 		glTranslated(-dim_Casa-dim_Casa/2+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
@@ -939,7 +975,7 @@ void sensores()
 		glPopMatrix();
 		for(int i=1; i<3; i++)
 		{
-			glLoadName(i);
+			glLoadName(i+2);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
 			glCallList(cube);
@@ -949,7 +985,7 @@ void sensores()
 		
 		for(int i=0; i<5; i++)
 		{
-			glLoadName(i+3);
+			glLoadName(i+8);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa-dim_Casa/2);
 			glCallList(cube);
@@ -958,7 +994,7 @@ void sensores()
 		
 		for(int i=0; i<7; i++)
 		{
-			glLoadName(i+8);
+			glLoadName(i+14);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa/2);
 			glCallList(cube);
@@ -967,7 +1003,7 @@ void sensores()
 
 		for(int i=0; i<7; i++)
 		{
-			glLoadName(i+15);
+			glLoadName(i+21);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa/2);
 			glCallList(cube);
@@ -976,7 +1012,7 @@ void sensores()
 
 		for(int i=0; i<7; i++)
 		{
-			glLoadName(i+22);
+			glLoadName(i+28);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa+dim_Casa/2);
 			glCallList(cube);
@@ -985,7 +1021,7 @@ void sensores()
 
 		for(int i=0; i<5; i++)
 		{
-			glLoadName(i+29);
+			glLoadName(i+36);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 2*dim_Casa+dim_Casa/2);
 			glCallList(cube);
@@ -994,7 +1030,7 @@ void sensores()
 		
 		for(int i=0; i<3; i++)
 		{
-			glLoadName(i+34);
+			glLoadName(i+44);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 3*dim_Casa+dim_Casa/2);
 			glCallList(cube);
@@ -1003,8 +1039,238 @@ void sensores()
 	glPopMatrix();
 }
 
-void pickingAction(GLuint answer) {
-	printf("%d\n", answer);
+void pickingAction(GLuint answer) 
+{
+	int peca;
+	switch(jogo->fase)
+	{
+	case 0://quando todos inserem
+		if(jogo->casa_valida(answer))//insere peca e decrementa peice pool
+		{
+			if(jogo->Jactual==0)
+			{
+				jogo->hist.push_back(jogo->tab);
+				peca=jogo->pecas_al.back();
+				jogo->pecas_al.pop_back();
+				jogo->tab.at(answer)=peca;
+				jogo->Jactual=1;
+			}
+			else
+			{
+				jogo->hist.push_back(jogo->tab);
+				peca=jogo->pecas_v.back();
+				jogo->pecas_v.pop_back();
+				if(jogo->pecas_v.empty())
+					jogo->fase++;
+				jogo->tab.at(answer)=peca;
+				jogo->Jactual=0;
+			}
+		}
+		break;
+	case 1://quando os aldeoes inserem e os vampiros jogam
+		switch(jogo->Jactual)
+		{
+		case 0:
+			if(jogo->casa_valida(answer))
+			{
+				jogo->hist.push_back(jogo->tab);
+				peca=jogo->pecas_al.back();
+				jogo->pecas_al.pop_back();
+				if(jogo->pecas_al.empty())
+					jogo->fase++;
+				jogo->tab.at(answer)=peca;
+				jogo->Jactual=1;
+			}
+			break;
+		case 1:
+			if(jogo->pertence(answer))
+			{
+				jogo->casa_sel=answer;
+				jogo->fase_ant=jogo->fase;
+				jogo->fase=3;
+				//cout<<"pertence\n";
+			}
+			break;
+		}
+		break;
+	case 2://quando todos jogam
+		if(jogo->pertence(answer))
+		{
+			jogo->casa_sel=answer;
+			jogo->fase_ant=jogo->fase;
+			jogo->fase=3;
+			//cout<<"pertence\n";
+		}
+		break;
+	case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
+		if(jogo->mov_valido(answer))
+		{
+			jogo->exec_move(answer);
+			if(jogo->Jactual==0)
+				jogo->Jactual=1;
+			else
+				jogo->Jactual=0;
+			jogo->casa_sel=-1;
+			jogo->fase=jogo->fase_ant;
+		}
+		break;
+	}
+
+	//printf("%d\n", answer);
+}
+
+void Jogo::anexa_tab(char * buf)
+{
+	int i=0;
+	char buf2[BUFSIZE];
+
+	//linha 0
+	sprintf(buf2, "[[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 1
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 2
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 3
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 4
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 5
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i],", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+	//linha 6
+	i++;
+	sprintf(buf2, "[%i,%i,%i,%i,%i,%i,%i]]).\n", tab.at(i*7+0), tab.at(i*7+1), tab.at(i*7+2), tab.at(i*7+3), tab.at(i*7+4), tab.at(i*7+5), tab.at(i*7+6));
+	strcat(buf, buf2);
+}
+
+bool Jogo::casa_valida(int casa)
+{
+	vector<int> pos = conv_casa(casa);
+	
+	char buf[BUFSIZE];
+
+	if(this->Jactual==0)
+		sprintf(buf, "casa_valida(%i,%i,%i,", pos.at(0), pos.at(1), this->pecas_al.back());
+	else
+		sprintf(buf, "casa_valida(%i,%i,%i,", pos.at(0), pos.at(1), this->pecas_v.back());
+	anexa_tab(buf);
+
+	//cout<<buf;
+	//system("pause");
+	
+	envia(buf, strlen(buf));
+
+	recebe(buf);
+
+	int res=atoi(buf);
+	//cout<<res<<endl;
+
+	//quit();
+
+	if(res==1)
+		return true;
+	else
+		return false;
+}	
+
+bool Jogo::pertence(int casa)
+{
+	vector<int> pos = conv_casa(casa);
+	char buf[BUFSIZE];
+
+	sprintf(buf, "pertence(%i,%i,%i,", this->Jactual+1, pos.at(0), pos.at(1));
+	anexa_tab(buf);
+
+	envia(buf, strlen(buf));
+
+	recebe(buf);
+
+	int res=atoi(buf);
+
+	if(res==1)
+		return true;
+	else
+		return false;
+}
+
+bool Jogo::mov_valido(int casa)
+{
+	vector<int> posi = conv_casa(this->casa_sel);
+	vector<int> posf = conv_casa(casa);
+	char buf[BUFSIZE];
+
+	sprintf(buf, "movimento_valido(%i,%i,%i,%i,", posi.at(0), posi.at(1), posf.at(0), posf.at(1));
+	anexa_tab(buf);
+
+	envia(buf, strlen(buf));
+
+	recebe(buf);
+
+	int res=atoi(buf);
+
+	if(res==1)
+		return true;
+	else
+		return false;
+}
+
+void Jogo::exec_move(int casa)
+{
+	vector<int> posi = conv_casa(this->casa_sel);
+	vector<int> posf = conv_casa(casa);
+	char buf[BUFSIZE];
+
+	sprintf(buf, "exec_move(%i,%i,%i,%i,", posi.at(0), posi.at(1), posf.at(0), posf.at(1));
+	anexa_tab(buf);
+
+	envia(buf, strlen(buf));
+
+	recebe(buf);
+
+	this->hist.push_back(this->tab);
+	this->tab=parse_tab(buf);
+
+}
+
+vector<int> Jogo::parse_tab(char * buf)
+{
+	vector<int> nums;
+	int num;
+	char c;
+	for(unsigned int j=0; j<7; j++)
+	{
+		for(unsigned int i=0; i<7; i++)
+		{
+			buf+=2;
+			num=atoi(buf);
+			nums.push_back(num);
+		}
+		buf+=2;
+	}
+	
+	
+	//cout<<nums.size()<<endl;
+	return nums;
+}
+
+vector<int> Jogo::conv_casa(int casa)
+{
+	vector<int> pos;
+	int aux=casa/7;
+	//pos.push_back(aux);
+	pos.push_back(casa%7);
+	pos.push_back(aux);
+	return pos;
 }
 
 // processa os hits no picking
