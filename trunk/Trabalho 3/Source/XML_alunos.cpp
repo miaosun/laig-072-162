@@ -518,6 +518,84 @@ void ctr_camara(int control)
 
 SOCKET sock;
 
+bool socketConnect() // Initialize Winsock.
+{
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
+    if (iResult != NO_ERROR)
+		printf("Client: Error at WSAStartup().\n");
+    else
+        printf("Client: WSAStartup() is OK.\n");
+
+	// Create a socket.
+    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (sock == INVALID_SOCKET) {
+        printf("Client: socket() - Error at socket(): %ld\n", WSAGetLastError());
+        WSACleanup();
+        return false;
+    }
+	else
+       printf("Client: socket() is OK.\n");
+
+    // Connect to a server.
+    sockaddr_in clientService;
+    clientService.sin_family = AF_INET;
+    // Just test using the localhost, you can try other IP address
+    clientService.sin_addr.s_addr = inet_addr("127.0.0.1");
+    clientService.sin_port = htons(60070);
+
+    if (connect(sock, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR) {
+        printf("Client: connect() - Failed to connect.\n");
+        WSACleanup();
+        return false;
+    }
+    else {
+       printf("Client: connect() is OK.\n");
+       printf("Client: Can start sending and receiving data...\n");
+    }
+
+    // Send and receive data.
+	printf("Connected\n");
+	return true;
+}
+
+void envia(char *s, int len) {
+	int bytesSent = send(sock, s, len, 0);
+	if(bytesSent == SOCKET_ERROR)
+	{
+		printf("Client: send() error %ld.\n", WSAGetLastError());
+		throw ExcepcaoSocket();
+	}
+	cout<<s;
+}
+
+void recebe(char *ans) {
+	int bytesRecv = SOCKET_ERROR;
+	int pos = 0;
+	while (true) {
+		recv(sock, &ans[pos], 1, 0);
+		if (ans[pos] == '\n')
+			break;
+		pos++;
+	}
+	ans[pos] = 0;
+	cout << "prolog answered: " << ans << endl;
+}
+
+void quit() {
+	cout << "Asking prolog to quit" << endl;
+	char buff[] = "quit.\n";
+	envia(buff, 6);
+	char ans[128];
+	recebe(ans);
+}
+
+void sock_end(int control)
+{
+	if(control==0)
+		quit();
+}
+
 int main(int argc, char* argv[])
 {
 	cena_actual=0;
@@ -606,6 +684,11 @@ int main(int argc, char* argv[])
 	cena->add_item(1, "cena 1");
 	cena->add_item(2, "cena 2");
 
+
+	/////para desligar as sockets
+	glui2->add_button("QuitSock", 0, sock_end);
+
+
 	////////camaras
 	glui2->add_column(false);
 	GLUI_Panel *panel;
@@ -640,77 +723,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-bool socketConnect() // Initialize Winsock.
-{
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2,2), &wsaData);
-    if (iResult != NO_ERROR)
-		printf("Client: Error at WSAStartup().\n");
-    else
-        printf("Client: WSAStartup() is OK.\n");
 
-	// Create a socket.
-    sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (sock == INVALID_SOCKET) {
-        printf("Client: socket() - Error at socket(): %ld\n", WSAGetLastError());
-        WSACleanup();
-        return false;
-    }
-	else
-       printf("Client: socket() is OK.\n");
-
-    // Connect to a server.
-    sockaddr_in clientService;
-    clientService.sin_family = AF_INET;
-    // Just test using the localhost, you can try other IP address
-    clientService.sin_addr.s_addr = inet_addr("127.0.0.1");
-    clientService.sin_port = htons(60070);
-
-    if (connect(sock, (SOCKADDR*)&clientService, sizeof(clientService)) == SOCKET_ERROR) {
-        printf("Client: connect() - Failed to connect.\n");
-        WSACleanup();
-        return false;
-    }
-    else {
-       printf("Client: connect() is OK.\n");
-       printf("Client: Can start sending and receiving data...\n");
-    }
-
-    // Send and receive data.
-	printf("Connected\n");
-	return true;
-}
-
-void envia(char *s, int len) {
-	int bytesSent = send(sock, s, len, 0);
-	if(bytesSent == SOCKET_ERROR)
-	{
-		printf("Client: send() error %ld.\n", WSAGetLastError());
-		throw ExcepcaoSocket();
-	}
-	cout<<s;
-}
-
-void recebe(char *ans) {
-	int bytesRecv = SOCKET_ERROR;
-	int pos = 0;
-	while (true) {
-		recv(sock, &ans[pos], 1, 0);
-		if (ans[pos] == '\n')
-			break;
-		pos++;
-	}
-	ans[pos] = 0;
-	cout << "prolog answered: " << ans << endl;
-}
-
-void quit() {
-	cout << "Asking prolog to quit" << endl;
-	char buff[] = "quit.\n";
-	envia(buff, 6);
-	char ans[128];
-	recebe(ans);
-}
 
 Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2)
 {
@@ -1042,47 +1055,60 @@ void sensores()
 void pickingAction(GLuint answer) 
 {
 	int peca;
-	switch(jogo->fase)
+	try
 	{
-	case 0://quando todos inserem
-		if(jogo->casa_valida(answer))//insere peca e decrementa peice pool
+		switch(jogo->fase)
 		{
-			if(jogo->Jactual==0)
+		case 0://quando todos inserem
+			if(jogo->casa_valida(answer))//insere peca e decrementa peice pool
 			{
-				jogo->hist.push_back(jogo->tab);
-				peca=jogo->pecas_al.back();
-				jogo->pecas_al.pop_back();
-				jogo->tab.at(answer)=peca;
-				jogo->Jactual=1;
-			}
-			else
-			{
-				jogo->hist.push_back(jogo->tab);
-				peca=jogo->pecas_v.back();
-				jogo->pecas_v.pop_back();
-				if(jogo->pecas_v.empty())
-					jogo->fase++;
-				jogo->tab.at(answer)=peca;
-				jogo->Jactual=0;
-			}
-		}
-		break;
-	case 1://quando os aldeoes inserem e os vampiros jogam
-		switch(jogo->Jactual)
-		{
-		case 0:
-			if(jogo->casa_valida(answer))
-			{
-				jogo->hist.push_back(jogo->tab);
-				peca=jogo->pecas_al.back();
-				jogo->pecas_al.pop_back();
-				if(jogo->pecas_al.empty())
-					jogo->fase++;
-				jogo->tab.at(answer)=peca;
-				jogo->Jactual=1;
+				if(jogo->Jactual==0)
+				{
+					jogo->hist.push_back(jogo->tab);
+					peca=jogo->pecas_al.back();
+					jogo->pecas_al.pop_back();
+					jogo->tab.at(answer)=peca;
+					jogo->Jactual=1;
+				}
+				else
+				{
+					jogo->hist.push_back(jogo->tab);
+					peca=jogo->pecas_v.back();
+					jogo->pecas_v.pop_back();
+					if(jogo->pecas_v.empty())
+						jogo->fase++;
+					jogo->tab.at(answer)=peca;
+					jogo->Jactual=0;
+				}
 			}
 			break;
-		case 1:
+		case 1://quando os aldeoes inserem e os vampiros jogam
+			switch(jogo->Jactual)
+			{
+			case 0:
+				if(jogo->casa_valida(answer))
+				{
+					jogo->hist.push_back(jogo->tab);
+					peca=jogo->pecas_al.back();
+					jogo->pecas_al.pop_back();
+					if(jogo->pecas_al.empty())
+						jogo->fase++;
+					jogo->tab.at(answer)=peca;
+					jogo->Jactual=1;
+				}
+				break;
+			case 1:
+				if(jogo->pertence(answer))
+				{
+					jogo->casa_sel=answer;
+					jogo->fase_ant=jogo->fase;
+					jogo->fase=3;
+					//cout<<"pertence\n";
+				}
+				break;
+			}
+			break;
+		case 2://quando todos jogam
 			if(jogo->pertence(answer))
 			{
 				jogo->casa_sel=answer;
@@ -1091,29 +1117,24 @@ void pickingAction(GLuint answer)
 				//cout<<"pertence\n";
 			}
 			break;
+		case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
+			if(jogo->mov_valido(answer))
+			{
+				jogo->exec_move(answer);
+				if(jogo->Jactual==0)
+					jogo->Jactual=1;
+				else
+					jogo->Jactual=0;
+				jogo->casa_sel=-1;
+				jogo->fase=jogo->fase_ant;
+			}
+			break;
 		}
-		break;
-	case 2://quando todos jogam
-		if(jogo->pertence(answer))
-		{
-			jogo->casa_sel=answer;
-			jogo->fase_ant=jogo->fase;
-			jogo->fase=3;
-			//cout<<"pertence\n";
-		}
-		break;
-	case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
-		if(jogo->mov_valido(answer))
-		{
-			jogo->exec_move(answer);
-			if(jogo->Jactual==0)
-				jogo->Jactual=1;
-			else
-				jogo->Jactual=0;
-			jogo->casa_sel=-1;
-			jogo->fase=jogo->fase_ant;
-		}
-		break;
+	}
+	catch (ExcepcaoSocket e)
+	{
+		cout<<"erro na comunicacao com o prolog\n";
+		system("pause");
 	}
 
 	//printf("%d\n", answer);
