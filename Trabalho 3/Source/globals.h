@@ -1,12 +1,18 @@
+
+//#include <winsock2.h>
+//#include <winsock.h>
+//#include <windows.h>
+//#include <stdlib.h>
+#include <glui.h>
+//#include <stdio.h>
+#include <ctype.h>
+#include <iostream>
 #include <string>
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include <stdlib.h>
-#include <iostream>
-#include <glui.h>
-#include <stdio.h>
-#include <ctype.h>
+#include <math.h>
+#include <queue>
 
 using namespace std;
 
@@ -15,8 +21,7 @@ using namespace std;
 // idealmente tudo seria incluido numa classe
 
 class Excepcao{};
-
-
+class ExcepcaoSocket{};
 
 
 class Global
@@ -30,11 +35,11 @@ public:
 
 	Global()
 	{
-		this->maxlights = maxlights;
-		this->maxtextures = maxtextures;
-		this->maxmaterials = maxmaterials;
-		this->maxobjects = maxobjects;
-		this->root = root;
+		this->maxlights = 0;
+		this->maxtextures = 0;
+		this->maxmaterials = 0;
+		this->maxobjects = 0;
+		this->root = "";
 	}
 };
 
@@ -119,4 +124,3 @@ public:
 		this->length_t = length_t;
 	}
 };
-

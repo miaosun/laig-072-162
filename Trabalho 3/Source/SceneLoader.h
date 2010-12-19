@@ -2,8 +2,10 @@
 #define SCENE_LOADER
 
 #include "../tinyxml.h"
-#include "Object.h"
+//#include "Object.h"
+#include "jogo.h"
 #include "RGBpixmap.h"
+
 
 using namespace std;
 
