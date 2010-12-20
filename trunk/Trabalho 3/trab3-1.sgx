@@ -102,7 +102,7 @@
         <!-- root -->
         <object id="cena" type="compound">
             <transformations>
-				<translation x="0.0" y="-17.5" z="0.0" />
+				<translation x="0.0" y="-15.5" z="0.0" />
             </transformations>
 
             <material id="null" />
