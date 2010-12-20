@@ -42,6 +42,7 @@ void myCube(GLfloat lado);
 void sensores();
 void anim(int dummy);
 void peca_anim_init();
+void move_anim_init(int casa);
 
 void sock_end(int control);
 void undo(int control);

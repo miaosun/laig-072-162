@@ -95,11 +95,12 @@ unsigned int mili_secs = 10;
 #define ANGULAR_SPEED 0.5  // rotacoes por segundo
 
 typedef struct anim_data{
-	double yi,yf,dy,y,dt;
-	bool sobe;
+	double yi,yf,dy,y,dty,xi,xf,dx,x,dtx,zi,zf,dz,z,dtz;
+	bool sobe, enabled, corre;
 };
 
 anim_data peca_anim;
+anim_data move_anim;
 bool peca_sel;
 #define MOVE_ID 150 
 #define SELECT_ID 151
@@ -826,7 +827,7 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 	this->Jactual=0;
 	this->fase=0;
 	this->casa_sel=-1;
-	
+	move_anim.enabled=false;
 
 	//iniciar variaveis da animacao
 
@@ -898,7 +899,7 @@ void Jogo::posicao(bool tabuleiro, int pos)//a partir da origem
 	int coluna= pos%7;
 
 	if(tabuleiro)
-		glTranslated(-3*dim_Casa+coluna*dim_Casa, alturaTab, -3*dim_Casa+linha*dim_Casa);
+		glTranslated(-3*dim_Casa+coluna*dim_Casa, alturaTab+2.0, -3*dim_Casa+linha*dim_Casa);
 	else
 	{
 		if(pos<3)
@@ -937,14 +938,44 @@ void peca_anim_init()
 	peca_anim.yi=0;
 	peca_anim.y=peca_anim.yi;
 	peca_anim.yf=5.0;
-	peca_anim.dt=1.0;
+	peca_anim.dty=1.0;
 	peca_anim.sobe=true;
-	peca_anim.dy=(peca_anim.yf-peca_anim.yi)/((1000.0*peca_anim.dt)/mili_secs);
+	peca_anim.dy=(peca_anim.yf-peca_anim.yi)/((1000.0*peca_anim.dty)/mili_secs);
+}
+
+void move_anim_init(int casa)
+{
+	int linha_i=jogo->casa_sel/7;
+	int coluna_i=jogo->casa_sel%7;
+	int linha_f=casa/7;
+	int coluna_f=casa%7;
+
+	move_anim.yi=alturaTab+2.0;
+	move_anim.y=peca_anim.yi;
+	move_anim.yf=alturaTab+7.0;
+	move_anim.dty=1.0;
+	move_anim.sobe=true;
+	move_anim.dy=(move_anim.yf-move_anim.yi)/((1000.0*move_anim.dty)/mili_secs);
+	
+	move_anim.xi=-3*dim_Casa+coluna_i*dim_Casa;
+	move_anim.x=peca_anim.xi;
+	move_anim.xf=-3*dim_Casa+coluna_f*dim_Casa;
+	move_anim.dtx=2.0;
+	move_anim.dx=(move_anim.xf-move_anim.xi)/((1000.0*move_anim.dtx)/mili_secs);
+
+	move_anim.zi=-3*dim_Casa+linha_i*dim_Casa;
+	move_anim.z=peca_anim.zi;
+	move_anim.zf=-3*dim_Casa+linha_f*dim_Casa;
+	move_anim.dtz=2.0;
+	move_anim.dz=(move_anim.zf-move_anim.zi)/((1000.0*move_anim.dtz)/mili_secs);
+
+	move_anim.enabled=true;
+	move_anim.corre=false;
 }
 
 void anim(int dummy)
 {
-	if(jogo->casa_sel>0)
+	if(jogo->casa_sel>0 && !move_anim.enabled)
 	{
 		//cout<<"entrou\n";
 		if(peca_anim.sobe && (peca_anim.y<peca_anim.yf))
@@ -956,6 +987,26 @@ void anim(int dummy)
 		else if(!peca_anim.sobe && (peca_anim.y<=peca_anim.yi))
 			peca_anim.sobe=true;
 	}
+	if(move_anim.enabled)
+	{
+		if(move_anim.sobe && (move_anim.y<move_anim.yf))
+			move_anim.y+=move_anim.dy;
+		else if(move_anim.sobe && (move_anim.y>=move_anim.yf))
+		{
+			move_anim.sobe=false;
+			move_anim.corre=true;
+		}
+		else if(move_anim.corre && move_anim.z!=move_anim.zf && move_anim.x!=move_anim.xf)
+		{
+			move_anim.x+=move_anim.dx;
+			move_anim.z+=move_anim.dz;
+		}
+		else if(move_anim.corre && move_anim.z==move_anim.zf && move_anim.x==move_anim.xf && !move_anim.sobe && move_anim.y>move_anim.yi)
+			move_anim.y+=move_anim.dy;
+		else
+			move_anim.enabled=false;
+	}
+
 	glutTimerFunc(mili_secs,anim, 0);
 }
 
@@ -983,7 +1034,7 @@ void Jogo::sinaliza_casa(int casa)
 	glColor3f(0.0,0.86,0.67);	
 	glPushMatrix();
 	posicao(true, casa);
-	glTranslated(0.0, 0.1, 0.0);
+	glTranslated(0.0, 0.01, 0.0);
 	glRotated(-90, 1.0, 0.0, 0.0); 
 	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
 	glPopMatrix();
@@ -996,9 +1047,15 @@ void Jogo::draw()
 	for(unsigned int i=0; i<this->tab.size(); i++)
 	{
 		glPushMatrix();
-		posicao(true, i);
-		if(i==jogo->casa_sel)
+		if(i==jogo->casa_sel && !move_anim.enabled)
+		{
+			posicao(true, i);
 			glTranslated(0.0, peca_anim.y, 0.0);
+		}
+		else if(move_anim.enabled && i==jogo->casa_sel)
+			glTranslated(move_anim.x, move_anim.y, move_anim.z);
+		else
+			posicao(true, i);
 		switch(this->tab.at(i))
 		{
 		case 1:
@@ -1100,8 +1157,9 @@ void myCube(GLfloat lado)
 
 void sensores()
 {
+
 	glPushMatrix();
-	glTranslated(0.0, alturaTab, 0.0);
+	glTranslated(0.0, alturaTab+2.0, 0.0);
 		
 	glPushName(2);
 		
@@ -1228,50 +1286,65 @@ void pickingAction(GLuint answer)
 	int peca;
 	try
 	{
-		switch(jogo->fase)
+		if(!move_anim.enabled)
 		{
-		case 0://quando todos inserem
-			if(jogo->casa_valida(answer))//insere peca e decrementa peice pool
+			switch(jogo->fase)
 			{
-				if(jogo->Jactual==0)
+			case 0://quando todos inserem
+				if(jogo->casa_valida(answer))//insere peca e decrementa peice pool
 				{
-					jogo->hist.push_back(jogo->tab);
-					peca=jogo->pecas_al.back();
-					jogo->pecas_al.pop_back();
-					jogo->tab.at(answer)=peca;
-					jogo->Jactual=1;
-					jogo->procura_sinal(0);
-				}
-				else
-				{
-					jogo->hist.push_back(jogo->tab);
-					peca=jogo->pecas_v.back();
-					jogo->pecas_v.pop_back();
-					if(jogo->pecas_v.empty())
-						jogo->fase++;
-					jogo->tab.at(answer)=peca;
-					jogo->Jactual=0;
-					jogo->procura_sinal(0);
-				}
-			}
-			break;
-		case 1://quando os aldeoes inserem e os vampiros jogam
-			switch(jogo->Jactual)
-			{
-			case 0:
-				if(jogo->casa_valida(answer))
-				{
-					jogo->hist.push_back(jogo->tab);
-					peca=jogo->pecas_al.back();
-					jogo->pecas_al.pop_back();
-					if(jogo->pecas_al.empty())
-						jogo->fase++;
-					jogo->tab.at(answer)=peca;
-					jogo->Jactual=1;
-					jogo->sinal.clear();
+					if(jogo->Jactual==0)
+					{
+						jogo->hist.push_back(jogo->tab);
+						peca=jogo->pecas_al.back();
+						jogo->pecas_al.pop_back();
+						jogo->tab.at(answer)=peca;
+						jogo->Jactual=1;
+						jogo->procura_sinal(0);
+					}
+					else
+					{
+						jogo->hist.push_back(jogo->tab);
+						peca=jogo->pecas_v.back();
+						jogo->pecas_v.pop_back();
+						if(jogo->pecas_v.empty())
+							jogo->fase++;
+						jogo->tab.at(answer)=peca;
+						jogo->Jactual=0;
+						jogo->procura_sinal(0);
+					}
 				}
 				break;
-			case 1:
+			case 1://quando os aldeoes inserem e os vampiros jogam
+				switch(jogo->Jactual)
+				{
+				case 0:
+					if(jogo->casa_valida(answer))
+					{
+						jogo->hist.push_back(jogo->tab);
+						peca=jogo->pecas_al.back();
+						jogo->pecas_al.pop_back();
+						if(jogo->pecas_al.empty())
+							jogo->fase++;
+						jogo->tab.at(answer)=peca;
+						jogo->Jactual=1;
+						jogo->sinal.clear();
+					}
+					break;
+				case 1:
+					if(jogo->pertence(answer))
+					{
+						peca_anim_init();
+						jogo->casa_sel=answer;
+						jogo->fase_ant=jogo->fase;
+						jogo->fase=3;
+						jogo->procura_sinal(1);
+						//cout<<"pertence\n";
+					}
+					break;
+				}
+				break;
+			case 2://quando todos jogam
 				if(jogo->pertence(answer))
 				{
 					peca_anim_init();
@@ -1282,34 +1355,23 @@ void pickingAction(GLuint answer)
 					//cout<<"pertence\n";
 				}
 				break;
+			case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
+				if(jogo->mov_valido(answer))
+				{
+					move_anim_init(answer);
+					jogo->exec_move(answer);
+					if(jogo->Jactual==0)
+						jogo->Jactual=1;
+					else
+						jogo->Jactual=0;
+					jogo->casa_sel=-1;
+					jogo->fase=jogo->fase_ant;
+					jogo->sinal.clear();
+					if(jogo->fase==1)
+						jogo->procura_sinal(0);
+				}
+				break;
 			}
-			break;
-		case 2://quando todos jogam
-			if(jogo->pertence(answer))
-			{
-				peca_anim_init();
-				jogo->casa_sel=answer;
-				jogo->fase_ant=jogo->fase;
-				jogo->fase=3;
-				jogo->procura_sinal(1);
-				//cout<<"pertence\n";
-			}
-			break;
-		case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
-			if(jogo->mov_valido(answer))
-			{
-				jogo->exec_move(answer);
-				if(jogo->Jactual==0)
-					jogo->Jactual=1;
-				else
-					jogo->Jactual=0;
-				jogo->casa_sel=-1;
-				jogo->fase=jogo->fase_ant;
-				jogo->sinal.clear();
-				if(jogo->fase==1)
-					jogo->procura_sinal(0);
-			}
-			break;
 		}
 	}
 	catch (ExcepcaoSocket e)
