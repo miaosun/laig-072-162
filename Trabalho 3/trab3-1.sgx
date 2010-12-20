@@ -183,7 +183,7 @@
 		
 		<object id="quad_frente" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="2.0" />
+				<translation x="0.0" y="0.0" z="1.0" />
             </transformations>
 
             <material id="null" />
@@ -194,7 +194,7 @@
 		
 		<object id="quad_atras" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
+				<translation x="0.0" y="0.0" z="-1.0" />
 				<rotation axis="x" angle="180" />
             </transformations>
 
@@ -213,7 +213,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir" type="simple">
@@ -225,7 +225,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_cima" type="simple">
@@ -237,7 +237,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		<object id="quad_baixo" type="simple">
@@ -249,13 +249,13 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		
 		<object id="quad_frente1" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="2.0" />
+				<translation x="0.0" y="0.0" z="1.0" />
             </transformations>
 
             <material id="null" />
@@ -266,7 +266,7 @@
 		
 		<object id="quad_atras1" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
+				<translation x="0.0" y="0.0" z="-1.0" />
 				<rotation axis="x" angle="180" />
             </transformations>
 
@@ -285,7 +285,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir1" type="simple">
@@ -297,7 +297,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_cima1" type="simple">
@@ -309,7 +309,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		<object id="quad_baixo1" type="simple">
@@ -321,7 +321,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 
 	<!-- lin1 -->
@@ -651,7 +651,7 @@
 		
 		<object id="fre" type="compound">
             <transformations>
-				<translation x="0.0" y="4.0" z="14.1" />
+				<translation x="0.0" y="3.0" z="14.1" />
             </transformations>
 
             <material id="table" />
@@ -670,7 +670,7 @@
             <material id="table" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
+            <geometry type="rectangle" x1="-6.1" y1="-2.0" x2="6.1" y2="2.0" />
         </object>
 		
 		<object id="fre2" type="simple">
@@ -681,7 +681,7 @@
             <material id="table" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
+            <geometry type="rectangle" x1="-6.1" y1="-2.0" x2="6.1" y2="2.0" />
         </object>
 		
 		<object id="mesa_canto4" type="compound">
@@ -725,6 +725,7 @@
 	
 		<object id="mesa_canto1" type="compound">
             <transformations>
+				<translation x="0.0" y="-1.0" z="0.0" />
             </transformations>
 
             <material id="null" />
@@ -765,7 +766,7 @@
 		
 		<object id="q2" type="compound">
             <transformations>
-				<translation x="2.0" y="0.0" z="0.0" />
+				<translation x="2.0" y="-0.0" z="0.0" />
 				<rotation axis="y" angle="-90" />
             </transformations>
 
@@ -780,7 +781,7 @@
 		
 		<object id="q1" type="compound">
             <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
+				<translation x="0.0" y="-0.0" z="-2.0" />
             </transformations>
 
             <material id="null" />
@@ -799,7 +800,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
         </object>
 		
 		<object id="q_f2" type="simple">
@@ -810,7 +811,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
         </object>
 	<!-- mesa_canto -->
 	
@@ -1471,7 +1472,7 @@
 				<rotation axis="x" angle="-90" />
             </transformations>
 
-            <material id="verde" />
+            <material id="null" />
             <texture id="clear" />
 
             <children>
