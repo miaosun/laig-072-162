@@ -198,6 +198,16 @@ void drawScene(GLenum mode)
 
 }
 
+void sinalisa_casa()
+{
+	glColor3f(0.0,1.0,0.0);		// cor vermelho
+	glPushMatrix();
+	glTranslated(0.0, 4.5, 0.0);
+	glRotated(-90, 1.0, 0.0, 0.0); 
+	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
+	//gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
+	glPopMatrix();
+}
 
 
 void display(void)

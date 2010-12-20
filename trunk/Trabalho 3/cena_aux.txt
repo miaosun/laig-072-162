@@ -64,7 +64,375 @@
 <!-- cadeira1 -->
 
 <!-- cadeira2 -->
-
-
-
 <!-- cadeira2 -->
+
+
+
+				<objectref id="mesa_esq" />
+				<objectref id="mesa_dir" />
+				<objectref id="mesa_fre" />
+				<objectref id="mesa_atr" />
+				<objectref id="mesa_canto" />
+				
+				
+	
+	<!-- mesa_canto -->
+		<object id="mesa_canto" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="mesa_canto1" />
+				<objectref id="mesa_canto2" />
+				<objectref id="mesa_canto3" />
+				<objectref id="mesa_canto4" />
+				<objectref id="fre" />
+				<objectref id="atr" />
+            </children>
+        </object>
+		
+		<object id="atr" type="compound">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+          
+			<children>
+				<objectref id="fre" />
+            </children>
+        </object>
+		
+		<object id="fre" type="compound">
+            <transformations>
+				<translation x="0.0" y="4.0" z="14.1" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+          
+			<children>
+				<objectref id="fre1" />
+				<objectref id="fre2" />
+            </children>
+        </object>
+		
+		<object id="fre1" type="simple">
+            <transformations>	
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
+        </object>
+		
+		<object id="fre2" type="simple">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
+        </object>
+		
+		<object id="mesa_canto4" type="compound">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="mesa_canto1" />
+            </children>
+        </object>
+		
+		<object id="mesa_canto3" type="compound">
+            <transformations>
+				<rotation axis="y" angle="90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="mesa_canto1" />
+            </children>
+        </object>
+		
+		<object id="mesa_canto2" type="compound">
+            <transformations>
+				<rotation axis="y" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="mesa_canto1" />
+            </children>
+        </object>
+	
+		<object id="mesa_canto1" type="compound">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="canto_q1" />
+				<objectref id="canto_q2" />
+            </children>
+        </object>
+		
+		<object id="canto_q2" type="compound">
+            <transformations>
+				<translation x="4.0" y="0.0" z="4.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <children>
+                <objectref id="canto_q1" />
+            </children>
+		 </object>
+		
+		<object id="canto_q1" type="compound">
+            <transformations>
+				<translation x="-12.1" y="4.0" z="8.1" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+          
+            <children>
+                <objectref id="q1" />
+				<objectref id="q2" />
+            </children>
+		 </object>
+		
+		<object id="q2" type="compound">
+            <transformations>
+				<translation x="2.0" y="0.0" z="0.0" />
+				<rotation axis="y" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <children>
+                <objectref id="q_f1" />
+				<objectref id="q_f2" />
+            </children>
+		 </object>
+		
+		<object id="q1" type="compound">
+            <transformations>
+				<translation x="0.0" y="0.0" z="-2.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <children>
+                <objectref id="q_f1" />
+				<objectref id="q_f2" />
+            </children>
+		 </object>
+		
+		<object id="q_f1" type="simple">
+            <transformations>
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
+        </object>
+		
+		<object id="q_f2" type="simple">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
+        </object>
+	<!-- mesa_canto -->
+	
+	
+	
+<!-- mesa_dir -->
+		<object id="mesa_dir" type="compound">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="mesa_esq" />
+            </children>
+        </object>
+	<!-- mesa_dir -->
+	
+	<!-- mesa_esq -->	
+		<object id="mesa_esq" type="compound">
+            <transformations>
+				<translation x="-15.0" y="4.0" z="0.0" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="esq_cima" />
+				<objectref id="esq_frente" />
+				<objectref id="esq_atras" />
+				<objectref id="esq_esq" />
+				<objectref id="esq_dir" />
+            </children>
+        </object>
+		
+		<object id="esq_frente" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="20.0" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-1.0" y1="-3.0" x2="1.0" y2="3.0" />
+        </object>
+		
+		<object id="esq_atras" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="-20.0" />
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-1.0" y1="-3.0" x2="1.0" y2="3.0" />
+        </object>
+		
+		<object id="esq_esq" type="simple">
+            <transformations>
+				<translation x="-1.0" y="0.0" z="0.0" />
+				<rotation axis="y" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-20.0" y1="-3.0" x2="20.0" y2="3.0" />
+        </object>
+		
+		<object id="esq_dir" type="simple">
+            <transformations>
+				<translation x="1.0" y="0.0" z="0.0" />
+				<rotation axis="y" angle="90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-20.0" y1="-3.0" x2="20.0" y2="3.0" />
+        </object>
+		
+		<object id="esq_cima" type="simple">
+            <transformations>
+				<translation x="0.0" y="3.0" z="0.0" />
+				<rotation axis="x" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+          
+            <geometry type="rectangle" x1="-1.0" y1="-20.0" x2="1.0" y2="20.0" />
+        </object>
+	<!-- mesa_esq -->	
+	
+	<!-- mesa_fre -->
+			<object id="mesa_fre" type="compound">
+            <transformations>
+				<translation x="0.0" y="0.0" z="4.0" />
+				<rotation axis="y" angle="90" />
+				<scale x="1.0" y="1.0" z="0.8" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="mesa_esq" />
+            </children>
+		</object>	
+	<!-- mesa_fre -->
+	
+	<!-- mesa_atr -->
+			<object id="mesa_atr" type="compound">
+            <transformations>
+				<rotation axis="y" angle="180" />
+            </transformations>
+
+            <material id="table" />
+            <texture id="clear" />
+
+            <children>
+				<objectref id="mesa_fre" />
+            </children>
+		</object>	
+	<!-- mesa_atr -->
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
