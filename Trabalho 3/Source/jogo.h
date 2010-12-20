@@ -11,6 +11,7 @@ public:
 
 	vector<vector<int>> hist;
 	vector<int> tab;
+	vector<int> sinal;
 	int fase;
 	int fase_ant;
 	int Jactual;
@@ -31,8 +32,9 @@ public:
 	bool pertence(int casa);
 	bool mov_valido(int casa);
 	void exec_move(int casa);
-	void move_peca();
+	void sinaliza_casa(int casa);
 	vector<int> parse_tab(char * buf);
+	void procura_sinal(int fase);
 };
 
 void myCube(GLfloat lado);
@@ -41,10 +43,13 @@ void sensores();
 void anim(int dummy);
 void peca_anim_init();
 
+void sock_end(int control);
+void undo(int control);
+
 void pickingAction(GLuint answer);
 
 // processa os hits no picking
 void processHits (GLint hits, GLuint buffer[]);
 
 void show_jogador(int jactual);
-void sinalisa_casa();
+
