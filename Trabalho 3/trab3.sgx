@@ -32,13 +32,10 @@
 
     <textures>
         <texture id="wall" file="textures/wall_texture.bmp" length_s="20.0" length_t="20.0" /> 
-        <texture id="floor" file="textures/floor_texture.bmp" length_s="50.0" length_t="50.0" /> 		
-	    <texture id="monalisa" file="textures/monalisa.bmp" length_s="26.0" length_t="30.0" /> 		
-		<texture id="tex1" file="textures/zihua.bmp" length_s="30.0" length_t="65.0" /> 
-        <texture id="tex2" file="textures/fendou.bmp" length_s="60.0" length_t="30.0" /> 		
-	    <texture id="tex3" file="textures/qmsht.bmp" length_s="40.0" length_t="40.0" />
-		<texture id="white" file="textures/white.bmp" length_s="4.0" length_t="4.0" /> 		
-	    <texture id="black" file="textures/black.bmp" length_s="4.0" length_t="4.0" />
+        <texture id="bagua" file="textures/bagua.bmp" length_s="50.0" length_t="50.0" /> 	
+		<texture id="ren" file="textures/ren.bmp" length_s="50.0" length_t="50.0" /> 
+		<texture id="gui" file="textures/gui.bmp" length_s="50.0" length_t="50.0" /> 
+		<texture id="mo" file="textures/mo.bmp" length_s="50.0" length_t="50.0" /> 
 	</textures>
 
     <materials>
@@ -84,11 +81,12 @@
 		
 		<material id="table">
 			<emission r="0.0" g="0.0" b="0.0" a="1.0"/>
-			<ambient  r="0.80" g="0.52" b="0.25" a="1.0"/>
-			<diffuse r="0.8" g="0.52" b="0.25" a="1.0"/>
-			<specular r="0.8" g="0.52" b="0.25" a="1.0"/>
+			<ambient r="0.54" g="0.53" b="0.47" a="1.0"/>
+			<diffuse r="0.54" g="0.53" b="0.47" a="1.0"/>
+			<specular r="0.44" g="0.43" b="0.37" a="1.0"/>
 			<shininess value="128" />
-		</material> 	
+		</material>
+		
     </materials>
 
   
@@ -104,6 +102,7 @@
             <children>
 				<objectref id="tabuleiro" />
 				<objectref id="mesa" />
+				<objectref id="chao" />
 				<objectref id="_vampiro" />
 				<objectref id="_aldeao" />
 				<objectref id="_nosferatu" />
@@ -113,7 +112,7 @@
 <!-- tabuleiro -->
 		<object id="tabuleiro" type="compound">
             <transformations>
-				<translation x="0.0" y="2.0" z="0.0" />
+				<translation x="0.0" y="5.5" z="0.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
@@ -135,7 +134,7 @@
             <transformations>
             </transformations>
 
-            <material id="vermelho" />
+            <material id="branco" />
             <texture id="clear" />
           
             <children>
@@ -167,7 +166,7 @@
 		
 		<object id="quad_frente" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="2.0" />
+				<translation x="0.0" y="0.0" z="1.0" />
             </transformations>
 
             <material id="null" />
@@ -178,7 +177,7 @@
 		
 		<object id="quad_atras" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
+				<translation x="0.0" y="0.0" z="-1.0" />
 				<rotation axis="x" angle="180" />
             </transformations>
 
@@ -197,7 +196,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-1.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir" type="simple">
@@ -209,7 +208,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_cima" type="simple">
@@ -221,7 +220,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		<object id="quad_baixo" type="simple">
@@ -233,13 +232,13 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		
 		<object id="quad_frente1" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="2.0" />
+				<translation x="0.0" y="0.0" z="1.0" />
             </transformations>
 
             <material id="null" />
@@ -250,7 +249,7 @@
 		
 		<object id="quad_atras1" type="simple">
             <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
+				<translation x="0.0" y="0.0" z="-1.0" />
 				<rotation axis="x" angle="180" />
             </transformations>
 
@@ -269,7 +268,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-1.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir1" type="simple">
@@ -281,7 +280,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_cima1" type="simple">
@@ -293,7 +292,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 		
 		<object id="quad_baixo1" type="simple">
@@ -305,7 +304,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-2.0" y1="-2.0" x2="2.0" y2="2.0" />
+            <geometry type="rectangle" x1="-2.0" y1="-1.0" x2="2.0" y2="1.0" />
         </object>
 
 	<!-- lin1 -->
@@ -568,8 +567,8 @@
 <!-- mesa -->
 		<object id="mesa" type="compound">
             <transformations>
+				<translation x="0.0" y="3.5" z="0.0" />
 				<rotation axis="y" angle="90" />
-				<translation x="0.0" y="-1.0" z="0.0" />
             </transformations>
 
             <material id="null" />
@@ -577,11 +576,7 @@
 
             <children>
 				<objectref id="mesa_base" />
-				<objectref id="mesa_esq" />
-				<objectref id="mesa_dir" />
-				<objectref id="mesa_fre" />
-				<objectref id="mesa_atr" />
-				<objectref id="mesa_canto" />
+
 				<objectref id="suporto" />
             </children>
         </object>
@@ -601,202 +596,7 @@
             </children>
         </object>
 	<!-- suporto -->	
-		
-	<!-- mesa_canto -->
-		<object id="mesa_canto" type="compound">
-            <transformations>
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="mesa_canto1" />
-				<objectref id="mesa_canto2" />
-				<objectref id="mesa_canto3" />
-				<objectref id="mesa_canto4" />
-				<objectref id="fre" />
-				<objectref id="atr" />
-            </children>
-        </object>
-		
-		<object id="atr" type="compound">
-            <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-          
-			<children>
-				<objectref id="fre" />
-            </children>
-        </object>
-		
-		<object id="fre" type="compound">
-            <transformations>
-				<translation x="0.0" y="4.0" z="14.1" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-          
-			<children>
-				<objectref id="fre1" />
-				<objectref id="fre2" />
-            </children>
-        </object>
-		
-		<object id="fre1" type="simple">
-            <transformations>	
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
-        </object>
-		
-		<object id="fre2" type="simple">
-            <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-6.1" y1="-3.0" x2="6.1" y2="3.0" />
-        </object>
-		
-		<object id="mesa_canto4" type="compound">
-            <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="mesa_canto1" />
-            </children>
-        </object>
-		
-		<object id="mesa_canto3" type="compound">
-            <transformations>
-				<rotation axis="y" angle="90" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="mesa_canto1" />
-            </children>
-        </object>
-		
-		<object id="mesa_canto2" type="compound">
-            <transformations>
-				<rotation axis="y" angle="-90" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="mesa_canto1" />
-            </children>
-        </object>
 	
-		<object id="mesa_canto1" type="compound">
-            <transformations>
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="canto_q1" />
-				<objectref id="canto_q2" />
-            </children>
-        </object>
-		
-		<object id="canto_q2" type="compound">
-            <transformations>
-				<translation x="4.0" y="0.0" z="4.0" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <children>
-                <objectref id="canto_q1" />
-            </children>
-		 </object>
-		
-		<object id="canto_q1" type="compound">
-            <transformations>
-				<translation x="-12.1" y="4.0" z="8.1" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-          
-            <children>
-                <objectref id="q1" />
-				<objectref id="q2" />
-            </children>
-		 </object>
-		
-		<object id="q2" type="compound">
-            <transformations>
-				<translation x="2.0" y="0.0" z="0.0" />
-				<rotation axis="y" angle="-90" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <children>
-                <objectref id="q_f1" />
-				<objectref id="q_f2" />
-            </children>
-		 </object>
-		
-		<object id="q1" type="compound">
-            <transformations>
-				<translation x="0.0" y="0.0" z="-2.0" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <children>
-                <objectref id="q_f1" />
-				<objectref id="q_f2" />
-            </children>
-		 </object>
-		
-		<object id="q_f1" type="simple">
-            <transformations>
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
-        </object>
-		
-		<object id="q_f2" type="simple">
-            <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-2.0" y1="-3.0" x2="2.0" y2="3.0" />
-        </object>
-	<!-- mesa_canto -->
 	
 	<!-- mesa_base -->
 		<object id="mesa_base" type="compound">
@@ -887,134 +687,22 @@
             <geometry type="rectangle" x1="-20.0" y1="-1.0" x2="20.0" y2="1.0" />
         </object>
 	<!-- mesa_base -->
-	
-	<!-- mesa_dir -->
-		<object id="mesa_dir" type="compound">
+<!-- mesa -->
+
+
+<!-- chao -->
+		<object id="chao" type="simple">
             <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-
-            <children>
-                <objectref id="mesa_esq" />
-            </children>
-        </object>
-	<!-- mesa_dir -->
-	
-	<!-- mesa_esq -->	
-		<object id="mesa_esq" type="compound">
-            <transformations>
-				<translation x="-15.0" y="4.0" z="0.0" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-
-            <children>
-				<objectref id="esq_cima" />
-				<objectref id="esq_frente" />
-				<objectref id="esq_atras" />
-				<objectref id="esq_esq" />
-				<objectref id="esq_dir" />
-            </children>
-        </object>
-		
-		<object id="esq_frente" type="simple">
-            <transformations>
-				<translation x="0.0" y="0.0" z="20.0" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-1.0" y1="-3.0" x2="1.0" y2="3.0" />
-        </object>
-		
-		<object id="esq_atras" type="simple">
-            <transformations>
-				<translation x="0.0" y="0.0" z="-20.0" />
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-1.0" y1="-3.0" x2="1.0" y2="3.0" />
-        </object>
-		
-		<object id="esq_esq" type="simple">
-            <transformations>
-				<translation x="-1.0" y="0.0" z="0.0" />
-				<rotation axis="y" angle="-90" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-20.0" y1="-3.0" x2="20.0" y2="3.0" />
-        </object>
-		
-		<object id="esq_dir" type="simple">
-            <transformations>
-				<translation x="1.0" y="0.0" z="0.0" />
-				<rotation axis="y" angle="90" />
-            </transformations>
-
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-20.0" y1="-3.0" x2="20.0" y2="3.0" />
-        </object>
-		
-		<object id="esq_cima" type="simple">
-            <transformations>
-				<translation x="0.0" y="3.0" z="0.0" />
+				<translation x="0.0" y="-16.5" z="0.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
-            <material id="null" />
-            <texture id="clear" />
-          
-            <geometry type="rectangle" x1="-1.0" y1="-20.0" x2="1.0" y2="20.0" />
+            <material id="branco" />
+            <texture id="bagua" />
+
+			<geometry type="disk" inner="0.0" outer="60.0" slices="33" loops="33" />
         </object>
-	<!-- mesa_esq -->	
-	
-	<!-- mesa_fre -->
-			<object id="mesa_fre" type="compound">
-            <transformations>
-				<translation x="0.0" y="0.0" z="4.0" />
-				<rotation axis="y" angle="90" />
-				<scale x="1.0" y="1.0" z="0.8" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-
-            <children>
-				<objectref id="mesa_esq" />
-            </children>
-		</object>	
-	<!-- mesa_fre -->
-	
-	<!-- mesa_atr -->
-			<object id="mesa_atr" type="compound">
-            <transformations>
-				<rotation axis="y" angle="180" />
-            </transformations>
-
-            <material id="table" />
-            <texture id="clear" />
-
-            <children>
-				<objectref id="mesa_fre" />
-            </children>
-		</object>	
-	<!-- mesa_atr -->
-	
-<!-- mesa -->
-
+<!-- chao -->
 
 <!-- _aldeao -->
 		<object id="_aldeao" type="compound">
@@ -1028,6 +716,7 @@
             <children>
                 <objectref id="al_corpo" />
 				<objectref id="al_base" />
+				<objectref id="al_topo" />
             </children>
         </object>
 		
@@ -1038,7 +727,7 @@
             <material id="verde" />
             <texture id="clear" />
           
-            <geometry type="cylinder" base="1.6" top="0.0" height="3.0" slices="8" stacks="8" />
+            <geometry type="cylinder" base="1.6" top="1.6" height="1.8" slices="8" stacks="6" />
         </object>
 		
 		<object id="al_base" type="simple">
@@ -1051,6 +740,17 @@
           
             <geometry type="disk" inner="0.0" outer="1.6" slices="8" loops="8" />
         </object>
+		
+		<object id="al_topo" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="1.8" />
+            </transformations>
+
+            <material id="branco" />
+            <texture id="ren" />
+          
+            <geometry type="disk" inner="0.0" outer="1.6" slices="8" loops="8" />
+        </object>
 <!-- _aldeao -->
 
 <!-- _vampiro -->
@@ -1059,7 +759,7 @@
 				<rotation axis="x" angle="-90" />
             </transformations>
 
-            <material id="verde" />
+            <material id="null" />
             <texture id="clear" />
 
             <children>
@@ -1084,8 +784,8 @@
 				<translation x="0.0" y="0.0" z="2.0" />
             </transformations>
 
-            <material id="azul" />
-            <texture id="clear" />
+            <material id="branco" />
+            <texture id="gui" />
           
             <geometry type="disk" inner="0.0" outer="1.6" slices="8" loops="8" />
         </object>
@@ -1103,15 +803,51 @@
 <!-- _vampiro -->
 
 <!-- _nosferatu -->
-		<object id="_nosferatu" type="simple">
+		<object id="_nosferatu" type="compound">
             <transformations>
-				<translation x="0.0" y="1.0" z="0.0" />
+				<rotation axis="x" angle="-90" />
+            </transformations>
+
+            <material id="null" />
+            <texture id="clear" />
+
+            <children>
+                <objectref id="nf_topo" />
+				<objectref id="nf_base" />
+				<objectref id="nf_corpo" />
+            </children>
+        </object>
+		
+		<object id="nf_corpo" type="simple">
+            <transformations>
             </transformations>
 
             <material id="vermelho" />
             <texture id="clear" />
+          
+            <geometry type="cylinder" base="1.6" top="1.6" height="2.0" slices="8" stacks="8" />
+        </object>
+		
+		<object id="nf_topo" type="simple">
+            <transformations>
+				<translation x="0.0" y="0.0" z="2.0" />
+            </transformations>
 
-            <geometry type="sphere" radius="1.6" slices="8" stacks="8" />
+            <material id="branco" />
+            <texture id="mo" />
+          
+            <geometry type="disk" inner="0.0" outer="1.6" slices="8" loops="8" />
+        </object>
+		
+		<object id="nf_base" type="simple">
+            <transformations>
+				<rotation axis="x" angle="180" />
+            </transformations>
+
+            <material id="vermelho" />
+            <texture id="clear" />
+          
+            <geometry type="disk" inner="0.0" outer="1.6" slices="8" loops="8" />
         </object>
 <!-- _nosferatu -->
 
