@@ -16,6 +16,7 @@ public:
 	int fase_ant;
 	int Jactual;
 	int casa_sel;
+	bool ajuda;
 
 	Object * vampiro;
 	Object * aldeao;
