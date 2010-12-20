@@ -96,7 +96,8 @@ unsigned int mili_secs = 10;
 
 typedef struct anim_data{
 	double yi,yf,dy,y,dty,xi,xf,dx,x,dtx,zi,zf,dz,z,dtz;
-	bool sobe, enabled, corre;
+	bool sobe, enabled, corre, desce;
+	int casa_i, casa_f;
 };
 
 anim_data peca_anim;
@@ -677,7 +678,7 @@ void undo(int control)
 
 int main(int argc, char* argv[])
 {
-	cena_actual=0;
+	cena_actual=1;
 
 	Object * vampiro;
 	Object * aldeao;
@@ -833,6 +834,7 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 
 	if(!socketConnect())
 		throw ExcepcaoSocket();
+	this->ajuda=false;
 
 	this->procura_sinal(0);
 }
@@ -937,8 +939,8 @@ void peca_anim_init()
 {
 	peca_anim.yi=0;
 	peca_anim.y=peca_anim.yi;
-	peca_anim.yf=5.0;
-	peca_anim.dty=1.0;
+	peca_anim.yf=4.0;
+	peca_anim.dty=0.5;
 	peca_anim.sobe=true;
 	peca_anim.dy=(peca_anim.yf-peca_anim.yi)/((1000.0*peca_anim.dty)/mili_secs);
 }
@@ -950,27 +952,31 @@ void move_anim_init(int casa)
 	int linha_f=casa/7;
 	int coluna_f=casa%7;
 
+	move_anim.casa_i=jogo->casa_sel;
+	move_anim.casa_f=casa;
+
 	move_anim.yi=alturaTab+2.0;
-	move_anim.y=peca_anim.yi;
-	move_anim.yf=alturaTab+7.0;
-	move_anim.dty=1.0;
+	move_anim.y=move_anim.yi;
+	move_anim.yf=alturaTab+6.0;
+	move_anim.dty=0.5;
 	move_anim.sobe=true;
 	move_anim.dy=(move_anim.yf-move_anim.yi)/((1000.0*move_anim.dty)/mili_secs);
 	
 	move_anim.xi=-3*dim_Casa+coluna_i*dim_Casa;
-	move_anim.x=peca_anim.xi;
+	move_anim.x=move_anim.xi;
 	move_anim.xf=-3*dim_Casa+coluna_f*dim_Casa;
-	move_anim.dtx=2.0;
+	move_anim.dtx=1.0;
 	move_anim.dx=(move_anim.xf-move_anim.xi)/((1000.0*move_anim.dtx)/mili_secs);
 
 	move_anim.zi=-3*dim_Casa+linha_i*dim_Casa;
-	move_anim.z=peca_anim.zi;
+	move_anim.z=move_anim.zi;
 	move_anim.zf=-3*dim_Casa+linha_f*dim_Casa;
-	move_anim.dtz=2.0;
+	move_anim.dtz=1.0;
 	move_anim.dz=(move_anim.zf-move_anim.zi)/((1000.0*move_anim.dtz)/mili_secs);
 
 	move_anim.enabled=true;
 	move_anim.corre=false;
+	move_anim.desce=false;
 }
 
 void anim(int dummy)
@@ -989,6 +995,7 @@ void anim(int dummy)
 	}
 	if(move_anim.enabled)
 	{
+		//cout<<"entrou\n";
 		if(move_anim.sobe && (move_anim.y<move_anim.yf))
 			move_anim.y+=move_anim.dy;
 		else if(move_anim.sobe && (move_anim.y>=move_anim.yf))
@@ -1000,9 +1007,19 @@ void anim(int dummy)
 		{
 			move_anim.x+=move_anim.dx;
 			move_anim.z+=move_anim.dz;
+			if(move_anim.dz>0 && move_anim.z>=move_anim.zf)
+			{
+				move_anim.desce=true;
+				move_anim.corre=false;
+			}
+			else if(move_anim.dz<0 && move_anim.z<=move_anim.zf)
+			{
+				move_anim.desce=true;
+				move_anim.corre=false;
+			}
 		}
-		else if(move_anim.corre && move_anim.z==move_anim.zf && move_anim.x==move_anim.xf && !move_anim.sobe && move_anim.y>move_anim.yi)
-			move_anim.y+=move_anim.dy;
+		else if(!move_anim.corre && move_anim.desce && move_anim.y>move_anim.yi)
+			move_anim.y-=move_anim.dy;
 		else
 			move_anim.enabled=false;
 	}
@@ -1013,17 +1030,20 @@ void anim(int dummy)
 void Jogo::procura_sinal(int fase)
 {
 	this->sinal.clear();
-	for(unsigned int i=0; i<49; i++)
+	if(ajuda)
 	{
-		if(fase==0)
+		for(unsigned int i=0; i<49; i++)
 		{
-			if(casa_valida(i))
-				this->sinal.push_back(i);
-		}
-		else
-		{
-			if(mov_valido(i))
-				this->sinal.push_back(i);
+			if(fase==0)
+			{
+				if(casa_valida(i))
+					this->sinal.push_back(i);
+			}
+			else
+			{
+				if(mov_valido(i))
+					this->sinal.push_back(i);
+			}
 		}
 	}
 }
@@ -1052,7 +1072,7 @@ void Jogo::draw()
 			posicao(true, i);
 			glTranslated(0.0, peca_anim.y, 0.0);
 		}
-		else if(move_anim.enabled && i==jogo->casa_sel)
+		else if(move_anim.enabled && move_anim.casa_f==i)
 			glTranslated(move_anim.x, move_anim.y, move_anim.z);
 		else
 			posicao(true, i);
@@ -1358,7 +1378,6 @@ void pickingAction(GLuint answer)
 			case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
 				if(jogo->mov_valido(answer))
 				{
-					move_anim_init(answer);
 					jogo->exec_move(answer);
 					if(jogo->Jactual==0)
 						jogo->Jactual=1;
@@ -1500,6 +1519,8 @@ void Jogo::exec_move(int casa)
 	envia(buf, strlen(buf));
 
 	recebe(buf);
+
+	move_anim_init(casa);
 
 	this->hist.push_back(this->tab);
 	this->tab=parse_tab(buf);
