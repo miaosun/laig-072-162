@@ -45,3 +45,6 @@ void pickingAction(GLuint answer);
 
 // processa os hits no picking
 void processHits (GLint hits, GLuint buffer[]);
+
+void show_jogador(int jactual);
+void sinalisa_casa();
