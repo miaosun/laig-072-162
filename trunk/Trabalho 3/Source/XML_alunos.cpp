@@ -254,12 +254,14 @@ void display(void)
 	// inibicao de atribuicao directa de cores
 	glDisable(GL_COLOR_MATERIAL);
 
+	show_jogador(jogo->Jactual);
+
 	// define caracteristicas de cor do material do plano e da caixa
 	/*glMaterialfv(GL_FRONT, GL_SHININESS, mat1_shininess);
 	glMaterialfv(GL_FRONT, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
-	//show_jogador(0);
+
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
    
@@ -725,8 +727,6 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	show_jogador(jogo->Jactual);
-
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowSize (DIMX, DIMY);
@@ -980,7 +980,7 @@ void Jogo::procura_sinal(int fase)
 void Jogo::sinaliza_casa(int casa)
 {
 	glEnable(GL_COLOR_MATERIAL);
-	glColor3f(0.0,1.0,0.0);		// cor verde
+	glColor3f(0.0,0.86,0.67);	
 	glPushMatrix();
 	posicao(true, casa);
 	glTranslated(0.0, 0.1, 0.0);

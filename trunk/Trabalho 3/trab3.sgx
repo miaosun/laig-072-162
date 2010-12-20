@@ -196,7 +196,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-1.0" y1="-1.0" x2="1.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir" type="simple">
@@ -268,7 +268,7 @@
             <material id="null" />
             <texture id="clear" />
           
-            <geometry type="rectangle" x1="-1.0" y1="-1.0" x2="1.0" y2="2.0" />
+            <geometry type="rectangle" x1="-1.0" y1="-2.0" x2="1.0" y2="2.0" />
         </object>
 		
 		<object id="quad_dir1" type="simple">
