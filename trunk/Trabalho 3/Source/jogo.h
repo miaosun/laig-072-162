@@ -39,6 +39,7 @@ public:
 };
 
 void myCube(GLfloat lado);
+void open_textures();
 
 void sensores();
 void anim(int dummy);

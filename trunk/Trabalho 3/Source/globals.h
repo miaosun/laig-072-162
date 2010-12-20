@@ -21,6 +21,7 @@ using namespace std;
 // idealmente tudo seria incluido numa classe
 
 class Excepcao{};
+class Exit{};
 class ExcepcaoSocket{};
 
 

@@ -102,6 +102,11 @@ typedef struct anim_data{
 
 anim_data peca_anim;
 anim_data move_anim;
+struct camera_anim{
+	double rxi, rzi, ryi, rxf, rzf, ryf, dt, drx, dry, drz, rx, ry, rz;
+	int cam_ant;
+	bool enabled;
+}cam_anim;
 bool peca_sel;
 #define MOVE_ID 150 
 #define SELECT_ID 151
@@ -111,6 +116,8 @@ RGBpixmap pixmap;
 
 vector<SceneLoader *> cenas;
 int cena_actual;
+int vista_actual;
+int vista_actual_aux;
 
 Jogo * jogo;
 
@@ -136,7 +143,14 @@ bool loadCenas(string filename)
 				getline(myfile, linha);
 				cena=new SceneLoader(linha.c_str());
 				cenas.push_back(cena);
+				if(!cenas.back()->loadScene())
+				{
+					cout<<"nao fez load correctamente da cena!\n";
+					system("pause");
+					return false;
+				}
 			}
+			//open_textures();
 			cout<<endl<<endl<<"Cenas importadas com sucesso!"<<endl<<endl;
 		}
 		else
@@ -156,23 +170,59 @@ bool loadCenas(string filename)
 
 void open_textures()
 {
+	int count=1;
 	char* fname;
-
-	for(unsigned int i=0; i<cenas.at(cena_actual)->textures.size(); i++)
+	for(unsigned int j=0; j<cenas.size(); j++)
 	{
-		fname = const_cast<char*> (cenas.at(cena_actual)->textures[i]->file.c_str());
-		pixmap.readBMPFile(fname);
-		pixmap.setTexture(i+1);
-		cenas.at(cena_actual)->textures[i]->n_texture = i+1;
+		for(unsigned int i=0; i<cenas.at(j)->textures.size(); i++)
+		{
+			fname = const_cast<char*> (cenas.at(j)->textures.at(i)->file.c_str());
+			pixmap.readBMPFile(fname);
+			pixmap.setTexture(count);
+			cenas.at(j)->textures.at(i)->n_texture = count;
+			count++;
+		}
 	}
 }
 
 void drawScene(GLenum mode)
 {
+
 	//glFrustum( -xy_aspect*.04, xy_aspect*.04, -.04, .04, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
 	glFrustum( -xy_aspect*cenas.at(cena_actual)->view.axisscale, xy_aspect*cenas.at(cena_actual)->view.axisscale, -cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.axisscale, cenas.at(cena_actual)->view.near, cenas.at(cena_actual)->view.far);
 	
-	//inicializacoes da matriz de transformacoes geometricas
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
+
+	glTranslatef( obj_pos[0], obj_pos[1], -obj_pos[2] );
+
+	switch(vista_actual)
+	{
+	case -1://animacao
+		glTranslated(0.0, 0.0, -50.0);
+		glRotated(cam_anim.rx, 1.0, 0.0, 0.0);
+		glRotated(cam_anim.ry, 0.0, 1.0, 0.0);
+		glRotated(cam_anim.rz, 0.0, 0.0, 1.0);
+		break;
+	case 0:
+		glTranslated(0.0, 0.0, -50.0);
+		glRotated(60.0, 1.0, 0.0, 0.0);
+		break;
+	case 1:
+		glTranslated(0.0, 0.0, -50.0);
+		glRotated(90.0, 0.0, 1.0, 0.0);
+		glRotated(60.0, 0.0, 0.0, 1.0);
+		break;
+	case 2:
+		glTranslated(0.0, 0.0, -50.0);
+		glRotated(-90.0, 0.0, 1.0, 0.0);
+		glRotated(-60.0, 0.0, 0.0, 1.0);
+		break;
+	}
+
+	
+	glMultMatrixf( view_rotate );
+	/*//inicializacoes da matriz de transformacoes geometricas
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
@@ -186,31 +236,21 @@ void drawScene(GLenum mode)
 
 	for(unsigned int i=1; i<cenas.at(cena_actual)->view.trans.size(); i++)
 		cenas.at(cena_actual)->view.trans.at(i)->apply();
-
+		
 	// aplica efeito do botao de rotacao
-	glMultMatrixf( view_rotate );
+	glMultMatrixf( view_rotate );*/
+
+
+
+
 
 	cenas.at(cena_actual)->root_object->draw();
 	jogo->draw();
-	//myCube(10);
-	//sensores();
 
 	if(mode==GL_SELECT)
 		sensores();
 
 }
-
-void sinalisa_casa()
-{
-	glColor3f(0.0,1.0,0.0);		// cor vermelho
-	glPushMatrix();
-	glTranslated(0.0, 4.5, 0.0);
-	glRotated(-90, 1.0, 0.0, 0.0); 
-	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
-	//gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
-	glPopMatrix();
-}
-
 
 void display(void)
 {
@@ -491,6 +531,9 @@ void inicializacao()
 	//glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
 
 	open_textures();
+	vista_actual=vista_actual_aux;
+	move_anim.enabled=false;
+	cam_anim.enabled=false;
 
 	glShadeModel(GL_SMOOTH);				// GL_FLAT / GL_SMOOTH
 
@@ -525,22 +568,63 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 	}
 }
 
+void ctr_ajuda(int control)
+{
+	jogo->ajuda=!jogo->ajuda;
+}
+
 void ctr_camara(int control)
 {
-	if(control == 1)
+	//mudanca de uma para a outra
+	cam_anim.cam_ant=vista_actual;
+	vista_actual=-1;
+	switch(cam_anim.cam_ant)
 	{
-		gluLookAt(225.0, 500.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -10.0);
+	case 0:
+		cam_anim.rxi=60.0;
+		cam_anim.ryi=0.0;
+		cam_anim.rzi=0.0;
+		break;
+	case 1:
+		cam_anim.rxi=0.0;
+		cam_anim.ryi=90.0;
+		cam_anim.rzi=60.0;
+		break;
+	case 2:
+		cam_anim.rxi=0.0;
+		cam_anim.ryi=-90.0;
+		cam_anim.rzi=-60.0;
+		break;
 	}
-	
-	if(control == 2)
+	switch(vista_actual_aux)
 	{
-		gluLookAt(225.0, 250.0, -150.0, 225.0, 0.0, -150.0, 0.0, 0.0, -10.0);
+	case 0:
+		cam_anim.rxf=60.0;
+		cam_anim.ryf=0.0;
+		cam_anim.rzf=0.0;
+		break;
+	case 1:
+		cam_anim.rxf=0.0;
+		cam_anim.ryf=90.0;
+		cam_anim.rzf=60.0;
+		break;
+	case 2:
+		cam_anim.rxf=0.0;
+		cam_anim.ryf=-90.0;
+		cam_anim.rzf=-60.0;
+		break;
 	}
-	
-	if(control == 3)
-	{
-		gluLookAt(225.0, 180.0, 120.0, 225.0, 100.0, 300.0, 0.0, 1.0, 0.0);
-	}
+	cam_anim.dt=1.0;
+	cam_anim.rx=cam_anim.rxi;
+	cam_anim.drx=(cam_anim.rxf-cam_anim.rxi)/((1000.0*cam_anim.dt)/mili_secs);
+	cam_anim.ry=cam_anim.ryi;
+	cam_anim.dry=(cam_anim.ryf-cam_anim.ryi)/((1000.0*cam_anim.dt)/mili_secs);
+	cam_anim.rz=cam_anim.rzi;
+	cam_anim.drz=(cam_anim.rzf-cam_anim.rzi)/((1000.0*cam_anim.dt)/mili_secs);
+
+	if(cam_anim.cam_ant!=vista_actual_aux)
+		cam_anim.enabled=true;
+
 }
 
 
@@ -623,8 +707,8 @@ void quit() {
 
 void sock_end(int control)
 {
-	if(control==0)
-		quit();
+	quit();
+	throw Exit();
 }
 
 void undo(int control)
@@ -676,9 +760,23 @@ void undo(int control)
 	}
 }
 
+void muda_cena(int dummy)
+{
+	jogo->vampiro=cenas.at(cena_actual)->findObject("_vampiro");
+	jogo->aldeao=cenas.at(cena_actual)->findObject("_aldeao");
+	jogo->nosferatu=cenas.at(cena_actual)->findObject("_nosferatu");
+	if(jogo->aldeao==NULL || jogo->vampiro==NULL || jogo->nosferatu==NULL)
+	{
+		cout<<"o conjunto de 3 pecas de jogo tem que ser definido!\n";
+		system("pause");
+		throw Excepcao();
+	}
+
+}
+
 int main(int argc, char* argv[])
 {
-	cena_actual=1;
+	cena_actual=0;
 
 	Object * vampiro;
 	Object * aldeao;
@@ -701,12 +799,12 @@ int main(int argc, char* argv[])
 	}
 
 
-	if(!cenas.at(cena_actual)->loadScene())
+	/*if(!cenas.at(cena_actual)->loadScene())
 	{
 		cout<<"nao fez load correctamente!\n";
 		system("pause");
 		return 0;
-	}
+	}*/
 
 	vampiro=cenas.at(cena_actual)->findObject("_vampiro");
 	aldeao=cenas.at(cena_actual)->findObject("_aldeao");
@@ -759,48 +857,60 @@ int main(int argc, char* argv[])
 
 	/////////list box para diferentes cenas
 	glui2->add_column(true);
-	GLUI_Listbox *cena;
-	cena = glui2->add_listbox("escolhe cena: ");
-	cena->add_item(1, "cena 1");
-	cena->add_item(2, "cena 2");
+	char nome_cena[20];
+	GLUI_Listbox *cena_select;
+	cena_select = glui2->add_listbox("escolhe cena: ", &cena_actual, 0, muda_cena);
+	for(unsigned int i=0; i<cenas.size(); i++)
+	{
+		sprintf(nome_cena, "cena %i", i+1);
+		cena_select->add_item(i, nome_cena);
+	}
 
 
 	/////para desligar as sockets
-	glui2->add_button("QuitSock", 0, sock_end);
+	glui2->add_button("Exit", 0, sock_end);
+	/////para fazer undo
 	glui2->add_button("Undo", 0, undo);
 
 
+
 	////////camaras
+	vista_actual_aux=0;
 	glui2->add_column(false);
 	GLUI_Panel *panel;
 	panel = glui2->add_panel("Camaras");
 	GLUI_RadioGroup *rb;
-	rb = glui2->add_radiogroup_to_panel(panel, NULL, -1, ctr_camara);
+	rb = glui2->add_radiogroup_to_panel(panel, &vista_actual_aux, 0, ctr_camara);
 	glui2->add_radiobutton_to_group(rb, "Camara 1");
 	glui2->add_radiobutton_to_group(rb, "Camara 2");
 	glui2->add_radiobutton_to_group(rb, "Camara 3");
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	//As fontes de luz devem poder ser alteradas por meio de controlos na r¨¦gua inferior de comandos.//
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	glui2->add_column(true);
+	int ajuda_selected=0;
+	glui2->add_checkbox("ajuda", &ajuda_selected, 0, ctr_ajuda );
 
-	vector<int> light_enabled;
+
+	/*vector<int> light_enabled;
 	for(int i = 0; i < cenas.at(cena_actual)->lights.size(); i++)
 	{
 		light_enabled.push_back(cenas.at(cena_actual)->lights[i]->enabled);
 		glui2->add_checkbox(const_cast<char*> (cenas.at(cena_actual)->lights[i]->id.c_str()), &light_enabled[i],
 				LIGHT_ID+i, ctr_light );
-	}
+	}*/
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
     
 	inicializacao();
    
-	glutMainLoop();
-
+	try
+	{
+		glutMainLoop();
+	}
+	catch(Exit e)
+	{
+		return 0;
+	}
 	return 0;
 }
 
@@ -828,7 +938,7 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 	this->Jactual=0;
 	this->fase=0;
 	this->casa_sel=-1;
-	move_anim.enabled=false;
+	
 
 	//iniciar variaveis da animacao
 
@@ -955,7 +1065,7 @@ void move_anim_init(int casa)
 	move_anim.casa_i=jogo->casa_sel;
 	move_anim.casa_f=casa;
 
-	move_anim.yi=alturaTab+2.0;
+	move_anim.yi=alturaTab+2.0+peca_anim.y;
 	move_anim.y=move_anim.yi;
 	move_anim.yf=alturaTab+6.0;
 	move_anim.dty=0.5;
@@ -1018,10 +1128,30 @@ void anim(int dummy)
 				move_anim.corre=false;
 			}
 		}
-		else if(!move_anim.corre && move_anim.desce && move_anim.y>move_anim.yi)
+		else if(!move_anim.corre && move_anim.desce && move_anim.y>(alturaTab+2.0))
 			move_anim.y-=move_anim.dy;
 		else
 			move_anim.enabled=false;
+	}
+
+	if(cam_anim.enabled)
+	{
+		if((cam_anim.drx>0 && cam_anim.rx<cam_anim.rxf) || (cam_anim.drx<0 && cam_anim.rx>cam_anim.rxf))
+			cam_anim.rx+=cam_anim.drx;
+		else if((cam_anim.drx>0 && cam_anim.rx>=cam_anim.rxf) || (cam_anim.drx<0 && cam_anim.rx<=cam_anim.rxf))
+			cam_anim.enabled=false;
+		if((cam_anim.dry>0 && cam_anim.ry<cam_anim.ryf) || (cam_anim.dry<0 && cam_anim.ry>cam_anim.ryf))
+			cam_anim.ry+=cam_anim.dry;
+		else if((cam_anim.dry>0 && cam_anim.ry>=cam_anim.ryf) || (cam_anim.dry<0 && cam_anim.ry<=cam_anim.ryf))
+			cam_anim.enabled=false;
+		if((cam_anim.drz>0 && cam_anim.rz<cam_anim.rzf) || (cam_anim.drz<0 && cam_anim.rz>cam_anim.rzf))
+			cam_anim.rz+=cam_anim.drz;
+		else if((cam_anim.drz>0 && cam_anim.rz>=cam_anim.rzf) || (cam_anim.drz<0 && cam_anim.rz<=cam_anim.rzf))
+			cam_anim.enabled=false;
+
+		if(!cam_anim.enabled)
+			vista_actual=vista_actual_aux;
+
 	}
 
 	glutTimerFunc(mili_secs,anim, 0);
