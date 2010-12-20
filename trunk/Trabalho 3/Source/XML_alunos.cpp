@@ -198,16 +198,7 @@ void drawScene(GLenum mode)
 
 }
 
-void sinalisa_casa()
-{
-	glColor3f(0.0,1.0,0.0);		// cor vermelho
-	glPushMatrix();
-	glTranslated(0.0, 5.0, 0.0);
-	glRotated(-90, 1.0, 0.0, 0.0); 
-	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
-	//gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
-	glPopMatrix();
-}
+
 
 void display(void)
 {
@@ -259,7 +250,6 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
 	//show_jogador(0);
-	sinalisa_casa();
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
    
@@ -623,6 +613,55 @@ void sock_end(int control)
 		quit();
 }
 
+void undo(int control)
+{
+	bool actualiza=false;
+	if(control==0 && !jogo->hist.empty())
+	{
+		jogo->sinal.clear();
+		switch(jogo->fase)
+		{
+		case 0:
+			jogo->tab=jogo->hist.back();
+			jogo->hist.pop_back();
+			if(jogo->Jactual==0)
+				jogo->pecas_v.push_back(2);
+			else
+				jogo->pecas_al.push_back(1);
+			actualiza=true;
+			break;
+		case 1:
+			jogo->tab=jogo->hist.back();
+			jogo->hist.pop_back();
+			if(jogo->Jactual==0)
+			{
+				if(jogo->pecas_al.size()==6)
+				{
+					jogo->pecas_v.push_back(3);
+					jogo->fase--;
+					actualiza=true;
+				}
+			}
+			else
+			{
+				jogo->pecas_al.push_back(1);
+				actualiza=true;
+			}
+			break;
+		case 2:
+			jogo->tab=jogo->hist.back();
+			jogo->hist.pop_back();
+			break;
+		}
+		if(jogo->Jactual==0)
+			jogo->Jactual=1;
+		else
+			jogo->Jactual=0;
+		if(actualiza)
+			jogo->procura_sinal(0);
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	cena_actual=0;
@@ -716,6 +755,7 @@ int main(int argc, char* argv[])
 
 	/////para desligar as sockets
 	glui2->add_button("QuitSock", 0, sock_end);
+	glui2->add_button("Undo", 0, undo);
 
 
 	////////camaras
@@ -776,11 +816,14 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 	this->Jactual=0;
 	this->fase=0;
 	this->casa_sel=-1;
+	
 
 	//iniciar variaveis da animacao
 
 	if(!socketConnect())
 		throw ExcepcaoSocket();
+
+	this->procura_sinal(0);
 }
 
 void show_jogador(int jactual)
@@ -906,6 +949,37 @@ void anim(int dummy)
 	glutTimerFunc(mili_secs,anim, 0);
 }
 
+void Jogo::procura_sinal(int fase)
+{
+	this->sinal.clear();
+	for(unsigned int i=0; i<49; i++)
+	{
+		if(fase==0)
+		{
+			if(casa_valida(i))
+				this->sinal.push_back(i);
+		}
+		else
+		{
+			if(mov_valido(i))
+				this->sinal.push_back(i);
+		}
+	}
+}
+
+void Jogo::sinaliza_casa(int casa)
+{
+	glEnable(GL_COLOR_MATERIAL);
+	glColor3f(0.0,1.0,0.0);		// cor verde
+	glPushMatrix();
+	posicao(true, casa);
+	glTranslated(0.0, 0.1, 0.0);
+	glRotated(-90, 1.0, 0.0, 0.0); 
+	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
+	glPopMatrix();
+	glDisable(GL_COLOR_MATERIAL);
+}
+
 void Jogo::draw()
 {
 	//cout<<"a desenhar\n";
@@ -969,6 +1043,8 @@ void Jogo::draw()
 			return;
 		}
 	}
+	for(unsigned int i=0; i<this->sinal.size(); i++)
+		this->sinaliza_casa(this->sinal.at(i));
 }
 
 void myCube(GLfloat lado)
@@ -1154,6 +1230,7 @@ void pickingAction(GLuint answer)
 					jogo->pecas_al.pop_back();
 					jogo->tab.at(answer)=peca;
 					jogo->Jactual=1;
+					jogo->procura_sinal(0);
 				}
 				else
 				{
@@ -1164,6 +1241,7 @@ void pickingAction(GLuint answer)
 						jogo->fase++;
 					jogo->tab.at(answer)=peca;
 					jogo->Jactual=0;
+					jogo->procura_sinal(0);
 				}
 			}
 			break;
@@ -1180,6 +1258,7 @@ void pickingAction(GLuint answer)
 						jogo->fase++;
 					jogo->tab.at(answer)=peca;
 					jogo->Jactual=1;
+					jogo->sinal.clear();
 				}
 				break;
 			case 1:
@@ -1189,6 +1268,7 @@ void pickingAction(GLuint answer)
 					jogo->casa_sel=answer;
 					jogo->fase_ant=jogo->fase;
 					jogo->fase=3;
+					jogo->procura_sinal(1);
 					//cout<<"pertence\n";
 				}
 				break;
@@ -1201,6 +1281,7 @@ void pickingAction(GLuint answer)
 				jogo->casa_sel=answer;
 				jogo->fase_ant=jogo->fase;
 				jogo->fase=3;
+				jogo->procura_sinal(1);
 				//cout<<"pertence\n";
 			}
 			break;
@@ -1214,6 +1295,9 @@ void pickingAction(GLuint answer)
 					jogo->Jactual=0;
 				jogo->casa_sel=-1;
 				jogo->fase=jogo->fase_ant;
+				jogo->sinal.clear();
+				if(jogo->fase==1)
+					jogo->procura_sinal(0);
 			}
 			break;
 		}
@@ -1225,11 +1309,6 @@ void pickingAction(GLuint answer)
 	}
 
 	//printf("%d\n", answer);
-}
-
-void Jogo::move_peca()
-{
-
 }
 
 void Jogo::anexa_tab(char * buf)
