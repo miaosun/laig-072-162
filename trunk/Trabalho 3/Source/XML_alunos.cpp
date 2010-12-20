@@ -198,6 +198,17 @@ void drawScene(GLenum mode)
 
 }
 
+void sinalisa_casa()
+{
+	glColor3f(0.0,1.0,0.0);		// cor vermelho
+	glPushMatrix();
+	glTranslated(0.0, 5.0, 0.0);
+	glRotated(-90, 1.0, 0.0, 0.0); 
+	glRectd(-dim_Casa/2, -dim_Casa/2, dim_Casa/2, dim_Casa/2);
+	//gluSphere(glQ, symb_light0_radius, symb_light0_slices, symb_light0_stacks);
+	glPopMatrix();
+}
+
 void display(void)
 {
 	// ****** declaracoes internas 'a funcao display() ******
@@ -247,13 +258,13 @@ void display(void)
 	glMaterialfv(GL_FRONT, GL_SPECULAR,  mat1_specular);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat1_diffuse);
 	glMaterialfv(GL_FRONT, GL_AMBIENT,   mat1_ambient);*/
-
+	//show_jogador(0);
+	sinalisa_casa();
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
    
 	glFlush();
 }
-
 
 /* Mouse handling */
 void processMouse(int button, int state, int x, int y)
@@ -665,6 +676,7 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
+	show_jogador(jogo->Jactual);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
@@ -732,14 +744,13 @@ int main(int argc, char* argv[])
 
 	/* We register the idle callback with GLUI, not with GLUT */
 	GLUI_Master.set_glutIdleFunc( myGlutIdle );
-   
+    
 	inicializacao();
    
 	glutMainLoop();
 
 	return 0;
 }
-
 
 
 Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2)
@@ -803,6 +814,7 @@ void show_jogador(int jactual)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'e');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+		break;
 
 	case 1:
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'V');
@@ -821,6 +833,7 @@ void show_jogador(int jactual)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'r');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 'o');
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, 's');
+		break;
 	}
 
 	glDisable(GL_COLOR_MATERIAL);

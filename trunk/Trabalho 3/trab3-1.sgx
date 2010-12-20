@@ -151,7 +151,7 @@
             <transformations>
             </transformations>
 
-            <material id="vermelho" />
+            <material id="branco" />
             <texture id="clear" />
           
             <children>
@@ -1517,6 +1517,7 @@
 <!-- _nosferatu -->
 		<object id="_nosferatu" type="simple">
             <transformations>
+				<translation x="0.0" y="1.0" z="0.0" />
             </transformations>
 
             <material id="vermelho" />
