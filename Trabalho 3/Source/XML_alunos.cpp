@@ -940,7 +940,7 @@ void show_jogador(int jactual)
 	gluOrtho2D( 0.0, DIMX, 0.0, DIMY);
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	glColor3f(1.0,1.0,0.0);	//amarelo
+	glColor3f(0.0,1.0,0.0);	//amarelo
 	glRasterPos2i(3, DIMY-25);
 
 	switch(jactual)
