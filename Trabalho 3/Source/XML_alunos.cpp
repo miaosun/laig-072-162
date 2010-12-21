@@ -106,6 +106,7 @@ typedef struct anim_data{
 
 anim_data peca_anim;
 anim_data move_anim;
+anim_data insert_anim;
 struct camera_anim{
 	double rxi, rzi, ryi, rxf, rzf, ryf, dt, drx, dry, drz, rx, ry, rz;
 	int cam_ant;
@@ -542,6 +543,7 @@ void inicializacao()
 	vista_actual=vista_actual_aux;
 	move_anim.enabled=false;
 	cam_anim.enabled=false;
+	insert_anim.enabled=false;
 
 	glShadeModel(GL_SMOOTH);				// GL_FLAT / GL_SMOOTH
 
@@ -735,47 +737,11 @@ void undo(int control)
 		jogo->hist_pecas_al.pop_back();
 		jogo->pecas_v=jogo->hist_pecas_v.back();
 		jogo->hist_pecas_v.pop_back();
-		/*switch(jogo->fase)
-		{
-		case 0:
-			jogo->tab=jogo->hist.back();
-			jogo->hist.pop_back();
-			if(jogo->Jactual==0)
-				jogo->pecas_v.push_back(2);
-			else
-				jogo->pecas_al.push_back(1);
-			actualiza=true;
-			break;
-		case 1:
-			jogo->tab=jogo->hist.back();
-			jogo->hist.pop_back();
-			if(jogo->Jactual==0)
-			{
-				if(jogo->pecas_al.size()==6)
-				{
-					jogo->pecas_v.push_back(3);
-					jogo->fase--;
-					actualiza=true;
-				}
-			}
-			else
-			{
-				jogo->pecas_al.push_back(1);
-				actualiza=true;
-			}
-			break;
-		case 2:
-			jogo->tab=jogo->hist.back();
-			jogo->hist.pop_back();
-			break;
-		}*/
+		jogo->hist_insert.pop_back();
 		if(jogo->Jactual==0)
 			jogo->Jactual=1;
 		else
 			jogo->Jactual=0;
-		/*if(actualiza)
-			jogo->procura_sinal(0);*/
-
 	}
 }
 
@@ -1070,6 +1036,17 @@ void peca_anim_init()
 	peca_anim.dy=(peca_anim.yf-peca_anim.yi)/((1000.0*peca_anim.dty)/mili_secs);
 }
 
+void insert_anim_init(int casa)
+{
+	insert_anim.yi=5.0;
+	insert_anim.y=insert_anim.yi;
+	insert_anim.yf=0.0;
+	insert_anim.dty=0.5;
+	insert_anim.dy=(insert_anim.yf-insert_anim.yi)/((1000.0*insert_anim.dty)/mili_secs);
+	insert_anim.casa_i=casa;
+	insert_anim.enabled=true;
+}
+
 void move_anim_init(int casa)
 {
 	int linha_i=jogo->casa_sel/7;
@@ -1106,36 +1083,57 @@ void move_anim_init(int casa)
 
 void filme(int dummy)
 {
-	film_data.enabled=true;
-	film_data.pos=0;
-	filme_vars();
+	vector<int> aux;
+	if(jogo->hist_tabs.size()>=2)
+	{	
+		jogo->sinal.clear();
+		film_data.enabled=true;
+		film_data.pos=0;
+		jogo->hist_tabs.push_back(jogo->tab);
+		jogo->hist_moves.push_back(aux);
+		jogo->hist_pecas_al.push_back(jogo->pecas_al);
+		jogo->hist_pecas_v.push_back(jogo->pecas_v);
+		jogo->hist_insert.push_back(-1);
+		filme_vars();
+	}
 }
 
 void filme_vars()
 {
 	vector<int> move;
+	int insert;
 	bool chama=true;
-	cout<<"entrou\n";
 	jogo->pecas_al=jogo->hist_pecas_al.at(film_data.pos);
 	jogo->pecas_v=jogo->hist_pecas_v.at(film_data.pos);
 	jogo->tab=jogo->hist_tabs.at(film_data.pos);
 	move=jogo->hist_moves.at(film_data.pos);
+	insert=jogo->hist_insert.at(film_data.pos);
 	if(!move.empty())
 	{
 		jogo->casa_sel=move.at(0);
 		move_anim_init(move.at(1));
 		jogo->tab=jogo->hist_tabs.at(film_data.pos+1);
-		chama=false;
+	}
+	if(insert>0)
+	{
+		insert_anim_init(insert);
+		jogo->tab=jogo->hist_tabs.at(film_data.pos+1);
 	}
 	if(film_data.pos<jogo->hist_tabs.size()-2)
 		film_data.pos++;
 	else
 	{
 		film_data.enabled=false;
-		chama=false;
+		jogo->tab=jogo->hist_tabs.back();
+		jogo->hist_tabs.pop_back();
+		jogo->hist_moves.pop_back();
+		jogo->pecas_al=jogo->hist_pecas_al.back();
+		jogo->hist_pecas_al.pop_back();
+		jogo->pecas_v=jogo->hist_pecas_v.back();
+		jogo->hist_pecas_v.pop_back();
+		jogo->hist_insert.pop_back();
+		jogo->casa_sel=-1;
 	}
-	if(chama)
-		filme_vars();
 }
 
 void anim(int dummy)
@@ -1206,6 +1204,18 @@ void anim(int dummy)
 			vista_actual=vista_actual_aux;
 	}
 
+	if(insert_anim.enabled)
+	{
+		if(insert_anim.y>insert_anim.yf)
+			insert_anim.y+=insert_anim.dy;
+		else
+		{
+			insert_anim.enabled=false;
+			if(film_data.enabled)
+				filme_vars();
+		}
+	}
+
 	glutTimerFunc(mili_secs,anim, 0);
 }
 
@@ -1256,6 +1266,11 @@ void Jogo::draw()
 		}
 		else if(move_anim.enabled && move_anim.casa_f==i)
 			glTranslated(move_anim.x, move_anim.y, move_anim.z);
+		else if(insert_anim.enabled && insert_anim.casa_i==i)
+		{
+			posicao(true, i);
+			glTranslated(0.0, insert_anim.y, 0.0);
+		}
 		else
 			posicao(true, i);
 		switch(this->tab.at(i))
@@ -1367,26 +1382,16 @@ void sensores()
 		
 		glPushMatrix();
 		glTranslated(-dim_Casa-dim_Casa/2+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
-		if(jogo->tab.at(2)==0)
-		{
-			glRotated(-90.0, 1.0, 0.0, 0.0);
-			glRectd(0.0, 0.0, dim_cube, dim_cube);
-		}
-		else
-			glCallList(cube);
+		glRotated(-90.0, 1.0, 0.0, 0.0);
+		glRectd(0.0, 0.0, dim_cube, dim_cube);
 		glPopMatrix();
 		for(int i=1; i<3; i++)
 		{
 			glLoadName(i+2);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -2*dim_Casa-dim_Casa/2);
-			if(jogo->tab.at(i+2)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 
 		}
@@ -1396,13 +1401,8 @@ void sensores()
 			glLoadName(i+8);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa-dim_Casa/2);
-			if(jogo->tab.at(i+8)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 		}
 		
@@ -1411,13 +1411,8 @@ void sensores()
 			glLoadName(i+14);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, -dim_Casa/2);
-			if(jogo->tab.at(i+14)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);;
 			glPopMatrix();
 		}
 
@@ -1426,13 +1421,8 @@ void sensores()
 			glLoadName(i+21);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa/2);
-			if(jogo->tab.at(i+21)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 		}
 
@@ -1441,13 +1431,8 @@ void sensores()
 			glLoadName(i+28);
 			glPushMatrix();
 			glTranslated(-3*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, dim_Casa+dim_Casa/2);
-			if(jogo->tab.at(i+28)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 		}
 
@@ -1456,13 +1441,8 @@ void sensores()
 			glLoadName(i+36);
 			glPushMatrix();
 			glTranslated(-2*dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 2*dim_Casa+dim_Casa/2);
-			if(jogo->tab.at(i+36)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 		}
 		
@@ -1471,13 +1451,8 @@ void sensores()
 			glLoadName(i+44);
 			glPushMatrix();
 			glTranslated(-dim_Casa-dim_Casa/2+i*dim_Casa+(dim_Casa-dim_cube)/2, 0.0, 3*dim_Casa+dim_Casa/2);
-			if(jogo->tab.at(i+44)==0)
-			{
-				glRotated(-90.0, 1.0, 0.0, 0.0);
-				glRectd(0.0, 0.0, dim_cube, dim_cube);
-			}
-			else
-				glCallList(cube);
+			glRotated(-90.0, 1.0, 0.0, 0.0);
+			glRectd(0.0, 0.0, dim_cube, dim_cube);
 			glPopMatrix();
 		}
 	glPopMatrix();
@@ -1502,9 +1477,11 @@ void pickingAction(GLuint answer)
 						jogo->hist_moves.push_back(aux);
 						jogo->hist_pecas_al.push_back(jogo->pecas_al);
 						jogo->hist_pecas_v.push_back(jogo->pecas_v);
+						jogo->hist_insert.push_back(answer);
 						peca=jogo->pecas_al.back();
 						jogo->pecas_al.pop_back();
 						jogo->tab.at(answer)=peca;
+						insert_anim_init(answer);
 						jogo->Jactual=1;
 						jogo->procura_sinal(0);
 					}
@@ -1514,11 +1491,13 @@ void pickingAction(GLuint answer)
 						jogo->hist_moves.push_back(aux);
 						jogo->hist_pecas_al.push_back(jogo->pecas_al);
 						jogo->hist_pecas_v.push_back(jogo->pecas_v);
+						jogo->hist_insert.push_back(answer);
 						peca=jogo->pecas_v.back();
 						jogo->pecas_v.pop_back();
 						if(jogo->pecas_v.empty())
 							jogo->fase++;
 						jogo->tab.at(answer)=peca;
+						insert_anim_init(answer);
 						jogo->Jactual=0;
 						jogo->procura_sinal(0);
 					}
@@ -1534,11 +1513,13 @@ void pickingAction(GLuint answer)
 						jogo->hist_moves.push_back(aux);
 						jogo->hist_pecas_al.push_back(jogo->pecas_al);
 						jogo->hist_pecas_v.push_back(jogo->pecas_v);
+						jogo->hist_insert.push_back(answer);
 						peca=jogo->pecas_al.back();
 						jogo->pecas_al.pop_back();
 						if(jogo->pecas_al.empty())
 							jogo->fase++;
 						jogo->tab.at(answer)=peca;
+						insert_anim_init(answer);
 						jogo->Jactual=1;
 						jogo->sinal.clear();
 					}
@@ -1721,6 +1702,7 @@ void Jogo::exec_move(int casa)
 	this->hist_moves.push_back(aux);
 	this->hist_pecas_al.push_back(jogo->pecas_al);
 	this->hist_pecas_v.push_back(jogo->pecas_v);
+	this->hist_insert.push_back(-1);
 	this->tab=parse_tab(buf);
 
 }
