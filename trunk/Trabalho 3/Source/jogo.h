@@ -9,7 +9,11 @@ public:
 	vector<int> pecas_v;
 
 
-	vector<vector<int>> hist;
+	vector<vector<int>> hist_tabs;
+	vector<vector<int>> hist_moves;
+	vector<vector<int>> hist_pecas_al;
+	vector<vector<int>> hist_pecas_v;
+
 	vector<int> tab;
 	vector<int> sinal;
 	int fase;
@@ -45,6 +49,8 @@ void sensores();
 void anim(int dummy);
 void peca_anim_init();
 void move_anim_init(int casa);
+void filme(int dummy);
+void filme_vars();
 
 void sock_end(int control);
 void undo(int control);
