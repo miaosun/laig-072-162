@@ -21,7 +21,6 @@ public:
 	int fase_ant;
 	int Jactual;
 	int casa_sel;
-	bool ajuda;
 
 	Object * vampiro;
 	Object * aldeao;
@@ -40,7 +39,7 @@ public:
 	void exec_move(int casa);
 	void sinaliza_casa(int casa);
 	vector<int> parse_tab(char * buf);
-	void procura_sinal(int fase);
+	void procura_sinal();
 };
 
 void myCube(GLfloat lado);

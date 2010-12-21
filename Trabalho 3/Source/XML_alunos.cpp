@@ -578,9 +578,9 @@ void ctr_light(int control)//funcao que liga e desliga as luzes em funcao dos ch
 	}
 }
 
-void ctr_ajuda(int control)
+void ctr_validas(int control)
 {
-	jogo->ajuda=!jogo->ajuda;
+	jogo->procura_sinal();
 }
 
 void ctr_camara(int control)
@@ -730,6 +730,8 @@ void undo(int control)
 	if(control==0 && !jogo->hist_tabs.empty())
 	{
 		jogo->sinal.clear();
+		jogo->casa_sel=-1;
+		jogo->fase=jogo->fase_ant;
 		jogo->tab=jogo->hist_tabs.back();
 		jogo->hist_tabs.pop_back();
 		jogo->hist_moves.pop_back();
@@ -866,8 +868,7 @@ int main(int argc, char* argv[])
 	glui2->add_radiobutton_to_group(rb, "Camara 3");
 
 	glui2->add_column(true);
-	int ajuda_selected=0;
-	glui2->add_checkbox("ajuda", &ajuda_selected, 0, ctr_ajuda );
+	glui2->add_button("Validas", 0, ctr_validas);
 
 
 	/*vector<int> light_enabled;
@@ -924,9 +925,6 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 
 	if(!socketConnect())
 		throw ExcepcaoSocket();
-	this->ajuda=false;
-
-	this->procura_sinal(0);
 }
 
 
@@ -1219,23 +1217,37 @@ void anim(int dummy)
 	glutTimerFunc(mili_secs,anim, 0);
 }
 
-void Jogo::procura_sinal(int fase)
+void Jogo::procura_sinal()
 {
 	this->sinal.clear();
-	if(ajuda)
+	for(unsigned int i=0; i<49; i++)
 	{
-		for(unsigned int i=0; i<49; i++)
+		switch(this->fase)
 		{
-			if(fase==0)
+		case 0:
+			if(casa_valida(i))
+				this->sinal.push_back(i);
+			break;
+		case 1:
+			if(jogo->Jactual==0)
 			{
 				if(casa_valida(i))
 					this->sinal.push_back(i);
 			}
 			else
 			{
-				if(mov_valido(i))
+				if(pertence(i))
 					this->sinal.push_back(i);
 			}
+			break;
+		case 2:
+			if(pertence(i))
+				this->sinal.push_back(i);
+			break;
+		case 3:
+			if(mov_valido(i) && jogo->casa_sel>0)
+				this->sinal.push_back(i);
+			break;
 		}
 	}
 }
@@ -1462,6 +1474,7 @@ void pickingAction(GLuint answer)
 {
 	int peca;
 	vector<int> aux;
+	jogo->sinal.clear();
 	try
 	{
 		if(!move_anim.enabled)
@@ -1483,7 +1496,7 @@ void pickingAction(GLuint answer)
 						jogo->tab.at(answer)=peca;
 						insert_anim_init(answer);
 						jogo->Jactual=1;
-						jogo->procura_sinal(0);
+						jogo->fase_ant=jogo->fase;
 					}
 					else
 					{
@@ -1494,12 +1507,12 @@ void pickingAction(GLuint answer)
 						jogo->hist_insert.push_back(answer);
 						peca=jogo->pecas_v.back();
 						jogo->pecas_v.pop_back();
+						jogo->fase_ant=jogo->fase;
 						if(jogo->pecas_v.empty())
 							jogo->fase++;
 						jogo->tab.at(answer)=peca;
 						insert_anim_init(answer);
 						jogo->Jactual=0;
-						jogo->procura_sinal(0);
 					}
 				}
 				break;
@@ -1516,6 +1529,7 @@ void pickingAction(GLuint answer)
 						jogo->hist_insert.push_back(answer);
 						peca=jogo->pecas_al.back();
 						jogo->pecas_al.pop_back();
+						jogo->fase_ant=jogo->fase;
 						if(jogo->pecas_al.empty())
 							jogo->fase++;
 						jogo->tab.at(answer)=peca;
@@ -1531,7 +1545,6 @@ void pickingAction(GLuint answer)
 						jogo->casa_sel=answer;
 						jogo->fase_ant=jogo->fase;
 						jogo->fase=3;
-						jogo->procura_sinal(1);
 						//cout<<"pertence\n";
 					}
 					break;
@@ -1544,11 +1557,15 @@ void pickingAction(GLuint answer)
 					jogo->casa_sel=answer;
 					jogo->fase_ant=jogo->fase;
 					jogo->fase=3;
-					jogo->procura_sinal(1);
 					//cout<<"pertence\n";
 				}
 				break;
 			case 3://quando se seleccionou uma casa e se tenta seleccionar a outra
+				if(jogo->pertence(answer))
+				{
+					peca_anim_init();
+					jogo->casa_sel=answer;
+				}
 				if(jogo->mov_valido(answer))
 				{
 					jogo->exec_move(answer);
@@ -1559,8 +1576,6 @@ void pickingAction(GLuint answer)
 					jogo->casa_sel=-1;
 					jogo->fase=jogo->fase_ant;
 					jogo->sinal.clear();
-					if(jogo->fase==1)
-						jogo->procura_sinal(0);
 				}
 				break;
 			}
