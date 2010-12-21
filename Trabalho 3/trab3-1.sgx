@@ -129,7 +129,7 @@
 <!-- tabuleiro -->
 		<object id="tabuleiro" type="compound">
             <transformations>
-				<translation x="0.0" y="20.0" z="0.0" />
+				<translation x="0.0" y="21.0" z="0.0" />
 				<rotation axis="x" angle="-90" />
             </transformations>
 
