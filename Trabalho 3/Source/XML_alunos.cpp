@@ -40,6 +40,10 @@ float view_rotate[16] =	{ 1,0,0,0,
 						  0,1,0,0,
 						  0,0,1,0,
 						  0,0,0,1 };
+float view_rotate_aux[16] =	{ 1,0,0,0,
+						  0,1,0,0,
+						  0,0,1,0,
+						  0,0,0,1 };
 
 // vector de posicao utilizado pelo botao de afastamento
 float obj_pos[] = { 0.0, 0.0, 0.0 };
@@ -107,7 +111,10 @@ struct camera_anim{
 	int cam_ant;
 	bool enabled;
 }cam_anim;
-bool peca_sel;
+struct filme_data{
+	int pos;
+	bool enabled;
+} film_data;
 #define MOVE_ID 150 
 #define SELECT_ID 151
 
@@ -119,6 +126,7 @@ int cena_actual;
 int vista_actual;
 int vista_actual_aux;
 
+vector<Jogo *> hist_jogos;
 Jogo * jogo;
 
 
@@ -622,6 +630,9 @@ void ctr_camara(int control)
 	cam_anim.rz=cam_anim.rzi;
 	cam_anim.drz=(cam_anim.rzf-cam_anim.rzi)/((1000.0*cam_anim.dt)/mili_secs);
 
+	for(unsigned int i=0; i<16;i++)
+		view_rotate[i]=view_rotate_aux[i];
+
 	if(cam_anim.cam_ant!=vista_actual_aux)
 		cam_anim.enabled=true;
 
@@ -714,10 +725,17 @@ void sock_end(int control)
 void undo(int control)
 {
 	bool actualiza=false;
-	if(control==0 && !jogo->hist.empty())
+	if(control==0 && !jogo->hist_tabs.empty())
 	{
 		jogo->sinal.clear();
-		switch(jogo->fase)
+		jogo->tab=jogo->hist_tabs.back();
+		jogo->hist_tabs.pop_back();
+		jogo->hist_moves.pop_back();
+		jogo->pecas_al=jogo->hist_pecas_al.back();
+		jogo->hist_pecas_al.pop_back();
+		jogo->pecas_v=jogo->hist_pecas_v.back();
+		jogo->hist_pecas_v.pop_back();
+		/*switch(jogo->fase)
 		{
 		case 0:
 			jogo->tab=jogo->hist.back();
@@ -750,13 +768,14 @@ void undo(int control)
 			jogo->tab=jogo->hist.back();
 			jogo->hist.pop_back();
 			break;
-		}
+		}*/
 		if(jogo->Jactual==0)
 			jogo->Jactual=1;
 		else
 			jogo->Jactual=0;
-		if(actualiza)
-			jogo->procura_sinal(0);
+		/*if(actualiza)
+			jogo->procura_sinal(0);*/
+
 	}
 }
 
@@ -797,14 +816,6 @@ int main(int argc, char* argv[])
 		system("pause");
 		return 0;
 	}
-
-
-	/*if(!cenas.at(cena_actual)->loadScene())
-	{
-		cout<<"nao fez load correctamente!\n";
-		system("pause");
-		return 0;
-	}*/
 
 	vampiro=cenas.at(cena_actual)->findObject("_vampiro");
 	aldeao=cenas.at(cena_actual)->findObject("_aldeao");
@@ -871,6 +882,9 @@ int main(int argc, char* argv[])
 	glui2->add_button("Exit", 0, sock_end);
 	/////para fazer undo
 	glui2->add_button("Undo", 0, undo);
+	//para mostrar filme de jogo
+	glui2->add_button("Filme de jogo", 0, filme);
+
 
 
 
@@ -948,6 +962,7 @@ Jogo::Jogo(Object * vampiro, Object * aldeao, Object * nosferatu, int j1, int j2
 
 	this->procura_sinal(0);
 }
+
 
 void show_jogador(int jactual)
 {
@@ -1068,25 +1083,59 @@ void move_anim_init(int casa)
 	move_anim.yi=alturaTab+2.0+peca_anim.y;
 	move_anim.y=move_anim.yi;
 	move_anim.yf=alturaTab+6.0;
-	move_anim.dty=0.5;
+	move_anim.dty=0.25;
 	move_anim.sobe=true;
-	move_anim.dy=(move_anim.yf-move_anim.yi)/((1000.0*move_anim.dty)/mili_secs);
+	move_anim.dy=(move_anim.yf-(alturaTab+2.0))/((1000.0*move_anim.dty)/mili_secs);
 	
 	move_anim.xi=-3*dim_Casa+coluna_i*dim_Casa;
 	move_anim.x=move_anim.xi;
 	move_anim.xf=-3*dim_Casa+coluna_f*dim_Casa;
-	move_anim.dtx=1.0;
+	move_anim.dtx=0.5;
 	move_anim.dx=(move_anim.xf-move_anim.xi)/((1000.0*move_anim.dtx)/mili_secs);
 
 	move_anim.zi=-3*dim_Casa+linha_i*dim_Casa;
 	move_anim.z=move_anim.zi;
 	move_anim.zf=-3*dim_Casa+linha_f*dim_Casa;
-	move_anim.dtz=1.0;
+	move_anim.dtz=0.5;
 	move_anim.dz=(move_anim.zf-move_anim.zi)/((1000.0*move_anim.dtz)/mili_secs);
 
 	move_anim.enabled=true;
 	move_anim.corre=false;
 	move_anim.desce=false;
+}
+
+void filme(int dummy)
+{
+	film_data.enabled=true;
+	film_data.pos=0;
+	filme_vars();
+}
+
+void filme_vars()
+{
+	vector<int> move;
+	bool chama=true;
+	cout<<"entrou\n";
+	jogo->pecas_al=jogo->hist_pecas_al.at(film_data.pos);
+	jogo->pecas_v=jogo->hist_pecas_v.at(film_data.pos);
+	jogo->tab=jogo->hist_tabs.at(film_data.pos);
+	move=jogo->hist_moves.at(film_data.pos);
+	if(!move.empty())
+	{
+		jogo->casa_sel=move.at(0);
+		move_anim_init(move.at(1));
+		jogo->tab=jogo->hist_tabs.at(film_data.pos+1);
+		chama=false;
+	}
+	if(film_data.pos<jogo->hist_tabs.size()-2)
+		film_data.pos++;
+	else
+	{
+		film_data.enabled=false;
+		chama=false;
+	}
+	if(chama)
+		filme_vars();
 }
 
 void anim(int dummy)
@@ -1131,7 +1180,11 @@ void anim(int dummy)
 		else if(!move_anim.corre && move_anim.desce && move_anim.y>(alturaTab+2.0))
 			move_anim.y-=move_anim.dy;
 		else
+		{
 			move_anim.enabled=false;
+			if(film_data.enabled)
+				filme_vars();
+		}
 	}
 
 	if(cam_anim.enabled)
@@ -1151,7 +1204,6 @@ void anim(int dummy)
 
 		if(!cam_anim.enabled)
 			vista_actual=vista_actual_aux;
-
 	}
 
 	glutTimerFunc(mili_secs,anim, 0);
@@ -1434,6 +1486,7 @@ void sensores()
 void pickingAction(GLuint answer) 
 {
 	int peca;
+	vector<int> aux;
 	try
 	{
 		if(!move_anim.enabled)
@@ -1445,7 +1498,10 @@ void pickingAction(GLuint answer)
 				{
 					if(jogo->Jactual==0)
 					{
-						jogo->hist.push_back(jogo->tab);
+						jogo->hist_tabs.push_back(jogo->tab);
+						jogo->hist_moves.push_back(aux);
+						jogo->hist_pecas_al.push_back(jogo->pecas_al);
+						jogo->hist_pecas_v.push_back(jogo->pecas_v);
 						peca=jogo->pecas_al.back();
 						jogo->pecas_al.pop_back();
 						jogo->tab.at(answer)=peca;
@@ -1454,7 +1510,10 @@ void pickingAction(GLuint answer)
 					}
 					else
 					{
-						jogo->hist.push_back(jogo->tab);
+						jogo->hist_tabs.push_back(jogo->tab);
+						jogo->hist_moves.push_back(aux);
+						jogo->hist_pecas_al.push_back(jogo->pecas_al);
+						jogo->hist_pecas_v.push_back(jogo->pecas_v);
 						peca=jogo->pecas_v.back();
 						jogo->pecas_v.pop_back();
 						if(jogo->pecas_v.empty())
@@ -1471,7 +1530,10 @@ void pickingAction(GLuint answer)
 				case 0:
 					if(jogo->casa_valida(answer))
 					{
-						jogo->hist.push_back(jogo->tab);
+						jogo->hist_tabs.push_back(jogo->tab);
+						jogo->hist_moves.push_back(aux);
+						jogo->hist_pecas_al.push_back(jogo->pecas_al);
+						jogo->hist_pecas_v.push_back(jogo->pecas_v);
 						peca=jogo->pecas_al.back();
 						jogo->pecas_al.pop_back();
 						if(jogo->pecas_al.empty())
@@ -1641,6 +1703,7 @@ void Jogo::exec_move(int casa)
 {
 	vector<int> posi = conv_casa(this->casa_sel);
 	vector<int> posf = conv_casa(casa);
+	vector<int> aux;
 	char buf[BUFSIZE];
 
 	sprintf(buf, "exec_move(%i,%i,%i,%i,", posi.at(0), posi.at(1), posf.at(0), posf.at(1));
@@ -1652,7 +1715,12 @@ void Jogo::exec_move(int casa)
 
 	move_anim_init(casa);
 
-	this->hist.push_back(this->tab);
+	this->hist_tabs.push_back(jogo->tab);
+	aux.push_back(this->casa_sel);
+	aux.push_back(casa);
+	this->hist_moves.push_back(aux);
+	this->hist_pecas_al.push_back(jogo->pecas_al);
+	this->hist_pecas_v.push_back(jogo->pecas_v);
 	this->tab=parse_tab(buf);
 
 }
