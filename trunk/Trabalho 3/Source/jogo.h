@@ -13,6 +13,7 @@ public:
 	vector<vector<int>> hist_moves;
 	vector<vector<int>> hist_pecas_al;
 	vector<vector<int>> hist_pecas_v;
+	vector<int> hist_insert;
 
 	vector<int> tab;
 	vector<int> sinal;
